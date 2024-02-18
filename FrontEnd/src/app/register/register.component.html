@@ -1,0 +1,117 @@
+<div class="height100 center flex login-main">
+  <div class="login-container">
+    <div class="register-role">
+      <button
+        [ngClass]="{ active: activeButton === 'athlete' }"
+        (click)="changeActive('athlete')"
+      >
+        Sportaš
+      </button>
+      <button
+        [ngClass]="{ active: activeButton === 'fieldOwner' }"
+        (click)="changeActive('fieldOwner')"
+      >
+        Vlasnik terena
+      </button>
+    </div>
+    <div class="login-header">
+      <p>Registracija</p>
+      <div>
+        <span>Već imate račun? </span>
+        <a routerLink="/login">Prijavite se</a>
+      </div>
+    </div>
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+      class="flex center login-form"
+      #form="ngForm"
+    >
+      <div class="form-field">
+        <input
+          formControlName="email"
+          type="email"
+          required
+          id="email"
+          placeholder=""
+        />
+        <label for="email">Email</label>
+      </div>
+      @if (
+        (registerForm.controls.email.dirty || form.submitted) &&
+        !registerForm.controls.email.valid
+      ) {
+        <span class="form-error">Morate unijeti ispravan email!</span>
+      }
+      <div class="form-field">
+        <input
+          formControlName="firstName"
+          type="text"
+          required
+          id="firstName"
+          placeholder=""
+        />
+        <label for="firstName">Ime</label>
+      </div>
+      @if (
+        (registerForm.controls.firstName.dirty || form.submitted) &&
+        !registerForm.controls.firstName.valid
+      ) {
+        <span class="form-error">Morate unijeti ime!</span>
+      }
+      <div class="form-field">
+        <input
+          formControlName="lastName"
+          type="text"
+          required
+          id="lastName"
+          placeholder=""
+        />
+        <label for="lastName">Prezime</label>
+      </div>
+      @if (
+        (registerForm.controls.lastName.dirty || form.submitted) &&
+        !registerForm.controls.lastName.valid
+      ) {
+        <span class="form-error">Morate unijeti prezime!</span>
+      }
+      <div class="form-field">
+        <input
+          formControlName="contactNumber"
+          type="text"
+          required
+          id="contactNumber"
+          placeholder=""
+        />
+        <label for="contactNumber">{{ contactString }}</label>
+      </div>
+      @if (
+        (registerForm.controls.contactNumber.dirty || form.submitted) &&
+        ((registerForm.controls.contactNumber.value.length != 10 &&
+          registerForm.controls.contactNumber.valid) ||
+          (registerForm.controls.contactNumber.value.length != 0 &&
+            !registerForm.controls.contactNumber.valid) ||
+            (form.submitted && activeButton == "fieldOwner"))
+      ) {
+        <span class="form-error">Morate unijeti ispravan broj mobitela!</span>
+      }
+      <div class="form-field">
+        <input
+          formControlName="password"
+          type="password"
+          required
+          id="password"
+          placeholder=""
+        />
+        <label for="password">Lozinka</label>
+      </div>
+      @if (
+        (registerForm.controls.password.dirty || form.submitted) &&
+        !registerForm.controls.password.valid
+      ) {
+        <span class="form-error">Lozinka mora imati bar 8 znakova!</span>
+      }
+      <button type="submit" class="button">Registriraj se</button>
+    </form>
+  </div>
+</div>
