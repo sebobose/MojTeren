@@ -35,7 +35,7 @@
           id="email"
           placeholder=""
         />
-        <label for="email">Email</label>
+        <label for="email">Email*</label>
       </div>
       @if (
         (registerForm.controls.email.dirty || form.submitted) &&
@@ -51,7 +51,7 @@
           id="firstName"
           placeholder=""
         />
-        <label for="firstName">Ime</label>
+        <label for="firstName">Ime*</label>
       </div>
       @if (
         (registerForm.controls.firstName.dirty || form.submitted) &&
@@ -67,7 +67,7 @@
           id="lastName"
           placeholder=""
         />
-        <label for="lastName">Prezime</label>
+        <label for="lastName">Prezime*</label>
       </div>
       @if (
         (registerForm.controls.lastName.dirty || form.submitted) &&
@@ -91,7 +91,9 @@
           registerForm.controls.contactNumber.valid) ||
           (registerForm.controls.contactNumber.value.length != 0 &&
             !registerForm.controls.contactNumber.valid) ||
-            (form.submitted && activeButton == "fieldOwner"))
+          (form.submitted &&
+            activeButton == "fieldOwner" &&
+            !registerForm.controls.contactNumber.valid))
       ) {
         <span class="form-error">Morate unijeti ispravan broj mobitela!</span>
       }
@@ -103,13 +105,20 @@
           id="password"
           placeholder=""
         />
-        <label for="password">Lozinka</label>
+        <label for="password">Lozinka*</label>
       </div>
       @if (
         (registerForm.controls.password.dirty || form.submitted) &&
         !registerForm.controls.password.valid
       ) {
         <span class="form-error">Lozinka mora imati bar 8 znakova!</span>
+      }
+      @if (userExists) {
+        <span class="form-error">Ovaj email se već koristi!</span>
+      } @else if (registrationSuccess) {
+        <span class="form-error"
+          >Registracija uspješna! Povratak na login...</span
+        >
       }
       <button type="submit" class="button">Registriraj se</button>
     </form>

@@ -1,20 +1,22 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { NgClass } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RegisterService } from './register.service';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgClass],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
   private formBuilder = inject(FormBuilder);
+  private registerService = inject(RegisterService);
+  private router = inject(Router);
 
+  userExists: boolean = false;
   activeButton: string = 'athlete';
-  contactString: string = 'Broj mobitela (opcionalno)';
+  contactString: string = 'Broj mobitela';
+  registrationSuccess = false;
   registerForm = this.formBuilder.nonNullable.group(
     {
       email: ['', [Validators.required, Validators.email]],
@@ -22,20 +24,50 @@ export class RegisterComponent {
       lastName: ['', [Validators.required]],
       contactNumber: ['', [Validators.pattern('^[0-9]*$')]],
       password: ['', [Validators.required, Validators.minLength(8)]],
+      role: [''],
     },
     {
       updateOn: 'blur',
     },
   );
 
-  register() {}
+  register() {
+    this.registerForm.value.role = this.activeButton;
+    if (
+      (this.registerForm.valid &&
+        this.registerForm.controls.contactNumber.value.length == 10) ||
+      (this.registerForm.value.contactNumber === '' &&
+        this.registerForm.controls.email.valid &&
+        this.registerForm.controls.firstName.valid &&
+        this.registerForm.controls.lastName.valid &&
+        this.registerForm.controls.password.valid &&
+        this.activeButton === 'athlete')
+    ) {
+      this.registerService.register(this.registerForm.value).subscribe({
+        next: (response) => {
+          console.log('Response:', response);
+          this.registrationSuccess = true;
+          this.userExists = false;
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
+        },
+        error: (error) => {
+          console.log('Error:', error);
+          this.userExists = true;
+        },
+      });
+    } else {
+      console.log('Form is invalid');
+    }
+  }
 
   changeActive(role: string) {
     this.activeButton = role;
     if (role === 'athlete') {
-      this.contactString = 'Broj mobitela (opcionalno)';
-    } else if (role === 'fieldOwner') {
       this.contactString = 'Broj mobitela';
+    } else if (role === 'fieldOwner') {
+      this.contactString = 'Broj mobitela*';
     }
   }
 }

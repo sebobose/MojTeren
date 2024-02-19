@@ -27,7 +27,7 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @Size(min = 3, max = 30)
+    @Size(min = 3, max = 50)
     private String email;
 
     @Size(min = 8)
@@ -41,7 +41,6 @@ public class User implements UserDetails {
 
     private String contactNumber;
 
-    @NotNull
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdTS;
@@ -81,7 +80,6 @@ public class User implements UserDetails {
 
     public User(RegisterDto user, Role role) {
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.contactNumber = user.getContactNumber();

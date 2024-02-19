@@ -18,16 +18,14 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(
-            @ModelAttribute RegisterDto request
+            @RequestBody RegisterDto request
     ) {
-        System.out.println("controller " + request);
         return service.register(request);
     }
     @PostMapping("/login")
     public ResponseEntity<Map<String,String>> authenticate(
             @RequestBody LoginDto request
     ) {
-        System.out.println("controller " + request);
         return service.authenticate(request);
     }
 

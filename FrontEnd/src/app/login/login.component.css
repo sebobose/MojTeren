@@ -50,7 +50,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
   color: #d1d0c5 !important;
   -webkit-text-fill-color: #d1d0c5 !important;
 }
@@ -81,16 +81,17 @@ input:-webkit-autofill:active {
 .button {
   width: 150px;
   margin-top: 20px;
-  background-image: linear-gradient(to right, #646669 0%, #434447 30%, #434447 70%,#646669 100%);
+  background-color: #434447;
   color: #b8bec5;
   border-radius: 10px;
   padding: 10px;
   cursor: pointer;
   transition: 0.3s all;
   font-weight: bold;
+  border: none;
 }
 
 .button:hover {
-  background-image: linear-gradient(to right, #646669 0%, #b8bec5 20%, #b8bec5 80%, #646669 100%);
+  background-color: #b8bec5;
   color: #646669;
 }
