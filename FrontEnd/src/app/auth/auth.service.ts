@@ -1,21 +1,16 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-    constructor() { }
-
-    ngOnInit() {
+  getUserRole() {
+    const user = localStorage.getItem('role');
+    if (user) {
+      return user;
     }
-
-    getUserRole() {
-      const user = localStorage.getItem('user');
-      if (user) {
-        return user;
-      }
-      return null;
-    }
+    return null;
+  }
 
   isUserLoggedIn() {
     return !!localStorage.getItem('token');

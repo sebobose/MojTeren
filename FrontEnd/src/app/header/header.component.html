@@ -1,0 +1,20 @@
+<div class="header">
+  <span class="header-title" (click)="changePage('')">M⚾j Teren</span>
+  @if (role == null) {
+    <span class="header-login" (click)="changePage('/login')">Prijava</span>
+  }
+  @else if (role == "athlete"){
+    <div class="header-login">
+      <span class="header-login">Moje rezervacije</span>
+      <span class="header-login">Profil</span>
+      <span class="header-login">Odjava</span>
+    </div>
+  }
+  @else if (role == "fieldOwner") {
+    <div class="header-login">
+      <span class="header-login">Moji tereni</span>
+      <span class="header-login">Profil</span>
+      <span class="header-login">Odjava</span>
+    </div>
+  }
+</div>

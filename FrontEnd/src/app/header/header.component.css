@@ -1,0 +1,27 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure the header is always on top */
+  background-color: #e3bd2a;
+  height: 10%;
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-left: 20px;
+  color: #323437;
+  cursor: pointer;
+}
+
+.header-login {
+  margin-left: auto;
+  margin-right: 20px;
+  color: #323437;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}

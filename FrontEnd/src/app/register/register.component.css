@@ -3,6 +3,10 @@
   width: fit-content;
 }
 
+.login-main {
+  height: 100%;
+}
+
 .form-field {
   display: flex;
   flex-direction: column;

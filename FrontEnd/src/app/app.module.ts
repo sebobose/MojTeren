@@ -7,9 +7,16 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './header/header.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    HeaderComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -17,6 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
     ReactiveFormsModule,
     RouterLink,
     AppRoutingModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
