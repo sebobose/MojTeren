@@ -1,22 +1,14 @@
 package org.zavrsni.backend.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.zavrsni.backend.auth.dto.LoginDto;
 import org.zavrsni.backend.auth.dto.RegisterDto;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.zavrsni.backend.role.Role;
@@ -25,8 +17,6 @@ import org.zavrsni.backend.security.JwtService;
 import org.zavrsni.backend.user.User;
 import org.zavrsni.backend.user.UserRepository;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             System.out.println("User with email " + request.getEmail() + " already exists");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Role role = roleRepository.findByName(request.getRole());
+        Role role = roleRepository.findByRoleName(request.getRole());
         if (role == null) {
             System.out.println("Role " + request.getRole() + " does not exist");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -75,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         String jwtToken = jwtService.generateToken(user);
-        return ResponseEntity.ok(Map.of("accessToken", jwtToken, "role", user.getRole().getName()));
+        return ResponseEntity.ok(Map.of("accessToken", jwtToken, "role", user.getRole().getRoleName()));
     }
 
 }

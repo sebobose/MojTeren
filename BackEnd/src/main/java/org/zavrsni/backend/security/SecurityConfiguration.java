@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/sport/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )

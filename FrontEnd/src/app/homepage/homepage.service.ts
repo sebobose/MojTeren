@@ -5,13 +5,10 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class RegisterService {
+export class HomepageService {
   private http = inject(HttpClient);
 
-  register(registerForm: any) {
-    return this.http.post(
-      environment.BASE_API_URL + '/auth/register',
-      registerForm,
-    );
+  getSports() {
+    return this.http.get(environment.BASE_API_URL + '/sport/all');
   }
 }

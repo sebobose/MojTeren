@@ -1,0 +1,13 @@
+<div class="homepage-container">
+  <div class="homepage-sidebar">
+    @for(sport of sports; track sport.name) {
+      <div class="side-bar-item">
+        <span class="side-bar-text" [ngClass]="{active: activeSport === sport.name }" (click)="getSport(sport)">{{ sport.name }}</span>
+      </div>
+    }
+  </div>
+  <div class="homepage-main">
+    <span>Ništa</span>
+  </div>
+
+</div>

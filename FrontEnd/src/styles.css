@@ -35,3 +35,11 @@ body {
 .width100 {
   width: 100%;
 }
+
+.main-body{
+  height: 90%;
+}
+
+.main-header {
+  height: 10%;
+}

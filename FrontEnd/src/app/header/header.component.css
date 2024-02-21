@@ -4,7 +4,7 @@
   width: 100%;
   z-index: 1000; /* Ensure the header is always on top */
   background-color: #e3bd2a;
-  height: 10%;
+  height: 10vh;
   display: flex;
   align-items: center;
 }

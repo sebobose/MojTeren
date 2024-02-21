@@ -45,7 +45,6 @@ export class RegisterComponent {
     ) {
       this.registerService.register(this.registerForm.value).subscribe({
         next: (response) => {
-          console.log('Response:', response);
           this.registrationSuccess = true;
           this.userExists = false;
           setTimeout(() => {

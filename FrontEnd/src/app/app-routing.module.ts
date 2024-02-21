@@ -3,9 +3,11 @@ import { AuthLoginGuard } from './auth/auth.loginguard';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { NgModule } from '@angular/core';
+import { HomepageComponent } from './homepage/homepage.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomepageComponent },
   { path: 'login', component: LoginComponent, canActivate: [AuthLoginGuard] },
   {
     path: 'register',

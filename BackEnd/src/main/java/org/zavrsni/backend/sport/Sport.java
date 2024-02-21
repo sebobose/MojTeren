@@ -1,10 +1,9 @@
-package org.zavrsni.backend.role;
+package org.zavrsni.backend.sport;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Role {
+public class Sport {
 
     @Id
     @GeneratedValue
-    private Long roleId = 0L;
+    private Long sportId = 0L;
 
     @NotNull
-    @Size(max = 20)
-    private String roleName;
-
+    private String sportName;
 }
