@@ -1,5 +1,5 @@
 <div class="homepage-container">
-  <div class="homepage-sidebar">
+  <div class="homepage-left-sidebar">
     @for(sport of sports; track sport.name) {
       <div class="side-bar-item">
         <span class="side-bar-text" [ngClass]="{active: activeSport === sport.name }" (click)="getSport(sport)">{{ sport.name }}</span>
@@ -7,7 +7,39 @@
     }
   </div>
   <div class="homepage-main">
-    <span>Ništa</span>
+    <div class="filters">
+      <div class="slider-container">
+        <span class="slider-header">Max udaljenost: {{distanceChange.getRawValue()}} km</span>
+        <mat-slider min="1" max="50" step="1" value="10">
+          <input matSliderThumb [formControl]="distanceChange">
+        </mat-slider>
+      </div>
+      <div class="appointment">
+        <mat-form-field color="accent">
+          <mat-label>Inherited calendar color</mat-label>
+          <input matInput [matDatepicker]="picker1">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <span>termin</span>
+      </div>
+      <div class="filters-button">
+        <span>pretrazi</span>
+      </div>
+    </div>
+    <div class="map">
+      <span>karta</span>
+    </div>
+    <div class="field-details">
+      <span>Detalji</span>
+    </div>
+  </div>
+  <div class="homepage-right-sidebar">
+    <div class="search">
+      <textarea #searchArea class="input" placeholder="Pretraži terene" (keydown.enter)="doSearch(); $event.preventDefault()"></textarea>
+      <mat-icon>search</mat-icon>
+    </div>
   </div>
 
 </div>

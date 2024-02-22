@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HomepageService } from './homepage.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-homepage',
@@ -27,6 +28,7 @@ export class HomepageComponent implements OnInit {
     '??‍♂️ Rolanje',
     '??‍♂️ Jahanje',
   ];
+  distanceChange: FormControl = new FormControl(10);
 
   ngOnInit(): void {
     this.homepageService.getSports().subscribe({
@@ -42,4 +44,6 @@ export class HomepageComponent implements OnInit {
   getSport(sport: any) {
     this.activeSport = sport.name;
   }
+
+  doSearch() {}
 }

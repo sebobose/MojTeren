@@ -1,7 +1,7 @@
 .header {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 1000; /* Ensure the header is always on top */
   background-color: #e3bd2a;
   height: 10vh;
@@ -19,7 +19,7 @@
 
 .header-login {
   margin-left: auto;
-  margin-right: 20px;
+  margin-right: 50px;
   color: #323437;
   font-size: 20px;
   font-weight: bold;
