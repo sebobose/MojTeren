@@ -1,33 +1,64 @@
 <div class="homepage-container">
   <div class="homepage-left-sidebar">
-    @for(sport of sports; track sport.name) {
+    @for (sport of sports; track sport.name) {
       <div class="side-bar-item">
-        <span class="side-bar-text" [ngClass]="{active: activeSport === sport.name }" (click)="getSport(sport)">{{ sport.name }}</span>
+        <span
+          class="side-bar-text"
+          [ngClass]="{ active: activeSport === sport.name }"
+          (click)="getSport(sport)"
+          >{{ sport.name }}</span
+        >
       </div>
     }
   </div>
   <div class="homepage-main">
-    <div class="filters">
+    <form class="filters" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
       <div class="slider-container">
-        <span class="slider-header">Max udaljenost: {{distanceChange.getRawValue()}} km</span>
+        <span class="slider-header"
+          >Max udaljenost:
+          {{ filterForm.controls.distanceChange.getRawValue() }} km</span
+        >
         <mat-slider min="1" max="50" step="1" value="10">
-          <input matSliderThumb [formControl]="distanceChange">
+          <input matSliderThumb formControlName="distanceChange" />
         </mat-slider>
       </div>
-      <div class="appointment">
-        <mat-form-field color="accent">
-          <mat-label>Inherited calendar color</mat-label>
-          <input matInput [matDatepicker]="picker1">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-        <span>termin</span>
+      <div class="form-field">
+        <input
+          [matDatepicker]="picker"
+          [min]="minDate"
+          formControlName="date"
+          required
+          class="date-input"
+          placeholder="Odaberite datum"
+          readonly="readonly"
+          (click)="picker.open()"
+        />
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+      <div class="slider-container time-filter">
+        <span class="slider-header-top">Vrijeme termina:</span>
+        <span class="slider-header-bottom"
+          >{{
+            convertMinutesToTime(
+              filterForm.controls.timeChangeLow.getRawValue()
+            )
+          }}
+          -
+          {{
+            convertMinutesToTime(
+              filterForm.controls.timeChangeHigh.getRawValue()
+            )
+          }}</span
+        >
+        <mat-slider min="300" max="1439" step="5">
+          <input matSliderStartThumb formControlName="timeChangeLow" />
+          <input matSliderEndThumb formControlName="timeChangeHigh" />
+        </mat-slider>
       </div>
       <div class="filters-button">
-        <span>pretrazi</span>
+        <button type="submit" class="button">Pretraži</button>
       </div>
-    </div>
+    </form>
     <div class="map">
       <span>karta</span>
     </div>
@@ -37,9 +68,13 @@
   </div>
   <div class="homepage-right-sidebar">
     <div class="search">
-      <textarea #searchArea class="input" placeholder="Pretraži terene" (keydown.enter)="doSearch(); $event.preventDefault()"></textarea>
+      <textarea
+        #searchArea
+        class="search-field-input"
+        placeholder="Pretraži terene"
+        (keydown.enter)="doSearch(); $event.preventDefault()"
+      ></textarea>
       <mat-icon>search</mat-icon>
     </div>
   </div>
-
 </div>

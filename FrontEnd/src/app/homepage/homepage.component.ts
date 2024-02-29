@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HomepageService } from './homepage.service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-homepage',
@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 })
 export class HomepageComponent implements OnInit {
   private homepageService = inject(HomepageService);
+  private formBuilder = inject(FormBuilder);
 
   activeSport: any = 'Nogomet';
   sports: any = [
@@ -28,7 +29,18 @@ export class HomepageComponent implements OnInit {
     '??‍♂️ Rolanje',
     '??‍♂️ Jahanje',
   ];
-  distanceChange: FormControl = new FormControl(10);
+  filterForm = this.formBuilder.nonNullable.group(
+    {
+      distanceChange: [10],
+      date: [''],
+      timeChangeLow: [300],
+      timeChangeHigh: [1439],
+    },
+    {
+      updateOn: 'change',
+    },
+  );
+  minDate: any = new Date();
 
   ngOnInit(): void {
     this.homepageService.getSports().subscribe({
@@ -46,4 +58,12 @@ export class HomepageComponent implements OnInit {
   }
 
   doSearch() {}
+
+  applyFilters() {}
+
+  convertMinutesToTime(minutes: number): string {
+    let hours = Math.floor(minutes / 60);
+    let mins = minutes % 60;
+    return `${hours}:${mins < 10 ? '0' : ''}${mins}`;
+  }
 }

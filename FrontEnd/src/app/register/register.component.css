@@ -8,46 +8,7 @@
 }
 
 .form-field {
-  display: flex;
-  flex-direction: column;
   width: 350px;
-  position: relative;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 10px;
-  margin-top: 40px;
-}
-
-.form-field input {
-  border: none;
-  outline: none;
-  padding: 5px 0;
-  background: transparent;
-  color: #d1d0c5;
-}
-
-.form-field label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 16px;
-  color: #d1d0c5;
-  transition: 0.3s all;
-}
-
-.form-field input:focus + label,
-.form-field input:not(:placeholder-shown) + label,
-.form-field input:-webkit-autofill + label {
-  top: -20px;
-  left: 0;
-  font-size: 14px;
-  color: #e2b714;
-}
-
-.form-error {
-  color: #e2b714;
-  font-size: 14px;
-  margin-top: 5px;
-  width: 100%;
 }
 
 input:-webkit-autofill,
@@ -80,24 +41,6 @@ input:-webkit-autofill:active {
     font-weight: bold;
     font-size: 24px;
   }
-}
-
-.button {
-  width: 150px;
-  margin-top: 20px;
-  background-color: #434447;
-  color: #b8bec5;
-  border-radius: 10px;
-  padding: 10px;
-  cursor: pointer;
-  transition: 0.3s all;
-  font-weight: bold;
-  border: none;
-}
-
-.button:hover {
-  background-color: #b8bec5;
-  color: #646669;
 }
 
 .register-role {
