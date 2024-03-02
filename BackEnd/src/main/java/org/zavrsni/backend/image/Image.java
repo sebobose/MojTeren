@@ -1,29 +1,29 @@
-package org.zavrsni.backend.sport;
+package org.zavrsni.backend.image;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.zavrsni.backend.field.Field;
 
-import java.util.List;
+import java.sql.Types;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sport {
+public class Image {
 
     @Id
     @GeneratedValue
-    private Long sportId = 0L;
+    private Long imageId = 0L;
 
-    @NotNull
-    private String sportName;
+    @ManyToOne
+    private Field field;
 
-    @OneToMany(mappedBy = "sport")
-    private List<Field> fields;
+    @JdbcTypeCode(Types.VARBINARY)
+    private byte[] image;
 }

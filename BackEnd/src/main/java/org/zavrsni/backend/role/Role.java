@@ -1,14 +1,15 @@
 package org.zavrsni.backend.role;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zavrsni.backend.user.User;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -24,5 +25,8 @@ public class Role {
     @NotNull
     @Size(max = 20)
     private String roleName;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
 }

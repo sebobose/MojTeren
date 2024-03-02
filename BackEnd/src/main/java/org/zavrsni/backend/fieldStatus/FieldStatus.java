@@ -1,4 +1,4 @@
-package org.zavrsni.backend.sport;
+package org.zavrsni.backend.fieldStatus;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -7,23 +7,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.zavrsni.backend.field.Field;
+import org.zavrsni.backend.status.Status;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sport {
+public class FieldStatus {
 
     @Id
     @GeneratedValue
-    private Long sportId = 0L;
+    private Long fieldStatusId = 0L;
 
     @NotNull
-    private String sportName;
+    private Timestamp statusChangeTS;
 
-    @OneToMany(mappedBy = "sport")
-    private List<Field> fields;
+    private String statusComment;
+
+    @ManyToOne
+    private Status status;
+
+    @ManyToOne
+    private Field field;
 }

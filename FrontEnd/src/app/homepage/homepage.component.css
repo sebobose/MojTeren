@@ -183,6 +183,7 @@ mat-slider {
   --mat-datepicker-calendar-date-today-disabled-state-outline-color: #e2b714;
   --mat-datepicker-calendar-date-text-color: #e2b714;
   --mat-datepicker-calendar-body-label-text-color: #e2b714;
+  --mat-datepicker-calendar-date-focus-state-background-color: #323437;
 }
 
 input.my-custom-input {

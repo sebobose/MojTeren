@@ -1,4 +1,4 @@
-package org.zavrsni.backend.sport;
+package org.zavrsni.backend.review;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -7,23 +7,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.zavrsni.backend.field.Field;
-
-import java.util.List;
+import org.zavrsni.backend.user.User;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Sport {
+public class Review {
 
     @Id
     @GeneratedValue
-    private Long sportId = 0L;
+    private Long reviewId = 0L;
 
     @NotNull
-    private String sportName;
+    private Long rating;
 
-    @OneToMany(mappedBy = "sport")
-    private List<Field> fields;
+    @NotNull
+    private String reviewComment;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Field field;
 }
