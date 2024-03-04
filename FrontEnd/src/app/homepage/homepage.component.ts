@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HomepageService } from './homepage.service';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -10,25 +11,10 @@ import { FormBuilder } from '@angular/forms';
 export class HomepageComponent implements OnInit {
   private homepageService = inject(HomepageService);
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
 
   activeSport: any = 'Nogomet';
-  sports: any = [
-    'Nogomet',
-    'Košarka',
-    'Rukomet',
-    'Tenis',
-    'Stolni tenis',
-    'Badminton',
-    'Odbojka',
-    '??‍♂️ Plivanje',
-    '??‍♂️ Skijanje',
-    '??‍♂️ Snowboarding',
-    '??‍♂️ Planinarenje',
-    '??‍♂️ Trčanje',
-    '??‍♂️ Biciklizam',
-    '??‍♂️ Rolanje',
-    '??‍♂️ Jahanje',
-  ];
+  sports: any;
   filterForm = this.formBuilder.nonNullable.group(
     {
       distanceChange: [10],
@@ -43,6 +29,15 @@ export class HomepageComponent implements OnInit {
   minDate: any = new Date();
 
   ngOnInit(): void {
+    if (localStorage.getItem('role') === 'ADMIN') {
+      this.router.navigate(['/admin/requests']).then(() => {
+        window.location.reload();
+      });
+    } else if (localStorage.getItem('role') === 'FIELD_OWNER') {
+      this.router.navigate(['/field-owner/home']).then(() => {
+        window.location.reload();
+      });
+    }
     this.homepageService.getSports().subscribe({
       next: (data) => {
         this.sports = data;

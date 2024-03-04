@@ -5,13 +5,13 @@ import { AppComponent } from './app.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { HomepageComponent } from './homepage/homepage.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MatNativeDateModule,
@@ -19,6 +19,10 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminRequestsComponent } from './admin-requests/admin-requests.component';
+import { AdminFieldsComponent } from './admin-fields/admin-fields.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminSportsComponent } from './admin-sports/admin-sports.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -36,6 +40,10 @@ export const MY_DATE_FORMATS = {
     RegisterComponent,
     HeaderComponent,
     HomepageComponent,
+    AdminRequestsComponent,
+    AdminFieldsComponent,
+    AdminUsersComponent,
+    AdminSportsComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,3 +25,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.selected {
+  color: #e0e0e0;
+}

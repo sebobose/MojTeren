@@ -1,17 +1,30 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   private router = inject(Router);
-  title = 'MojTeren';
   role = localStorage.getItem('role');
+  active: any;
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.active = this.router.url;
+      }
+    });
+  }
 
   changePage(page: string) {
-    this.router.navigate([page]);
+    this.router.navigate([page]).then(() => window.location.reload());
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']).then(() => window.location.reload());
   }
 }

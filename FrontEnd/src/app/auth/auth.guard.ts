@@ -14,12 +14,37 @@ export class AuthGuard {
   private router = inject(Router);
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const requiredRole = next.data['requiredRole'];
     if (!this.authService.isUserLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/home']).then(() => {
+        window.location.reload();
+      });
       return false;
     }
+    const requiredRole = next.data['requiredRole'];
     const userRole = this.authService.getUserRole();
-    return !!requiredRole.includes(userRole);
+    if (requiredRole.includes(userRole)) {
+      return true;
+    } else {
+      switch (userRole) {
+        case 'ADMIN':
+          this.router.navigate(['/admin/requests']).then(() => {
+            window.location.reload();
+          });
+          break;
+        case 'FIELD_OWNER':
+          this.router.navigate(['/field-owner/home']).then(() => {
+            window.location.reload();
+          });
+          break;
+        case 'ATHLETE':
+          this.router.navigate(['/home']).then(() => {
+            window.location.reload();
+          });
+          break;
+        default:
+          return false;
+      }
+    }
+    return true;
   }
 }

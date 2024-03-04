@@ -14,10 +14,10 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     public void createAdmin() {
-        if (!userRepository.existsByEmail("admin@admin")) {
+        if (!userRepository.existsByEmail("admin@admin.com")) {
             Role role = roleRepository.findByRoleName("ADMIN");
             User admin = new User();
-            admin.setEmail("admin@admin");
+            admin.setEmail("admin@admin.com");
             admin.setFirstName("admin");
             admin.setLastName("admin");
             admin.setContactNumber("123456789");
