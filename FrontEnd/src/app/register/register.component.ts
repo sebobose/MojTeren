@@ -14,7 +14,7 @@ export class RegisterComponent {
   private router = inject(Router);
 
   userExists: boolean = false;
-  activeButton: string = 'athlete';
+  activeButton: string = 'ATHLETE';
   contactString: string = 'Broj mobitela';
   registrationSuccess = false;
   registerForm = this.formBuilder.nonNullable.group(
@@ -41,7 +41,7 @@ export class RegisterComponent {
         this.registerForm.controls.firstName.valid &&
         this.registerForm.controls.lastName.valid &&
         this.registerForm.controls.password.valid &&
-        this.activeButton === 'athlete')
+        this.activeButton === 'ATHLETE')
     ) {
       this.registerService.register(this.registerForm.value).subscribe({
         next: (response) => {
@@ -63,9 +63,9 @@ export class RegisterComponent {
 
   changeActive(role: string) {
     this.activeButton = role;
-    if (role === 'athlete') {
+    if (role === 'ATHLETE') {
       this.contactString = 'Broj mobitela';
-    } else if (role === 'fieldOwner') {
+    } else if (role === 'FIELD_OWNER') {
       this.contactString = 'Broj mobitela*';
     }
   }

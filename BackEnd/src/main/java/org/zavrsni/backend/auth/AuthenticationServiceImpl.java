@@ -38,7 +38,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         Role role = roleRepository.findByRoleName(request.getRole());
         if (role == null) {
-            System.out.println("Role " + request.getRole() + " does not exist");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         User user = new User(request, role);

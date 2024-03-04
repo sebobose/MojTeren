@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.zavrsni.backend.role.RoleService;
 import org.zavrsni.backend.sport.SportService;
 import org.zavrsni.backend.status.StatusService;
+import org.zavrsni.backend.user.UserService;
 
 @Component
 public class DataInitializer {
@@ -13,17 +14,19 @@ public class DataInitializer {
     private final RoleService roleService;
     private final SportService sportService;
     private final StatusService statusService;
+    private final UserService userService;
 
-    private final String[] roles = {"admin", "athlete", "fieldOwner"};
+    private final String[] roles = {"ADMIN", "ATHLETE", "FIELD_OWNER"};
     private final String[] sports = {"Nogomet", "Košarka", "Rukomet", "Tenis", "Stolni tenis", "Badminton",
             "Odbojka", "Američki nogomet", "Hokej", "Vaterpolo"};
 
     private final String[] statuses = {"PENDING", "APPROVED", "REJECTED"};
 
-    public DataInitializer(RoleService roleService, SportService sportService, StatusService statusService) {
+    public DataInitializer(RoleService roleService, SportService sportService, StatusService statusService, UserService userService) {
         this.roleService = roleService;
         this.sportService = sportService;
         this.statusService = statusService;
+        this.userService = userService;
     }
 
     @EventListener
@@ -37,5 +40,6 @@ public class DataInitializer {
         for (String status : statuses) {
             statusService.createStatus(status);
         }
+        userService.createAdmin();
     }
 }

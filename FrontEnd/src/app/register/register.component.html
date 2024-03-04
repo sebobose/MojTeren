@@ -2,14 +2,14 @@
   <div class="login-container">
     <div class="register-role">
       <button
-        [ngClass]="{ active: activeButton === 'athlete' }"
-        (click)="changeActive('athlete')"
+        [ngClass]="{ active: activeButton === 'ATHLETE' }"
+        (click)="changeActive('ATHLETE')"
       >
         Sportaš
       </button>
       <button
-        [ngClass]="{ active: activeButton === 'fieldOwner' }"
-        (click)="changeActive('fieldOwner')"
+        [ngClass]="{ active: activeButton === 'FIELD_OWNER' }"
+        (click)="changeActive('FIELD_OWNER')"
       >
         Vlasnik terena
       </button>
@@ -92,7 +92,7 @@
           (registerForm.controls.contactNumber.value.length != 0 &&
             !registerForm.controls.contactNumber.valid) ||
           (form.submitted &&
-            activeButton == "fieldOwner" &&
+            activeButton == "FIELD_OWNER" &&
             !registerForm.controls.contactNumber.valid))
       ) {
         <span class="form-error">Morate unijeti ispravan broj mobitela!</span>
