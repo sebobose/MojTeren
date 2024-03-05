@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
@@ -19,10 +19,10 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AdminRequestsComponent } from './admin-requests/admin-requests.component';
-import { AdminFieldsComponent } from './admin-fields/admin-fields.component';
-import { AdminUsersComponent } from './admin-users/admin-users.component';
-import { AdminSportsComponent } from './admin-sports/admin-sports.component';
+import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
+import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
+import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 
 export const MY_DATE_FORMATS = {
   parse: {

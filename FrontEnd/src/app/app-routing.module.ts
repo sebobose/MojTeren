@@ -1,14 +1,14 @@
 import { RouterModule, Routes } from '@angular/router';
 import { AuthLoginGuard } from './auth/auth.loginguard';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { NgModule } from '@angular/core';
 import { HomepageComponent } from './homepage/homepage.component';
 import { AuthGuard } from './auth/auth.guard';
-import { AdminRequestsComponent } from './admin-requests/admin-requests.component';
-import { AdminFieldsComponent } from './admin-fields/admin-fields.component';
-import { AdminUsersComponent } from './admin-users/admin-users.component';
-import { AdminSportsComponent } from './admin-sports/admin-sports.component';
+import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
+import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
+import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

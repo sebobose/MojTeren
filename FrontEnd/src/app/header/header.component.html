@@ -1,11 +1,14 @@
 <div class="header">
-  <span
-    class="header-title"
-    (click)="changePage('')"
-    >M⚽j Teren</span
-  >
+  <span class="header-title" (click)="changePage('')">M⚽j Teren</span>
   @if (role == null) {
-    <span class="header-login" [class.selected]="active === '/login'" (click)="changePage('/login')">Prijava</span>
+    <div class="header-login">
+      <span
+        class="header-login"
+        [class.selected]="active === '/login'"
+        (click)="changePage('/login')"
+        >Prijava</span
+      >
+    </div>
   } @else if (role == "ATHLETE") {
     <div class="header-login">
       <span class="header-login">Moje rezervacije</span>
@@ -14,37 +17,53 @@
     </div>
   } @else if (role == "FIELD_OWNER") {
     <div class="header-login">
-      <span class="header-login">Moji tereni</span>
-      <span class="header-login">Profil</span>
-      <span class="header-login" (click)="logout()">Odjava</span>
+      <div class="header-login">
+        <span class="header-login">Moji tereni</span>
+      </div>
+      <div class="header-login">
+        <span class="header-login">Profil</span>
+      </div>
+      <div class="header-login">
+        <span class="header-login" (click)="logout()">Odjava</span>
+      </div>
     </div>
   } @else if (role == "ADMIN") {
     <div class="header-login">
-      <span
-        class="header-login"
-        [class.selected]="active === '/admin/requests'"
-        (click)="changePage('/admin/requests')"
-        >Zahtjevi</span
-      >
-      <span
-        class="header-login"
-        [class.selected]="active === '/admin/fields'"
-        (click)="changePage('/admin/fields')"
-        >Sportski centri</span
-      >
-      <span
-        class="header-login"
-        [class.selected]="active === '/admin/users'"
-        (click)="changePage('/admin/users')"
-        >Korisnici</span
-      >
-      <span
-        class="header-login"
-        [class.selected]="active === '/admin/sports'"
-        (click)="changePage('/admin/sports')"
-        >Sportovi</span
-      >
-      <span class="header-login" (click)="logout()">Odjava</span>
+      <div class="header-login">
+        <span
+          class="header-login"
+          [class.selected]="active === '/admin/requests'"
+          (click)="changePage('/admin/requests')"
+          >Zahtjevi</span
+        >
+      </div>
+      <div class="header-login">
+        <span
+          class="header-login"
+          [class.selected]="active === '/admin/fields'"
+          (click)="changePage('/admin/fields')"
+          >Sportski centri</span
+        >
+      </div>
+      <div class="header-login">
+        <span
+          class="header-login"
+          [class.selected]="active === '/admin/users'"
+          (click)="changePage('/admin/users')"
+          >Korisnici</span
+        >
+      </div>
+      <div class="header-login">
+        <span
+          class="header-login"
+          [class.selected]="active === '/admin/sports'"
+          (click)="changePage('/admin/sports')"
+          >Sportovi</span
+        >
+      </div>
+      <div class="header-login">
+        <span class="header-login" (click)="logout()">Odjava</span>
+      </div>
     </div>
   }
 </div>

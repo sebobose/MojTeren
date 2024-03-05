@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.active = this.router.url;
+        console.log(this.active);
       }
     });
   }
