@@ -38,6 +38,7 @@ import {
 } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorIntl } from './custom-angular-material/custom-paginator-intl';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -86,6 +87,8 @@ export const MY_DATE_FORMATS = {
     MatHeaderRow,
     MatRow,
     MatPaginator,
+    MatSort,
+    MatSortHeader,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },
