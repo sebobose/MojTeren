@@ -105,3 +105,19 @@ body {
   background-color: #b8bec5;
   color: #646669;
 }
+
+mat-tab-group {
+  --mdc-tab-indicator-active-indicator-color: #e2b714;
+  --mat-tab-header-disabled-ripple-color: rgba(0, 0, 0, 0.38);
+  --mat-tab-header-pagination-icon-color: #000;
+  --mat-tab-header-inactive-label-text-color: #646669;
+  --mat-tab-header-active-label-text-color: #e2b714;
+  --mat-tab-header-active-ripple-color: #e2b714;
+  --mat-tab-header-inactive-ripple-color: #e2b714;
+  --mat-tab-header-inactive-focus-label-text-color: #e2b714;
+  --mat-tab-header-inactive-hover-label-text-color: #e2b714;
+  --mat-tab-header-active-focus-label-text-color: #e2b714;
+  --mat-tab-header-active-hover-label-text-color: #e2b714;
+  --mat-tab-header-active-focus-indicator-color: #e2b714;
+  --mat-tab-header-active-hover-indicator-color: #e2b714;
+}

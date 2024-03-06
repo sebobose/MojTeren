@@ -23,6 +23,21 @@ import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.co
 import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomPaginatorIntl } from './custom-angular-material/custom-paginator-intl';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -58,10 +73,24 @@ export const MY_DATE_FORMATS = {
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
+    MatTabGroup,
+    MatTab,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatHeaderRowDef,
+    MatRowDef,
+    MatHeaderRow,
+    MatRow,
+    MatPaginator,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
   ],
   bootstrap: [AppComponent],
 })

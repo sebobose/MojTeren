@@ -1,0 +1,25 @@
+.users-table {
+  margin: 30px;
+  border-radius: 20px;
+  border: #646669 2px solid;
+}
+
+table {
+  --mat-table-background-color: transparent;
+  --mat-table-header-headline-color: #e2b714;
+  --mat-table-row-item-label-text-color: #d1d0c5;
+  --mat-table-row-item-outline-color: #646669;
+}
+
+mat-paginator {
+  --mat-paginator-container-text-color: #d1d0c5;
+  --mat-paginator-container-background-color: transparent;
+  --mat-paginator-enabled-icon-color: #d1d0c5;
+  --mat-paginator-disabled-icon-color: #646669;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

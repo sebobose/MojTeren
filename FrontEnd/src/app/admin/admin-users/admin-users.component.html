@@ -1,1 +1,38 @@
-<p>admin-users works!</p>
+<div class="mat-elevation-z8 users-table">
+  <table mat-table [dataSource]="DataSource">
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> Ime </th>
+      <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef> Prezime </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact">
+      <th mat-header-cell *matHeaderCellDef> Kontakt </th>
+      <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Uloga </th>
+      <td mat-cell *matCellDef="let element"> {{translateRole(element.role)}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="DisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: DisplayedColumns;"></tr>
+  </table>
+  <mat-paginator
+    class="paginator" [pageSize]="12"
+    [pageSizeOptions]="[]"
+    showFirstLastButtons
+    aria-label="Select page of users">
+  </mat-paginator>
+</div>
