@@ -71,3 +71,7 @@ mat-icon {
 .add-sport {
   position: relative;
 }
+
+.add-sport-error {
+  margin-left: 45px;
+}

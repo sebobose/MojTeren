@@ -1,6 +1,7 @@
-package org.zavrsni.backend.sport;
+package org.zavrsni.backend.sport.dto;
 
 import lombok.Data;
+import org.zavrsni.backend.sport.Sport;
 
 @Data
 public class SportDTO {

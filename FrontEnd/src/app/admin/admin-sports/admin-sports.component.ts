@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -15,7 +9,7 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './admin-sports.component.html',
   styleUrl: './admin-sports.component.css',
 })
-export class AdminSportsComponent implements OnInit, AfterViewInit {
+export class AdminSportsComponent implements OnInit {
   private adminService = inject(AdminService);
 
   displayedColumns: string[] = [
@@ -26,6 +20,7 @@ export class AdminSportsComponent implements OnInit, AfterViewInit {
   ];
   dataSource: MatTableDataSource<SportsData> = new MatTableDataSource();
   disabledButtons: Map<string, boolean> = new Map<string, boolean>();
+  addSportError: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -49,20 +44,16 @@ export class AdminSportsComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         this.dataSource = new MatTableDataSource<SportsData>(data);
         this.dataSource.sort;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
       error: (error) => {
         console.error('Error:', error);
       },
     });
-    this.dataSource = new MatTableDataSource<SportsData>(testData);
     for (let element of this.dataSource.data) {
       this.disabledButtons.set(element.sportName, element.fields > 0);
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   deleteSport(element: any) {
@@ -80,8 +71,9 @@ export class AdminSportsComponent implements OnInit, AfterViewInit {
     let sportName = this.sportArea.nativeElement.value;
     if (sportName === '') {
       return;
-    } else if (this.disabledButtons.has(sportName)) {
+    } else if (this.dataSource.data.find((x) => x.sportName === sportName)) {
       console.log('Sport already exists');
+      this.addSportError = true;
       return;
     } else {
       this.disabledButtons.set(sportName, true);
@@ -102,26 +94,3 @@ export interface SportsData {
   fields: number;
   reservations: number;
 }
-
-const testData = [
-  {
-    sportName: 'Football',
-    fields: 5,
-    reservations: 10,
-  },
-  {
-    sportName: 'Basketball',
-    fields: 3,
-    reservations: 5,
-  },
-  {
-    sportName: 'Tennis',
-    fields: 2,
-    reservations: 3,
-  },
-  {
-    sportName: 'Volleyball',
-    fields: 4,
-    reservations: 7,
-  },
-];

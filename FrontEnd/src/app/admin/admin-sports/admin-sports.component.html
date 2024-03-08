@@ -7,6 +7,11 @@
       ></textarea>
   <mat-icon (click)="addSport()">add</mat-icon>
 </div>
+<div class="add-sport-error">
+  @if(addSportError) {
+    <span class="form-error">Sport već postoji!</span>
+  }
+</div>
 <div class="mat-elevation-z8 sports-table">
   <table mat-table [dataSource]="dataSource" matSort>
 

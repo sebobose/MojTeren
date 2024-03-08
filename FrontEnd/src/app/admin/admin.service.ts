@@ -24,7 +24,7 @@ export class AdminService {
 
   getAdminSports() {
     return this.http.get(
-      environment.BASE_API_URL + '/sport/admin',
+      environment.BASE_API_URL + '/sport/admin/all',
       this.createHeader(),
     );
   }

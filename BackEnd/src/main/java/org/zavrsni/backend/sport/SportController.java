@@ -2,10 +2,9 @@ package org.zavrsni.backend.sport;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.zavrsni.backend.sport.dto.SportDTO;
+import org.zavrsni.backend.sport.dto.SportDetailsDTO;
 
 import java.util.List;
 
@@ -20,5 +19,22 @@ public class SportController {
     @GetMapping("/all")
     public ResponseEntity<List<SportDTO>> getAllSports() {
         return ResponseEntity.ok(sportService.getAllSports());
+    }
+    
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<SportDetailsDTO>> getAllSportsAdmin() {
+        return ResponseEntity.ok(sportService.getAdminSports());
+    }
+
+    @PostMapping("/admin/add")
+    public ResponseEntity<Void> addSport(@RequestBody String sportName) {
+        sportService.createSport(sportName);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/admin/delete/{sportName}")
+    public ResponseEntity<Void> deleteSport(@PathVariable String sportName) {
+        sportService.deleteSport(sportName);
+        return ResponseEntity.ok().build();
     }
 }
