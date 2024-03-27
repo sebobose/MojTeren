@@ -52,4 +52,18 @@ export class AdminService {
       headers: header,
     };
   }
+
+  addSportCenter(sportCenter: any) {
+    let header = new HttpHeaders({
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    });
+    let headersObj = {
+      headers: header,
+    };
+    return this.http.post(
+      environment.BASE_API_URL + '/sport-center/admin/add-sport-center',
+      sportCenter,
+      headersObj,
+    );
+  }
 }

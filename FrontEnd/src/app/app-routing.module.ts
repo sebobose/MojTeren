@@ -6,9 +6,10 @@ import { NgModule } from '@angular/core';
 import { HomepageComponent } from './homepage/homepage.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
-import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { AdminSportCentersComponent } from './admin/admin-sport-centers/admin-sport-centers.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
+import { AddSportCenterComponent } from './add-sport-center/add-sport-center.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,8 +27,8 @@ export const routes: Routes = [
     data: { requiredRole: 'ADMIN' },
   },
   {
-    path: 'admin/fields',
-    component: AdminFieldsComponent,
+    path: 'admin/sport-centers',
+    component: AdminSportCentersComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ADMIN' },
   },
@@ -48,6 +49,12 @@ export const routes: Routes = [
     component: HomepageComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'FIELD_OWNER' },
+  },
+  {
+    path: 'add-sport-center',
+    component: AddSportCenterComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: ['FIELD_OWNER', 'ADMIN'] },
   },
 ];
 

@@ -20,7 +20,7 @@ import {
 } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
-import { AdminFieldsComponent } from './admin/admin-fields/admin-fields.component';
+import { AdminSportCentersComponent } from './admin/admin-sport-centers/admin-sport-centers.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -39,6 +39,7 @@ import {
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorIntl } from './custom-angular-material/custom-paginator-intl';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { AddSportCenterComponent } from './add-sport-center/add-sport-center.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -57,9 +58,10 @@ export const MY_DATE_FORMATS = {
     HeaderComponent,
     HomepageComponent,
     AdminRequestsComponent,
-    AdminFieldsComponent,
+    AdminSportCentersComponent,
     AdminUsersComponent,
     AdminSportsComponent,
+    AddSportCenterComponent,
   ],
   imports: [
     BrowserModule,
