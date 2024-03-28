@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.zavrsni.backend.field.Field;
+import org.zavrsni.backend.sportCenter.SportCenter;
 
 import java.sql.Types;
 
@@ -26,4 +27,11 @@ public class Image {
 
     @JdbcTypeCode(Types.VARBINARY)
     private byte[] image;
+
+    @ManyToOne
+    private SportCenter sportCenter;
+
+    public Image(byte[] image) {
+        this.image = image;
+    }
 }

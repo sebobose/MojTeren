@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.zavrsni.backend.field.Field;
+import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.user.User;
 
 import java.sql.Timestamp;
@@ -21,6 +22,7 @@ import java.util.List;
 public class SportCenter {
 
     @Id
+    @GeneratedValue
     private Long sportCenterId = 0L;
 
     @NotNull
@@ -30,12 +32,17 @@ public class SportCenter {
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdTS;
 
-    @NotNull
     private String location;
+
+    @NotNull
+    private String address;
 
     @OneToMany(mappedBy = "sportCenter", cascade = CascadeType.ALL)
     private List<Field> fields;
 
     @ManyToOne
     private User owner;
+
+    @OneToMany
+    private List<Image> images;
 }

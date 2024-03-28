@@ -16,7 +16,6 @@ export class AddSportCenterComponent {
   protected role = localStorage.getItem('role');
   url: any = [];
   fileInput: any;
-  files: any = [];
 
   addForm = this.formBuilder.nonNullable.group(
     {
@@ -31,9 +30,20 @@ export class AddSportCenterComponent {
   );
 
   addSportCenter() {
-    console.log(this.addForm);
     if (this.addForm.valid) {
-      this.adminService.addSportCenter(this.addForm.value).subscribe({
+      let formData = new FormData();
+      formData.append('email', this.addForm.controls.email.value);
+      formData.append(
+        'sportCenterName',
+        this.addForm.controls.sportCenterName.value,
+      );
+      formData.append('address', this.addForm.controls.address.value);
+      const images = this.addForm.get('images') as FormArray;
+      for (let i = 0; i < this.addForm.controls.images.value.length; i++) {
+        formData.append('images', images.at(i).value);
+      }
+
+      this.adminService.addSportCenter(formData).subscribe({
         next: () => {
           this.router.navigate(['/admin/sport-centers']).then(() => {
             window.location.reload();
@@ -47,17 +57,15 @@ export class AddSportCenterComponent {
     this.fileInput = event.target;
     let reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
-    this.files.push(this.fileInput.files[0]);
+    const images = this.addForm.get('images') as FormArray;
+    images.push(this.formBuilder.control(this.fileInput.files[0]));
     reader.onload = (_event) => {
       this.url.push(reader.result);
-      const images = this.addForm.get('images') as FormArray;
-      images.push(this.formBuilder.control(reader.result));
     };
   }
 
   onDeleteImg(id: number) {
     this.url.splice(id, 1);
-    this.files.splice(id, 1);
     const images = this.addForm.get('images') as FormArray;
     images.removeAt(id);
   }

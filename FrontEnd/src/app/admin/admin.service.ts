@@ -54,6 +54,8 @@ export class AdminService {
   }
 
   addSportCenter(sportCenter: any) {
+    let formData = new FormData();
+    formData.append('sportCenter', JSON.stringify(sportCenter));
     let header = new HttpHeaders({
       Authorization: 'Bearer ' + localStorage.getItem('token'),
     });
@@ -61,7 +63,7 @@ export class AdminService {
       headers: header,
     };
     return this.http.post(
-      environment.BASE_API_URL + '/sport-center/admin/add-sport-center',
+      environment.BASE_API_URL + '/sport-center/admin/add',
       sportCenter,
       headersObj,
     );

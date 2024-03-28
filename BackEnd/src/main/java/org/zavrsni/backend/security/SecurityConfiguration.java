@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/sport/all").permitAll()
                                 .requestMatchers("/user/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/sport-center/admin/**").hasAuthority("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )
