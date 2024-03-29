@@ -23,4 +23,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+
+    @GetMapping("/check-token")
+    public ResponseEntity<Boolean> checkToken() {
+        return userService.checkToken();
+    }
 }

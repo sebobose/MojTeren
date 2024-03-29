@@ -1,6 +1,7 @@
 package org.zavrsni.backend.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zavrsni.backend.role.Role;
@@ -34,5 +35,10 @@ public class UserServiceImpl implements UserService{
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().filter(user -> !user.getRole().getRoleName().equals("ADMIN")).map(UserDTO::new).toList();
+    }
+
+    @Override
+    public ResponseEntity<Boolean> checkToken() {
+        return ResponseEntity.ok(true);
     }
 }
