@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
+import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
 import org.zavrsni.backend.user.User;
 import org.zavrsni.backend.user.UserRepository;
 
@@ -52,6 +53,11 @@ public class SportCenterServiceImpl implements SportCenterService {
             sportCenterRepository.save(sportCenter);
             return null;
         }
+
+    @Override
+    public List<SportCenterDetailsDTO> getAllSportCentersAdmin() {
+        return sportCenterRepository.findAll().stream().map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+    }
 
     @SneakyThrows
     private static byte[] compressImage(MultipartFile image) {

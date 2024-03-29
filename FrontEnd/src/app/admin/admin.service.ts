@@ -68,4 +68,11 @@ export class AdminService {
       headersObj,
     );
   }
+
+  getAdminSportCenters() {
+    return this.http.get(
+      environment.BASE_API_URL + '/sport-center/admin/all',
+      this.createHeader(),
+    );
+  }
 }
