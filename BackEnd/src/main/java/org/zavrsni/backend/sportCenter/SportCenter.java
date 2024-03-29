@@ -6,12 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.user.User;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -28,10 +27,6 @@ public class SportCenter {
     @NotNull
     private String sportCenterName;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp createdTS;
-
     private String location;
 
     @NotNull
@@ -45,4 +40,7 @@ public class SportCenter {
 
     @OneToMany
     private List<Image> images;
+
+    @OneToMany(mappedBy = "sportCenter")
+    private List<EntityStatus> sportCenterStatuses;
 }

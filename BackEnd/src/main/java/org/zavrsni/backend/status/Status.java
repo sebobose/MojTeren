@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.zavrsni.backend.fieldStatus.FieldStatus;
-import org.zavrsni.backend.reservationStatus.ReservationStatus;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 
 import java.util.List;
 
@@ -26,8 +25,11 @@ public class Status {
     private String statusType;
 
     @OneToMany(mappedBy = "status")
-    private List<FieldStatus> fieldStatuses;
+    private List<EntityStatus> fieldStatuses;
 
     @OneToMany(mappedBy = "status")
-    private List<ReservationStatus> reservationStatuses;
+    private List<EntityStatus> reservationStatuses;
+
+    @OneToMany(mappedBy = "status")
+    private List<EntityStatus> sportCenterStatuses;
 }

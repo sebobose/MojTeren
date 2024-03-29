@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.field.Field;
-import org.zavrsni.backend.reservationStatus.ReservationStatus;
 import org.zavrsni.backend.user.User;
 
 import java.sql.Time;
@@ -31,7 +31,7 @@ public class Reservation {
     private Time endTime;
 
     @OneToMany(mappedBy = "reservation")
-    private List<ReservationStatus> reservationStatuses;
+    private List<EntityStatus> reservationStatuses;
 
     @ManyToOne
     private User user;

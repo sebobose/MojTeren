@@ -2,12 +2,17 @@ package org.zavrsni.backend.sportCenter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.zavrsni.backend.entityStatus.EntityStatus;
+import org.zavrsni.backend.entityStatus.EntityStatusRepository;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
+import org.zavrsni.backend.status.Status;
+import org.zavrsni.backend.status.StatusRepository;
 import org.zavrsni.backend.user.User;
 import org.zavrsni.backend.user.UserRepository;
 
@@ -32,6 +37,8 @@ public class SportCenterServiceImpl implements SportCenterService {
         private final SportCenterRepository sportCenterRepository;
         private final UserRepository userRepository;
         private final ImageRepository imageRepository;
+        private final StatusRepository statusRepository;
+        private final EntityStatusRepository entityStatusRepository;
 
         @Override
         @SneakyThrows
@@ -41,6 +48,7 @@ public class SportCenterServiceImpl implements SportCenterService {
             for(MultipartFile image : addSportCenterDTO.getImages()){
                 compressedImages.add(compressImage(image));
             }
+
             User owner = userRepository.findByEmail(addSportCenterDTO.getEmail()).orElseThrow();
             List<Image> savedImages = compressedImages.stream().map(Image::new)
                     .map(imageRepository::save).collect(Collectors.toList());
@@ -51,12 +59,27 @@ public class SportCenterServiceImpl implements SportCenterService {
                     .images(savedImages)
                     .build();
             sportCenterRepository.save(sportCenter);
+
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Status status = user.getRole().getRoleName().equals("ADMIN") ?
+                    statusRepository.findByStatusType("ACTIVE").orElseThrow() :
+                    statusRepository.findByStatusType("PENDING").orElseThrow();
+            EntityStatus entityStatus = EntityStatus.builder()
+                    .status(status)
+                    .sportCenter(sportCenter)
+                    .build();
+            entityStatusRepository.save(entityStatus);
             return null;
         }
 
     @Override
     public List<SportCenterDetailsDTO> getAllSportCentersAdmin() {
-        return sportCenterRepository.findAll().stream().map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+        return sportCenterRepository.findAll().stream()
+                .filter(sportCenter -> {
+                    List<EntityStatus> statuses = sportCenter.getSportCenterStatuses();
+                    return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
+                            .getStatus().getStatusType().equals("ACTIVE");
+                }).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
     }
 
     @SneakyThrows

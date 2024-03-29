@@ -38,7 +38,6 @@ export class AdminSportCentersComponent implements OnInit {
     this.adminService.getAdminSportCenters().subscribe({
       next: (data: any) => {
         this.dataSource = new MatTableDataSource<SportCenterData>(data);
-        this.dataSource.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
@@ -54,7 +53,13 @@ export class AdminSportCentersComponent implements OnInit {
     });
   }
 
-  doSearch() {}
+  doSearch() {
+    const searchValue = this.searchArea.nativeElement.value;
+    this.dataSource.filter = searchValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }
 
 export interface SportCenterData {

@@ -1,12 +1,14 @@
-package org.zavrsni.backend.fieldStatus;
+package org.zavrsni.backend.entityStatus;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.zavrsni.backend.field.Field;
+import org.zavrsni.backend.reservation.Reservation;
+import org.zavrsni.backend.sportCenter.SportCenter;
 import org.zavrsni.backend.status.Status;
 
 import java.sql.Timestamp;
@@ -16,13 +18,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class FieldStatus {
+public class EntityStatus {
 
     @Id
     @GeneratedValue
-    private Long fieldStatusId = 0L;
+    private Long entityStatusId = 0L;
 
-    @NotNull
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp statusChangeTS;
 
     private String statusComment;
@@ -31,5 +34,12 @@ public class FieldStatus {
     private Status status;
 
     @ManyToOne
+    private SportCenter sportCenter;
+
+    @ManyToOne
     private Field field;
+
+    @ManyToOne
+    private Reservation reservation;
+
 }

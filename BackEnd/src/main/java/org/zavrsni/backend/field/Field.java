@@ -6,16 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.zavrsni.backend.fieldAvailability.FieldAvailability;
-import org.zavrsni.backend.fieldStatus.FieldStatus;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.reservation.Reservation;
 import org.zavrsni.backend.review.Review;
 import org.zavrsni.backend.sport.Sport;
 import org.zavrsni.backend.sportCenter.SportCenter;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -31,10 +29,6 @@ public class Field {
 
     @NotNull
     private String fieldName;
-
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp createdTS;
 
     @NotNull
     private Long minResTime;
@@ -52,7 +46,7 @@ public class Field {
     private List<FieldAvailability> fieldAvailabilities;
 
     @OneToMany(mappedBy = "field")
-    private List<FieldStatus> fieldStatuses;
+    private List<EntityStatus> fieldStatuses;
 
     @OneToMany(mappedBy = "field")
     private List<Review> reviews;

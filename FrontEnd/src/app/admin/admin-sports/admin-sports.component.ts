@@ -43,7 +43,6 @@ export class AdminSportsComponent implements OnInit {
     this.adminService.getAdminSports().subscribe({
       next: (data: any) => {
         this.dataSource = new MatTableDataSource<SportsData>(data);
-        this.dataSource.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },

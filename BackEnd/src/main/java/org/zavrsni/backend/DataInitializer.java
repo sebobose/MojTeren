@@ -20,7 +20,7 @@ public class DataInitializer {
     private final String[] sports = {"Nogomet", "Košarka", "Rukomet", "Tenis", "Stolni tenis", "Badminton",
             "Odbojka", "Američki nogomet", "Hokej", "Vaterpolo"};
 
-    private final String[] statuses = {"PENDING", "APPROVED", "REJECTED"};
+    private final String[] statuses = {"PENDING", "ACTIVE", "REJECTED", "INACTIVE"};
 
     public DataInitializer(RoleService roleService, SportService sportService, StatusService statusService, UserService userService) {
         this.roleService = roleService;
