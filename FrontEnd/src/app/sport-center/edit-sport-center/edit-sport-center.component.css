@@ -1,0 +1,125 @@
+.sport-center-container {
+  padding: 40px;
+  flex-direction: column;
+  border-radius: 20px;
+  border: #646669 2px solid;
+  width: 90%;
+}
+
+.sport-center-main {
+  height: 100%;
+}
+
+.form-field {
+  margin-left: 30px;
+  height: fit-content;
+}
+
+.text-input {
+  display: flex;
+  flex-direction: row;
+}
+
+h1 {
+  text-align: center;
+  color: #d1d0c5;
+  width: 100%;
+}
+
+p {
+  color: #e2b714;
+  font-size: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-error {
+  margin-left: 30px;
+}
+
+.address {
+  width: 400px;
+}
+
+.info-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.image-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.hide-file-input {
+  display: none;
+}
+
+.img-container {
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.img-container:hover .img {
+  cursor: pointer;
+  filter: opacity(0.5);
+}
+
+.img-container:hover .delete {
+  cursor: pointer;
+  filter: opacity(1);
+}
+
+.delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  filter: opacity(0);
+}
+
+.img {
+  width: 100%;
+  object-fit: cover;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
+  color: #d1d0c5 !important;
+  -webkit-text-fill-color: #d1d0c5 !important;
+}
+
+.image-button {
+  width: 200px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.image-input {
+  display: flex;
+  text-align: left;
+}
+
+.button {
+  margin: 20px;
+}
+
+.delete-button {
+  background-color: #ff3f3f;
+  color: #d1d0c5;
+}
+
+.delete-button:hover {
+    background-color: #b8bec5;
+    color: #646669;
+}

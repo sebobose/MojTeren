@@ -10,6 +10,10 @@
   width: 200px;
 }
 
+.sc-details {
+  margin: 0;
+}
+
 mat-icon {
   color: #e2b714;
   position: absolute;
@@ -70,6 +74,6 @@ mat-paginator {
   align-items: center;
 }
 
-.mat-column-delete {
-  width: 300px;
+.mat-column-details, .mat-column-edit {
+  width: 200px;
 }

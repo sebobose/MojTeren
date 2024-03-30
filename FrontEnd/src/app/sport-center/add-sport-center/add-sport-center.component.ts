@@ -1,21 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { AdminService } from '../admin/admin.service';
+import { AdminService } from '../../admin/admin.service';
 import { Router } from '@angular/router';
+import { SportCenterService } from '../sport-center.service';
 
 @Component({
   selector: 'app-add-sport-center',
   templateUrl: './add-sport-center.component.html',
   styleUrl: './add-sport-center.component.css',
 })
-export class AddSportCenterComponent {
+export class AddSportCenterComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
-  private adminService = inject(AdminService);
+  private sportCenterService = inject(SportCenterService);
   private router = inject(Router);
 
   protected role = localStorage.getItem('role');
   url: any = [];
-  fileInput: any;
 
   addForm = this.formBuilder.nonNullable.group(
     {
@@ -29,6 +29,12 @@ export class AddSportCenterComponent {
     },
   );
 
+  ngOnInit(): void {
+    if (localStorage.getItem('role') === 'FIELD_OWNER') {
+      // @ts-ignore
+      this.addForm.controls.email.setValue(localStorage.getItem('email'));
+    }
+  }
   addSportCenter() {
     if (this.addForm.valid) {
       let formData = new FormData();
@@ -43,22 +49,19 @@ export class AddSportCenterComponent {
         formData.append('images', images.at(i).value);
       }
 
-      this.adminService.addSportCenter(formData).subscribe({
+      this.sportCenterService.addSportCenter(formData).subscribe({
         next: () => {
-          this.router.navigate(['/admin/sport-centers']).then(() => {
-            window.location.reload();
-          });
+          this.CloseForm();
         },
       });
     }
   }
 
   handleFileInput(event: any): void {
-    this.fileInput = event.target;
     let reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     const images = this.addForm.get('images') as FormArray;
-    images.push(this.formBuilder.control(this.fileInput.files[0]));
+    images.push(this.formBuilder.control(event.target.files[0]));
     reader.onload = (_event) => {
       this.url.push(reader.result);
     };
@@ -68,5 +71,17 @@ export class AddSportCenterComponent {
     this.url.splice(id, 1);
     const images = this.addForm.get('images') as FormArray;
     images.removeAt(id);
+  }
+
+  CloseForm() {
+    if (this.role === 'ADMIN') {
+      this.router.navigate(['/admin/sport-centers']).then(() => {
+        window.location.reload();
+      });
+    } else {
+      this.router.navigate(['/field-owner/home']).then(() => {
+        window.location.reload();
+      });
+    }
   }
 }

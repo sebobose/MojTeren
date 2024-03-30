@@ -31,7 +31,8 @@ public class Image {
     @ManyToOne
     private SportCenter sportCenter;
 
-    public Image(byte[] image) {
+    public Image(byte[] image, SportCenter sportCenter) {
         this.image = image;
+        this.sportCenter = sportCenter;
     }
 }

@@ -19,7 +19,13 @@ export class AdminSportCentersComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  displayedColumns: string[] = ['sportCenterName', 'owner', 'address'];
+  displayedColumns: string[] = [
+    'sportCenterName',
+    'owner',
+    'address',
+    // 'details',
+    'edit',
+  ];
   dataSource: MatTableDataSource<SportCenterData> = new MatTableDataSource();
 
   ngOnInit(): void {
@@ -60,10 +66,21 @@ export class AdminSportCentersComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  // sportCenterDetails(element: any) {}
+
+  editSportCenter(element: any) {
+    this.router
+      .navigate(['/edit-sport-center/' + element.sportCenterId])
+      .then(() => {
+        window.location.reload();
+      });
+  }
 }
 
 export interface SportCenterData {
+  sportCenterId: number;
   sportCenterName: string;
-  owner: number;
-  address: number;
+  owner: string;
+  address: string;
 }

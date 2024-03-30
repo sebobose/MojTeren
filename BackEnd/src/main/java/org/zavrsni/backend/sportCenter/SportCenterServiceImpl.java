@@ -50,15 +50,14 @@ public class SportCenterServiceImpl implements SportCenterService {
             }
 
             User owner = userRepository.findByEmail(addSportCenterDTO.getEmail()).orElseThrow();
-            List<Image> savedImages = compressedImages.stream().map(Image::new)
-                    .map(imageRepository::save).collect(Collectors.toList());
             SportCenter sportCenter = SportCenter.builder()
                     .owner(owner)
                     .sportCenterName(addSportCenterDTO.getSportCenterName())
                     .address(addSportCenterDTO.getAddress())
-                    .images(savedImages)
                     .build();
             sportCenterRepository.save(sportCenter);
+
+            compressedImages.stream().map(image -> new Image(image, sportCenter)).forEach(imageRepository::save);
 
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Status status = user.getRole().getRoleName().equals("ADMIN") ?
@@ -80,6 +79,49 @@ public class SportCenterServiceImpl implements SportCenterService {
                     return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
                             .getStatus().getStatusType().equals("ACTIVE");
                 }).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public SportCenterDetailsDTO getSportCenterById(Long sportCenterId) {
+            List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenterId);
+        return new SportCenterDetailsDTO(sportCenterRepository.findById(sportCenterId).orElseThrow(), images);
+    }
+
+    @Override
+    public Void updateSportCenter(Long sportCenterId, AddSportCenterDTO addSportCenterDTO) {
+        List<byte[]> compressedImages = new ArrayList<>();
+        for(MultipartFile image : addSportCenterDTO.getImages()){
+            compressedImages.add(compressImage(image));
+        }
+
+        SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Status status = user.getRole().getRoleName().equals("ADMIN") ?
+                statusRepository.findByStatusType("ACTIVE").orElseThrow() :
+                statusRepository.findByStatusType("PENDING").orElseThrow();
+        EntityStatus entityStatus = EntityStatus.builder()
+                .status(status)
+                .sportCenter(sportCenter)
+                .build();
+        entityStatusRepository.save(entityStatus);
+
+        compressedImages.stream().map(image -> new Image(image, sportCenter)).forEach(imageRepository::save);
+        sportCenter.setSportCenterName(addSportCenterDTO.getSportCenterName());
+        sportCenter.setAddress(addSportCenterDTO.getAddress());
+        sportCenterRepository.save(sportCenter);
+        return null;
+    }
+
+    @Override
+    public Void deactivateSportCenter(Long sportCenterId) {
+        SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
+        Status status = statusRepository.findByStatusType("INACTIVE").orElseThrow();
+        EntityStatus entityStatus = EntityStatus.builder()
+                .status(status)
+                .sportCenter(sportCenter)
+                .build();
+        entityStatusRepository.save(entityStatus);
+        return null;
     }
 
     @SneakyThrows

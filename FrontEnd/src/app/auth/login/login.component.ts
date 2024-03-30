@@ -32,6 +32,7 @@ export class LoginComponent {
           localStorage.clear();
           localStorage.setItem('token', data.accessToken);
           localStorage.setItem('role', data.role);
+          localStorage.setItem('email', this.loginForm.controls.email.value);
           switch (data.role) {
             case 'ADMIN':
               this.router.navigate(['/admin/requests']).then(() => {

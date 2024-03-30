@@ -9,7 +9,8 @@ import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.co
 import { AdminSportCentersComponent } from './admin/admin-sport-centers/admin-sport-centers.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
-import { AddSportCenterComponent } from './add-sport-center/add-sport-center.component';
+import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
+import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -53,6 +54,12 @@ export const routes: Routes = [
   {
     path: 'add-sport-center',
     component: AddSportCenterComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: ['FIELD_OWNER', 'ADMIN'] },
+  },
+  {
+    path: 'edit-sport-center/:id',
+    component: EditSportCenterComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: ['FIELD_OWNER', 'ADMIN'] },
   },

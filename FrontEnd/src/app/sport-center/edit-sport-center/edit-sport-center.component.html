@@ -1,35 +1,16 @@
 <div class="center flex sport-center-main">
   <div class="sport-center-container center flex">
     <div>
-      <h1>Dodajte sportski centar</h1>
+      <h1>Uredite sportski centar</h1>
+      <p>Promjenom naziva, adrese ili fotografija sportski centar će se ponovno morati potvrditi od strane admina!</p>
     </div>
     <form
       [formGroup]="addForm"
-      (ngSubmit)="addSportCenter()"
+      (ngSubmit)="editSportCenter()"
       class="flex center info-form"
       #form="ngForm"
     >
       <div class="text-input">
-        @if (role == "ADMIN") {
-          <div class="form-container">
-            <div class="form-field">
-              <input
-                formControlName="email"
-                type="email"
-                required
-                id="email"
-                placeholder=""
-              />
-              <label for="email">Email vlasnika</label>
-            </div>
-            @if (
-              (addForm.controls.email.dirty || form.submitted) &&
-              !addForm.controls.email.valid
-            ) {
-              <span class="form-error">Morate unijeti ispravan email!</span>
-            }
-          </div>
-        }
         <div class="form-container">
           <div class="form-field">
             <input
@@ -84,7 +65,12 @@
           }
         </div>
       }
-      <button type="submit" class="button">Spremi</button>
+      <div class="flex">
+        <button type="button" class="button" (click)="CloseForm()">Odustani</button>
+        <button type="submit" class="button">Spremi</button>
+        <button type="button" class="button delete-button" (click)="deleteSportCenter()">Obriši sportski centar</button>
+      </div>
+
     </form>
   </div>
 </div>

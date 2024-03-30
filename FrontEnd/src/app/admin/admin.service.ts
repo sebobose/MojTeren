@@ -53,22 +53,6 @@ export class AdminService {
     };
   }
 
-  addSportCenter(sportCenter: any) {
-    let formData = new FormData();
-    formData.append('sportCenter', JSON.stringify(sportCenter));
-    let header = new HttpHeaders({
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-    });
-    let headersObj = {
-      headers: header,
-    };
-    return this.http.post(
-      environment.BASE_API_URL + '/sport-center/admin/add',
-      sportCenter,
-      headersObj,
-    );
-  }
-
   getAdminSportCenters() {
     return this.http.get(
       environment.BASE_API_URL + '/sport-center/admin/all',

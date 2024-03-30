@@ -39,7 +39,15 @@ import {
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorIntl } from './custom-angular-material/custom-paginator-intl';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { AddSportCenterComponent } from './add-sport-center/add-sport-center.component';
+import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
+import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
+import { ConfirmDialogComponent } from './sport-center/edit-sport-center/confirm-dialog.component';
+import { MatButton } from '@angular/material/button';
+import {
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -62,6 +70,8 @@ export const MY_DATE_FORMATS = {
     AdminUsersComponent,
     AdminSportsComponent,
     AddSportCenterComponent,
+    EditSportCenterComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +101,10 @@ export const MY_DATE_FORMATS = {
     MatPaginator,
     MatSort,
     MatSortHeader,
+    MatButton,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogTitle,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },

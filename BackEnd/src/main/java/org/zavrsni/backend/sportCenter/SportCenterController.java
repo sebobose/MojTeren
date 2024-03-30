@@ -16,7 +16,7 @@ public class SportCenterController {
 
     private final SportCenterService sportCenterService;
 
-    @PostMapping("/admin/add")
+    @PostMapping("/add")
     public ResponseEntity<Void> addSportCenter(@ModelAttribute AddSportCenterDTO addSportCenterDTO) {
         return ResponseEntity.ok(sportCenterService.addSportCenter(addSportCenterDTO));
     }
@@ -24,5 +24,20 @@ public class SportCenterController {
     @GetMapping("/admin/all")
     public ResponseEntity<List<SportCenterDetailsDTO>> getAllSportCentersAdmin() {
         return ResponseEntity.ok(sportCenterService.getAllSportCentersAdmin());
+    }
+
+    @GetMapping("/{sportCenterId}")
+    public ResponseEntity<SportCenterDetailsDTO> getSportCenterDetails(@PathVariable Long sportCenterId) {
+        return ResponseEntity.ok(sportCenterService.getSportCenterById(sportCenterId));
+    }
+
+    @PutMapping("/update/{sportCenterId}")
+    public ResponseEntity<Void> updateSportCenter(@PathVariable Long sportCenterId, @ModelAttribute AddSportCenterDTO addSportCenterDTO) {
+        return ResponseEntity.ok(sportCenterService.updateSportCenter(sportCenterId, addSportCenterDTO));
+    }
+
+    @PutMapping("/deactivate/{sportCenterId}")
+    public ResponseEntity<Void> deactivateSportCenter(@PathVariable Long sportCenterId) {
+        return ResponseEntity.ok(sportCenterService.deactivateSportCenter(sportCenterId));
     }
 }

@@ -1,0 +1,93 @@
+<div class="center flex sport-center-main">
+  <div class="sport-center-container center flex">
+    <div>
+      <h1>Dodajte sportski centar</h1>
+    </div>
+    <form
+      [formGroup]="addForm"
+      (ngSubmit)="addSportCenter()"
+      class="flex center info-form"
+      #form="ngForm"
+    >
+      <div class="text-input">
+        @if (role == "ADMIN") {
+          <div class="form-container">
+            <div class="form-field">
+              <input
+                formControlName="email"
+                type="email"
+                required
+                id="email"
+                placeholder=""
+              />
+              <label for="email">Email vlasnika</label>
+            </div>
+            @if (
+              (addForm.controls.email.dirty || form.submitted) &&
+              !addForm.controls.email.valid
+            ) {
+              <span class="form-error">Morate unijeti ispravan email!</span>
+            }
+          </div>
+        }
+        <div class="form-container">
+          <div class="form-field">
+            <input
+              formControlName="sportCenterName"
+              type="text"
+              required
+              id="sportCenterName"
+              placeholder=""
+            />
+            <label for="sportCenterName">Naziv</label>
+          </div>
+          @if (
+            (addForm.controls.sportCenterName.dirty || form.submitted) &&
+            !addForm.controls.sportCenterName.valid
+          ) {
+            <span class="form-error">Morate unijeti naziv!</span>
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field address">
+            <input
+              formControlName="address"
+              type="text"
+              required
+              id="address"
+              placeholder=""
+            />
+            <label for="address">Adresa</label>
+          </div>
+          @if (
+            (addForm.controls.address.dirty || form.submitted) &&
+            !addForm.controls.address.valid
+          ) {
+            <span class="form-error">Morate unijeti adresu!</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-container image-input">
+        <label class="button image-button">
+          Odaberite fotografije
+          <input class="hide-file-input" type="file" (change)="handleFileInput($event)" required />
+        </label>
+      </div>
+      @if (url.length > 0) {
+        <div class="image-container">
+          @for (u of url; track $index) {
+            <div [id]="$index" class="img-container" (click)="onDeleteImg($index)">
+              <img class="img" [src]="u" alt="" />
+              <mat-icon class="delete">close</mat-icon>
+            </div>
+          }
+        </div>
+      }
+      <div class="flex">
+        <button type="button" class="button" (click)="CloseForm()">Odustani</button>
+        <button type="submit" class="button">Spremi</button>
+      </div>
+    </form>
+  </div>
+</div>
