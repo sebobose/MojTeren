@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zavrsni.backend.user.dto.UserDTO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -25,7 +26,7 @@ public class UserController {
 
 
     @GetMapping("/check-token")
-    public ResponseEntity<Boolean> checkToken() {
+    public ResponseEntity<Map<String, String>> checkToken() {
         return userService.checkToken();
     }
 }

@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (this.authService.isUserLoggedIn()) {
       this.authService.checkTokenAvailability().subscribe({
-        next: () => {
+        next: (data: any) => {
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('email', data.email);
           return;
         },
         error: () => {

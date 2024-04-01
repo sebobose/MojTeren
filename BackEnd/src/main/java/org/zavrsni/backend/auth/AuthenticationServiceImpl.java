@@ -64,7 +64,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         String jwtToken = jwtService.generateToken(user);
-        return ResponseEntity.ok(Map.of("accessToken", jwtToken, "role", user.getRole().getRoleName()));
+        return ResponseEntity.ok(Map.of("accessToken", jwtToken, "role", user.getRole().getRoleName(),
+                "email", user.getEmail()));
     }
 
 }

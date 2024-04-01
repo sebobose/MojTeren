@@ -3,11 +3,13 @@ package org.zavrsni.backend.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.zavrsni.backend.role.Role;
 import org.zavrsni.backend.role.RoleRepository;
 import org.zavrsni.backend.user.dto.UserDTO;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +40,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ResponseEntity<Boolean> checkToken() {
-        return ResponseEntity.ok(true);
+    public ResponseEntity<Map<String, String>> checkToken() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(Map.of("role", user.getRole().getRoleName(),
+                "email", user.getEmail()));
     }
 }
