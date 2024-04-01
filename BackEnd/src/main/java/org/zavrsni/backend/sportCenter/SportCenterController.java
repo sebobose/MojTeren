@@ -37,7 +37,7 @@ public class SportCenterController {
     }
 
     @PutMapping("/deactivate/{sportCenterId}")
-    public ResponseEntity<Void> deactivateSportCenter(@PathVariable Long sportCenterId) {
-        return ResponseEntity.ok(sportCenterService.deactivateSportCenter(sportCenterId));
+    public ResponseEntity<Void> deactivateSportCenter(@PathVariable Long sportCenterId, @RequestBody String reason) {
+        return ResponseEntity.ok(sportCenterService.deactivateSportCenter(sportCenterId, reason));
     }
 }

@@ -105,6 +105,8 @@ public class SportCenterServiceImpl implements SportCenterService {
                 .build();
         entityStatusRepository.save(entityStatus);
 
+        List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenterId);
+        imageRepository.deleteAll(images);
         compressedImages.stream().map(image -> new Image(image, sportCenter)).forEach(imageRepository::save);
         sportCenter.setSportCenterName(addSportCenterDTO.getSportCenterName());
         sportCenter.setAddress(addSportCenterDTO.getAddress());
@@ -113,12 +115,13 @@ public class SportCenterServiceImpl implements SportCenterService {
     }
 
     @Override
-    public Void deactivateSportCenter(Long sportCenterId) {
+    public Void deactivateSportCenter(Long sportCenterId, String reason) {
         SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
         Status status = statusRepository.findByStatusType("INACTIVE").orElseThrow();
         EntityStatus entityStatus = EntityStatus.builder()
                 .status(status)
                 .sportCenter(sportCenter)
+                .statusComment(reason)
                 .build();
         entityStatusRepository.save(entityStatus);
         return null;

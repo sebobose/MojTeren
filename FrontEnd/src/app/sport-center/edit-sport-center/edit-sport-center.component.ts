@@ -18,7 +18,7 @@ export class EditSportCenterComponent implements OnInit {
   private dialog = inject(MatDialog);
   private oldData: any;
   private imagesChanged: boolean = false;
-
+  protected addFieldForm: boolean = false;
   protected role = localStorage.getItem('role');
   url: any = [];
   sportCenterId: any;
@@ -139,11 +139,10 @@ export class EditSportCenterComponent implements OnInit {
 
   deleteSportCenter() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result) {
+    dialogRef.afterClosed().subscribe((reason: any) => {
+      if (reason) {
         this.sportCenterService
-          .deleteSportCenter(this.sportCenterId)
+          .deleteSportCenter(this.sportCenterId, reason)
           .subscribe({
             next: () => {
               this.CloseForm();
@@ -151,5 +150,8 @@ export class EditSportCenterComponent implements OnInit {
           });
       }
     });
+  }
+  addField() {
+    this.addFieldForm = !this.addFieldForm;
   }
 }

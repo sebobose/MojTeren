@@ -8,6 +8,7 @@
 
 .sport-center-main {
   height: 100%;
+  flex-direction: column;
 }
 
 .form-field {
@@ -122,4 +123,14 @@ input:-webkit-autofill:active {
 .delete-button:hover {
     background-color: #b8bec5;
     color: #646669;
+}
+
+.fields {
+  width: 100%;
+}
+
+.fields-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }

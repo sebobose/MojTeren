@@ -43,11 +43,7 @@ import { AddSportCenterComponent } from './sport-center/add-sport-center/add-spo
 import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
 import { ConfirmDialogComponent } from './sport-center/edit-sport-center/confirm-dialog.component';
 import { MatButton } from '@angular/material/button';
-import {
-  MatDialogActions,
-  MatDialogContent,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { AddFieldComponent } from './field/add-field/add-field.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -72,6 +68,7 @@ export const MY_DATE_FORMATS = {
     AddSportCenterComponent,
     EditSportCenterComponent,
     ConfirmDialogComponent,
+    AddFieldComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,10 +98,6 @@ export const MY_DATE_FORMATS = {
     MatPaginator,
     MatSort,
     MatSortHeader,
-    MatButton,
-    MatDialogActions,
-    MatDialogContent,
-    MatDialogTitle,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },

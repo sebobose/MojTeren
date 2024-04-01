@@ -70,7 +70,15 @@
         <button type="submit" class="button">Spremi</button>
         <button type="button" class="button delete-button" (click)="deleteSportCenter()">Obriši sportski centar</button>
       </div>
-
     </form>
+    <div class="fields">
+      <div class="fields-header">
+        <h2>Tereni</h2>
+        <button class="button" (click)="addField()">Dodaj teren</button>
+        @if (addFieldForm) {
+          <app-add-field [sportCenterId]="sportCenterId"></app-add-field>
+        }
+      </div>
+    </div>
   </div>
 </div>

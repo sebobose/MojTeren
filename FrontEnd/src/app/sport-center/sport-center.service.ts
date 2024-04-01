@@ -53,10 +53,10 @@ export class SportCenterService {
     );
   }
 
-  deleteSportCenter(sportCenterId: any) {
+  deleteSportCenter(sportCenterId: any, reason: string) {
     return this.http.put(
       environment.BASE_API_URL + '/sport-center/deactivate/' + sportCenterId,
-      {},
+      reason,
       this.createHeader(),
     );
   }

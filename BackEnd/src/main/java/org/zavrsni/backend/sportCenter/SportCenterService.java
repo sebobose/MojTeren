@@ -15,5 +15,5 @@ public interface SportCenterService {
 
     Void updateSportCenter(Long sportCenterId, AddSportCenterDTO addSportCenterDTO);
 
-    Void deactivateSportCenter(Long sportCenterId);
+    Void deactivateSportCenter(Long sportCenterId, String reason);
 }
