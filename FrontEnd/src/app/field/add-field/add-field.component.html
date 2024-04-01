@@ -1,1 +1,168 @@
-<p>balls</p>
+<div class="center flex add-field-main">
+  <div class="add-field-container center flex">
+    <form
+      [formGroup]="addForm"
+      (ngSubmit)="addField()"
+      class="flex center info-form"
+      #form="ngForm"
+    >
+      <div class="text-input">
+        <div class="form-container">
+          <div class="form-field">
+            <input
+              formControlName="fieldName"
+              type="text"
+              required
+              id="fieldName"
+              placeholder=""
+            />
+            <label for="fieldName">Naziv</label>
+          </div>
+          @if (
+            (addForm.controls.fieldName.dirty || form.submitted) &&
+            !addForm.controls.fieldName.valid
+          ) {
+            <span class="form-error">Morate unijeti naziv!</span>
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field">
+            <mat-select
+              formControlName="sport"
+              id="sport"
+              (selectionChange)="checkSportSelected($event)"
+              class="center"
+            >
+              @for (sport of sports; track sport.name) {
+                <mat-option value="{{ sport.id }}">{{ sport.name }}</mat-option>
+              }
+            </mat-select>
+            <label [ngClass]="{ selected: sportSelected }" for="sport"
+              >Sport</label
+            >
+          </div>
+          @if (
+            (addForm.controls.sport.dirty || form.submitted) &&
+            !addForm.controls.sport.valid
+          ) {
+            <span class="form-error">Morate unijeti sport!</span>
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field">
+            <mat-select
+              formControlName="minResTime"
+              id="minResTime"
+              (selectionChange)="checkResTimeSelected($event)"
+              class="center"
+            >
+              @for (time of minResTimes; track time) {
+                <mat-option value="{{ time }}">{{ time }}</mat-option>
+              }
+            </mat-select>
+            <label [ngClass]="{ selected: resTimeSelected }" for="minResTime"
+              >Minimalno vrijeme rezervacije</label
+            >
+          </div>
+          @if (
+            (addForm.controls.minResTime.dirty || form.submitted) &&
+            !addForm.controls.minResTime.valid
+          ) {
+            <span class="form-error"
+              >Morate unijeti minimalno trajanje rezervacije!</span
+            >
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field">
+            <mat-select
+              formControlName="minResTime"
+              id="timeSlot"
+              (selectionChange)="checkTimeSlotSelected($event)"
+              class="center"
+            >
+              @for (time of timeSlots; track time) {
+                <mat-option value="{{ time }}">{{ time }}</mat-option>
+              }
+            </mat-select>
+            <label [ngClass]="{ selected: timeSlotSelected }" for="timeSlot"
+              >Minimalni vremenski razmak</label
+            >
+          </div>
+          <span class="form-error"
+            >Ako je vremenski razmak 15 min, a minimalno vrijeme rezervacije 1h,
+            korisnik može rezervirati teren na 1h, 1h i 15 min, 1h i
+            30min...</span
+          >
+        </div>
+        <div class="form-container description">
+          <div class="form-field description-field">
+            <textarea
+              formControlName="description"
+              id="description"
+              placeholder="Opis terena"
+              class="description-input"
+            ></textarea>
+          </div>
+          @if (
+            (addForm.controls.description.dirty || form.submitted) &&
+            !addForm.controls.description.valid
+          ) {
+            <span class="form-error">Morate unijeti opis terena!</span>
+          }
+        </div>
+      </div>
+      <span class="work-hours">Radno vrijeme u obliku 7-23</span>
+      <div class="form-container days-input">
+        @for (day of days; track $index) {
+          <div class="day-container">
+            <mat-checkbox (change)="dayChecked($index)">{{ day.value }}</mat-checkbox>
+            @if (fieldAvailability[$index]) {
+              <div class="time-container">
+                <div class="time-field">
+                  <input
+                    [formControlName]="day.name"
+                    id="startTime"
+                    placeholder="Početak"
+                  />
+                  <label for="startTime">Početak</label>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="form-container image-input">
+        <label class="button image-button">
+          Odaberite fotografije
+          <input
+            class="hide-file-input"
+            type="file"
+            (change)="handleFileInput($event)"
+            required
+          />
+        </label>
+      </div>
+      @if (url.length > 0) {
+        <div class="image-container">
+          @for (u of url; track $index) {
+            <div
+              [id]="$index"
+              class="img-container"
+              (click)="onDeleteImg($index)"
+            >
+              <img class="img" [src]="u" alt="" />
+              <mat-icon class="delete">close</mat-icon>
+            </div>
+          }
+        </div>
+      }
+      <div class="flex">
+        <button type="button" class="button" (click)="CloseForm()">
+          Odustani
+        </button>
+        <button type="submit" class="button">Spremi</button>
+      </div>
+    </form>
+  </div>
+</div>

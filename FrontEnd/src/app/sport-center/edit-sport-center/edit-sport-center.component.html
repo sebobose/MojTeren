@@ -74,11 +74,13 @@
     <div class="fields">
       <div class="fields-header">
         <h2>Tereni</h2>
-        <button class="button" (click)="addField()">Dodaj teren</button>
-        @if (addFieldForm) {
-          <app-add-field [sportCenterId]="sportCenterId"></app-add-field>
-        }
+        <button class="button" [disabled]="addFieldForm" (click)="addField()">Dodaj teren</button>
       </div>
+      @if (addFieldForm) {
+        <div>
+          <app-add-field (closeFormEvent)="addField()" [sportCenterId]="sportCenterId"></app-add-field>
+        </div>
+      }
     </div>
   </div>
 </div>

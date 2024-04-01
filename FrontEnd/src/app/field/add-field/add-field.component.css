@@ -1,0 +1,172 @@
+.add-field-container {
+  padding: 40px;
+  flex-direction: column;
+  border-radius: 20px;
+  border: #646669 2px solid;
+  width: 90%;
+}
+
+.add-field-main {
+  height: 100%;
+}
+
+.form-field {
+  margin-left: 30px;
+  height: fit-content;
+  width: 270px;
+}
+
+.text-input {
+  display: grid;
+  justify-content: space-between;
+  width: 100%;
+  grid-template-columns: 33% 33% 34%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-error {
+  margin-left: 30px;
+  width: 270px;
+}
+
+.info-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.image-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.hide-file-input {
+  display: none;
+}
+
+.img-container {
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.img-container:hover .img {
+  cursor: pointer;
+  filter: opacity(0.5);
+}
+
+.img-container:hover .delete {
+  cursor: pointer;
+  filter: opacity(1);
+}
+
+.delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  filter: opacity(0);
+}
+
+.img {
+  width: 100%;
+  object-fit: cover;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
+  color: #d1d0c5 !important;
+  -webkit-text-fill-color: #d1d0c5 !important;
+}
+
+.image-button {
+  width: 200px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.image-input {
+  display: flex;
+  text-align: left;
+}
+
+.button {
+  margin: 20px;
+}
+
+.selected {
+  top: -20px;
+  left: 0;
+  font-size: 14px;
+  color: #e2b714;
+}
+
+mat-select {
+  color: #d1d0c5;
+  --mat-select-enabled-arrow-color: #d1d0c5;
+  font-size: 12px;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  --mat-select-panel-background-color: #323437;
+  --mat-option-selected-state-label-text-color: #e2b714;
+  color: #d1d0c5;
+}
+
+::ng-deep mat-pseudo-checkbox {
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: transparent;
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  color: #d1d0c5;
+  font-size: 12px;
+}
+
+.description {
+  grid-column: span 2;
+  width: 100%;
+}
+
+.description-field {
+  border: none;
+  width: 100%;
+  height: 100%;
+  margin: 0 0 0 10px;
+}
+
+.description-input {
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #927979;
+  background: transparent;
+  margin: 20px;
+  resize: none;
+  height: 100%;
+  width: 90%;
+  color: #d1d0c5;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.days-input {
+  margin-top: 30px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+}
+
+.work-hours {
+  margin-top: 30px;
+  font-size: 20px;
+}

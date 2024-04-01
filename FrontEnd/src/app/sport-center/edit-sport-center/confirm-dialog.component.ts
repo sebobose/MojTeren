@@ -12,7 +12,7 @@ import { MatDialogRef } from '@angular/material/dialog';
       </p>
       <textarea
         #deleteReason
-        class="search-field-input"
+        class="delete-reason-input"
         placeholder="Unesite razlog brisanja..."
         (keydown.enter)="deleteSC(); $event.preventDefault()"
       ></textarea>
@@ -33,7 +33,7 @@ import { MatDialogRef } from '@angular/material/dialog';
         padding: 20px;
         background-color: #323437;
       }
-      .search-field-input {
+      .delete-reason-input {
         font-size: 20px;
         border-radius: 10px;
         border: 1px solid #927979;
