@@ -27,6 +27,9 @@ export class AddFieldComponent implements OnInit {
   sportSelected: boolean = false;
   resTimeSelected: boolean = false;
   timeSlotSelected: boolean = false;
+  fieldAvailability = new Array(7).fill(0);
+  workHoursPattern =
+    '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]-([0-1]?[0-9]|2[0-3]):[0-5][0-9]$';
   minResTimes = [
     '30 min',
     '45 min',
@@ -46,7 +49,7 @@ export class AddFieldComponent implements OnInit {
     '45 min',
     '1 h',
   ];
-  days = [
+  days: { name: string; value: string }[] = [
     {
       name: 'Monday',
       value: 'Ponedjeljak',
@@ -76,7 +79,6 @@ export class AddFieldComponent implements OnInit {
       value: 'Nedjelja',
     },
   ];
-  fieldAvailability = new Array(7).fill(0);
 
   addForm = this.formBuilder.nonNullable.group(
     {
@@ -85,13 +87,13 @@ export class AddFieldComponent implements OnInit {
       minResTime: ['', [Validators.required]],
       timeSlot: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      Monday: [''],
-      Tuesday: [''],
-      Wednesday: [''],
-      Thursday: [''],
-      Friday: [''],
-      Saturday: [''],
-      Sunday: [''],
+      Monday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Tuesday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Wednesday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Thursday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Friday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Saturday: ['', [Validators.pattern(this.workHoursPattern)]],
+      Sunday: ['', [Validators.pattern(this.workHoursPattern)]],
       images: this.formBuilder.array([]),
     },
     {
@@ -111,28 +113,44 @@ export class AddFieldComponent implements OnInit {
   }
 
   addField() {
-    // if (this.addForm.valid) {
-    //   const formData = new FormData();
-    //   formData.append('fieldName', this.addForm.controls.fieldName.value);
-    //   formData.append('sport', this.addForm.value.sport);
-    //   formData.append('minResTime', this.addForm.value.minResTime);
-    //   formData.append('timeSlot', this.addForm.value.timeSlot);
-    //   formData.append('description', this.addForm.value.description);
-    //   for (let i of this.addForm.value.fieldAvailability) {
-    //     formData.append('fieldAvailabilities', i);
-    //   }
-    //   for (let i of this.addForm.value.images) {
-    //     formData.append('images', i);
-    //   }
-    //   this.fieldService.addField(formData, this.sportCenterId).subscribe({
-    //     next: (data) => {
-    //       this.closeFormEvent.emit();
-    //     },
-    //     error: (error) => {
-    //       console.error('Error:', error);
-    //     },
-    //   });
-    // }
+    if (this.addForm.valid && this.fieldAvailability.includes(1)) {
+      const formData = new FormData();
+      formData.append('fieldName', this.addForm.controls.fieldName.value);
+      formData.append('sportId', this.addForm.controls.sport.value);
+      formData.append('minResTime', this.addForm.controls.minResTime.value);
+      formData.append('timeSlot', this.addForm.controls.timeSlot.value);
+      formData.append('description', this.addForm.controls.description.value);
+      formData.append('sportCenterId', this.sportCenterId);
+      const images = this.addForm.get('images') as FormArray;
+      for (let i = 0; i < this.addForm.controls.images.value.length; i++) {
+        formData.append('images', images.at(i).value);
+      }
+      let fieldAvailabilities = [];
+      for (let i = 0; i < this.days.length; i++) {
+        if (this.fieldAvailability[i]) {
+          let workHours = (this.addForm.controls as { [key: string]: any })[
+            this.days[i].name
+          ];
+          let fieldAvailability = {
+            dayOfWeek: this.days[i].name,
+            startTime: workHours.value.split('-')[0],
+            endTime: workHours.value.split('-')[1],
+          };
+          fieldAvailabilities.push(fieldAvailability);
+        }
+      }
+      formData.append(
+        'fieldAvailabilities',
+        JSON.stringify(fieldAvailabilities),
+      );
+      formData.forEach((value, key) => {
+        console.log(key + ':' + value);
+      });
+      // console.log(formData);
+    } else {
+      console.log('Form is invalid');
+      console.log(this.addForm);
+    }
   }
 
   handleFileInput(event: any): void {
@@ -168,7 +186,21 @@ export class AddFieldComponent implements OnInit {
   }
 
   dayChecked(index: any) {
-    console.log(index);
     this.fieldAvailability[index] = this.fieldAvailability[index] === 0 ? 1 : 0;
+    if (!this.fieldAvailability[index]) {
+      (this.addForm.controls as { [key: string]: any })[
+        this.days[index].name
+      ].setValue('');
+    }
+  }
+
+  checkWorkHours(name: string) {
+    let workHours = (this.addForm.controls as { [key: string]: any })[name];
+    if (!workHours.invalid) {
+      let date1 = new Date(`1970-01-01T${workHours.value.split('-')[0]}:00`);
+      let date2 = new Date(`1970-01-01T${workHours.value.split('-')[1]}:00`);
+      return date1 >= date2;
+    }
+    return true;
   }
 }

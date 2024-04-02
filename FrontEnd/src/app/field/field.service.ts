@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -8,9 +8,25 @@ import { environment } from '../../environments/environment';
 export class FieldService {
   private http = inject(HttpClient);
 
+  createHeader() {
+    let header = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    });
+    return {
+      headers: header,
+    };
+  }
+
   getSports() {
     return this.http.get(environment.BASE_API_URL + '/sport/all');
   }
 
-  addField(formData: FormData, sportCenterId: any) {}
+  addField(field: FormData) {
+    return this.http.post(
+      environment.BASE_API_URL + '/field/add',
+      field,
+      this.createHeader(),
+    );
+  }
 }

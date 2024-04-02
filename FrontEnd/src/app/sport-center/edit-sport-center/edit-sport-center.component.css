@@ -129,8 +129,8 @@ button:disabled {
 }
 
 .delete-button:hover {
-    background-color: #b8bec5;
-    color: #646669;
+  background-color: #b8bec5;
+  color: #646669;
 }
 
 .fields {

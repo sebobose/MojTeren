@@ -5,6 +5,7 @@
       (ngSubmit)="addField()"
       class="flex center info-form"
       #form="ngForm"
+      (keydown.enter)="$event.preventDefault()"
     >
       <div class="text-input">
         <div class="form-container">
@@ -32,12 +33,16 @@
               id="sport"
               (selectionChange)="checkSportSelected($event)"
               class="center"
+              #sportSelect
             >
               @for (sport of sports; track sport.name) {
                 <mat-option value="{{ sport.id }}">{{ sport.name }}</mat-option>
               }
             </mat-select>
-            <label [ngClass]="{ selected: sportSelected }" for="sport"
+            <label
+              [ngClass]="{ selected: sportSelected }"
+              (click)="sportSelect.open()"
+              for="sport"
               >Sport</label
             >
           </div>
@@ -55,12 +60,16 @@
               id="minResTime"
               (selectionChange)="checkResTimeSelected($event)"
               class="center"
+              #minResTimeSelect
             >
               @for (time of minResTimes; track time) {
                 <mat-option value="{{ time }}">{{ time }}</mat-option>
               }
             </mat-select>
-            <label [ngClass]="{ selected: resTimeSelected }" for="minResTime"
+            <label
+              [ngClass]="{ selected: resTimeSelected }"
+              (click)="minResTimeSelect.open()"
+              for="minResTime"
               >Minimalno vrijeme rezervacije</label
             >
           </div>
@@ -76,16 +85,20 @@
         <div class="form-container">
           <div class="form-field">
             <mat-select
-              formControlName="minResTime"
+              formControlName="timeSlot"
               id="timeSlot"
               (selectionChange)="checkTimeSlotSelected($event)"
               class="center"
+              #timeSlotSelect
             >
               @for (time of timeSlots; track time) {
                 <mat-option value="{{ time }}">{{ time }}</mat-option>
               }
             </mat-select>
-            <label [ngClass]="{ selected: timeSlotSelected }" for="timeSlot"
+            <label
+              [ngClass]="{ selected: timeSlotSelected }"
+              (click)="timeSlotSelect.open()"
+              for="timeSlot"
               >Minimalni vremenski razmak</label
             >
           </div>
@@ -112,26 +125,34 @@
           }
         </div>
       </div>
-      <span class="work-hours">Radno vrijeme u obliku 7-23</span>
+      <span class="work-hours">Radno vrijeme</span>
       <div class="form-container days-input">
         @for (day of days; track $index) {
           <div class="day-container">
-            <mat-checkbox (change)="dayChecked($index)">{{ day.value }}</mat-checkbox>
+            <mat-checkbox (change)="dayChecked($index)">{{
+              day.value
+            }}</mat-checkbox>
             @if (fieldAvailability[$index]) {
-              <div class="time-container">
-                <div class="time-field">
-                  <input
-                    [formControlName]="day.name"
-                    id="startTime"
-                    placeholder="Početak"
-                  />
-                  <label for="startTime">Početak</label>
-                </div>
+              <div class="form-field day-input">
+                <input
+                  [formControlName]="day.name"
+                  type="text"
+                  placeholder=""
+                  [id]="day.name"
+                />
+                <label class="day-label" [for]="day.name">Trajanje</label>
               </div>
+              @if (checkWorkHours(day.name)) {
+                <span class="form-error time-error">Neispravno vrijeme!</span>
+              }
             }
           </div>
         }
       </div>
+      <span class="work-hours-hint"
+        >Radno vrijeme se upisuje u obliku: vrijeme početka-vrijeme kraja
+        (7:30-23:00)</span
+      >
       <div class="form-container image-input">
         <label class="button image-button">
           Odaberite fotografije

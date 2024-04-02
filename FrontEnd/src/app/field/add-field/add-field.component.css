@@ -4,6 +4,10 @@
   border-radius: 20px;
   border: #646669 2px solid;
   width: 90%;
+  box-shadow:
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .add-field-main {
@@ -169,4 +173,44 @@ mat-select {
 .work-hours {
   margin-top: 30px;
   font-size: 20px;
+}
+
+.work-hours-hint {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #e2b714;
+}
+
+.day-input {
+  width: 80%;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.time-error {
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+mat-checkbox {
+  --mdc-checkbox-selected-checkmark-color: #d1d0c5;
+  --mdc-checkbox-selected-focus-icon-color: #e2b714;
+  --mdc-checkbox-selected-hover-icon-color: #e2b714;
+  --mdc-checkbox-selected-icon-color: #e2b714;
+  --mdc-checkbox-selected-pressed-icon-color: #e2b714;
+  --mdc-checkbox-unselected-focus-icon-color: #d1d0c5;
+  --mdc-checkbox-unselected-hover-icon-color: #d1d0c5;
+  --mdc-checkbox-unselected-icon-color: #d1d0c5;
+  --mdc-checkbox-unselected-pressed-icon-color: #d1d0c5;
+  --mdc-checkbox-selected-focus-state-layer-color: #e2b714;
+  --mdc-checkbox-selected-hover-state-layer-color: #e2b714;
+  --mdc-checkbox-selected-pressed-state-layer-color: #e2b714;
+  --mdc-checkbox-unselected-focus-state-layer-color: #d1d0c5;
+  --mdc-checkbox-unselected-hover-state-layer-color: #d1d0c5;
+  --mdc-checkbox-unselected-pressed-state-layer-color: #d1d0c5;
+}
+
+::ng-deep .mdc-label {
+  font-size: 14px;
+  color: #d1d0c5;
 }
