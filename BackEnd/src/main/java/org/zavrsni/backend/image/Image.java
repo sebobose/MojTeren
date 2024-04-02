@@ -35,4 +35,9 @@ public class Image {
         this.image = image;
         this.sportCenter = sportCenter;
     }
+
+    public Image(byte[] image, Field field) {
+        this.image = image;
+        this.field = field;
+    }
 }

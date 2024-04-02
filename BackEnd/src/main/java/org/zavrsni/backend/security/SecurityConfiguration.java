@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/user/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport-center/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/field/add").hasAnyAuthority("ADMIN", "FIELD_OWNER")
                                 .anyRequest()
                                 .authenticated()
                 )

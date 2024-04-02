@@ -10,7 +10,6 @@ export class FieldService {
 
   createHeader() {
     let header = new HttpHeaders({
-      'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('token'),
     });
     return {

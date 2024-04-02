@@ -43,7 +43,6 @@ public class SportCenterServiceImpl implements SportCenterService {
         @Override
         @SneakyThrows
         public Void addSportCenter(AddSportCenterDTO addSportCenterDTO) {
-            System.out.println(addSportCenterDTO.toString());
             List<byte[]> compressedImages = new ArrayList<>();
             for(MultipartFile image : addSportCenterDTO.getImages()){
                 compressedImages.add(compressImage(image));
@@ -128,7 +127,7 @@ public class SportCenterServiceImpl implements SportCenterService {
     }
 
     @SneakyThrows
-    private static byte[] compressImage(MultipartFile image) {
+    public static byte[] compressImage(MultipartFile image) {
             if (image.getSize() <= 0.5 * 1024 * 1024) {
                 image.getBytes();
             }

@@ -117,8 +117,18 @@ export class AddFieldComponent implements OnInit {
       const formData = new FormData();
       formData.append('fieldName', this.addForm.controls.fieldName.value);
       formData.append('sportId', this.addForm.controls.sport.value);
-      formData.append('minResTime', this.addForm.controls.minResTime.value);
-      formData.append('timeSlot', this.addForm.controls.timeSlot.value);
+      formData.append(
+        'minResTime',
+        this.convertTimeToMinutes(
+          this.addForm.controls.minResTime.value,
+        ).toString(),
+      );
+      formData.append(
+        'timeSlot',
+        this.convertTimeToMinutes(
+          this.addForm.controls.timeSlot.value,
+        ).toString(),
+      );
       formData.append('description', this.addForm.controls.description.value);
       formData.append('sportCenterId', this.sportCenterId);
       const images = this.addForm.get('images') as FormArray;
@@ -139,14 +149,29 @@ export class AddFieldComponent implements OnInit {
           fieldAvailabilities.push(fieldAvailability);
         }
       }
-      formData.append(
-        'fieldAvailabilities',
-        JSON.stringify(fieldAvailabilities),
-      );
-      formData.forEach((value, key) => {
-        console.log(key + ':' + value);
+      for (let i = 0; i < fieldAvailabilities.length; i++) {
+        formData.append(
+          `fieldAvailabilities[${i}].dayOfWeek`,
+          fieldAvailabilities[i].dayOfWeek,
+        );
+        formData.append(
+          `fieldAvailabilities[${i}].startTime`,
+          fieldAvailabilities[i].startTime,
+        );
+        formData.append(
+          `fieldAvailabilities[${i}].endTime`,
+          fieldAvailabilities[i].endTime,
+        );
+      }
+      this.fieldService.addField(formData).subscribe({
+        next: (data) => {
+          console.log('Field added successfully');
+          this.closeFormEvent.emit();
+        },
+        error: (error) => {
+          console.error('Error:', error);
+        },
       });
-      // console.log(formData);
     } else {
       console.log('Form is invalid');
       console.log(this.addForm);
@@ -202,5 +227,19 @@ export class AddFieldComponent implements OnInit {
       return date1 >= date2;
     }
     return true;
+  }
+
+  private convertTimeToMinutes(value: any) {
+    if (value.split(' ')[1] === 'min') {
+      return parseInt(value.split(' ')[0]);
+    } else if (value.split(' ')[1] === 'h') {
+      if (value.split(' ').length > 2) {
+        return (
+          parseInt(value.split(' ')[0]) * 60 + parseInt(value.split(' ')[2])
+        );
+      }
+      return parseInt(value.split(' ')[0]) * 60;
+    }
+    return 0;
   }
 }
