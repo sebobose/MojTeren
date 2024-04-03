@@ -87,15 +87,6 @@ h1 {
   object-fit: cover;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
-  color: #d1d0c5 !important;
-  -webkit-text-fill-color: #d1d0c5 !important;
-}
-
 .image-button {
   width: 200px;
   text-align: center;

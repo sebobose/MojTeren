@@ -145,3 +145,13 @@ mat-tab-group {
   display: flex;
   flex-direction: column;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #323437 inset;
+  color: #d1d0c5;
+  -webkit-text-fill-color: #d1d0c5;
+  caret-color: #d1d0c5;
+}

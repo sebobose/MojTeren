@@ -93,15 +93,6 @@ p {
   object-fit: cover;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
-  color: #d1d0c5 !important;
-  -webkit-text-fill-color: #d1d0c5 !important;
-}
-
 .image-button {
   width: 200px;
   text-align: center;
@@ -146,13 +137,10 @@ button:disabled {
 }
 
 .field {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: 10px;
   margin-bottom: 20px;
-  border: 1px solid #646669;
+  border: 2px solid #646669;
   border-radius: 10px;
-  width: 95%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   box-shadow:
@@ -165,4 +153,8 @@ button:disabled {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+h3 {
+  padding-left: 20px;
 }

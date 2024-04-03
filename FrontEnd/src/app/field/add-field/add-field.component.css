@@ -2,12 +2,15 @@
   padding: 40px;
   flex-direction: column;
   border-radius: 20px;
+  width: 100%;
+}
+
+.border {
   border: #646669 2px solid;
-  width: 90%;
   box-shadow:
-    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .add-field-main {
@@ -82,15 +85,6 @@
 .img {
   width: 100%;
   object-fit: cover;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #323437 inset !important;
-  color: #d1d0c5 !important;
-  -webkit-text-fill-color: #d1d0c5 !important;
 }
 
 .image-button {

@@ -124,6 +124,7 @@ export class EditSportCenterComponent implements OnInit {
     reader.onload = (_event) => {
       this.url.push(reader.result);
     };
+    event.target.value = null;
   }
 
   onDeleteImg(id: number) {

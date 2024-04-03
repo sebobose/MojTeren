@@ -1,5 +1,5 @@
 <div class="center flex add-field-main">
-  <div class="add-field-container center flex">
+  <div class="add-field-container center flex" [ngClass]="{border: !fieldId}">
     <form
       [formGroup]="addForm"
       (ngSubmit)="addField()"

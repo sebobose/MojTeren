@@ -99,12 +99,10 @@
         </button>
       </div>
       @if (addFieldForm) {
-        <div>
           <app-add-field
             (closeFormEvent)="closeAddFieldForm($event)"
             [sportCenterId]="sportCenterId"
           ></app-add-field>
-        </div>
       }
       @for (field of fields; track field) {
         <div class="field">
