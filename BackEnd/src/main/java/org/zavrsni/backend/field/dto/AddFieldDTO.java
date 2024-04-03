@@ -16,7 +16,7 @@ import java.util.List;
 public class AddFieldDTO {
 
         private String fieldName;
-        private Long sportId;
+        private String sportName;
         private Long minResTime;
         private Long timeSlot;
         private String description;

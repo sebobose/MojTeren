@@ -12,6 +12,7 @@
 
 .add-field-main {
   height: 100%;
+  margin-bottom: 20px;
 }
 
 .form-field {
@@ -193,7 +194,7 @@ mat-select {
 }
 
 mat-checkbox {
-  --mdc-checkbox-selected-checkmark-color: #d1d0c5;
+  --mdc-checkbox-selected-checkmark-color: #000;
   --mdc-checkbox-selected-focus-icon-color: #e2b714;
   --mdc-checkbox-selected-hover-icon-color: #e2b714;
   --mdc-checkbox-selected-icon-color: #e2b714;
@@ -213,4 +214,14 @@ mat-checkbox {
 ::ng-deep .mdc-label {
   font-size: 14px;
   color: #d1d0c5;
+}
+
+.delete-button {
+  background-color: #ff3f3f;
+  color: #d1d0c5;
+}
+
+.delete-button:hover {
+  background-color: #b8bec5;
+  color: #646669;
 }

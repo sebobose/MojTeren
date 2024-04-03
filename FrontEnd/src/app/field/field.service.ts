@@ -28,4 +28,27 @@ export class FieldService {
       this.createHeader(),
     );
   }
+
+  getFieldById(fieldId: any) {
+    return this.http.get(
+      environment.BASE_API_URL + '/field/' + fieldId,
+      this.createHeader(),
+    );
+  }
+
+  editField(formData: FormData, fieldId: any) {
+    return this.http.put(
+      environment.BASE_API_URL + '/field/update/' + fieldId,
+      formData,
+      this.createHeader(),
+    );
+  }
+
+  deleteField(fieldId: any, reason: any) {
+    return this.http.put(
+      environment.BASE_API_URL + '/field/deactivate/' + fieldId,
+      reason,
+      this.createHeader(),
+    );
+  }
 }

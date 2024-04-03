@@ -7,4 +7,6 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
     List<Image> findAllBySportCenter_SportCenterId(Long sportCenterId);
+
+    List<Image> findAllByField_FieldId(Long fieldId);
 }

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.entityStatus.EntityStatusRepository;
+import org.zavrsni.backend.field.Field;
+import org.zavrsni.backend.field.FieldService;
+import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
@@ -39,6 +42,7 @@ public class SportCenterServiceImpl implements SportCenterService {
         private final ImageRepository imageRepository;
         private final StatusRepository statusRepository;
         private final EntityStatusRepository entityStatusRepository;
+        private final FieldService fieldService;
 
         @Override
         @SneakyThrows
@@ -83,7 +87,7 @@ public class SportCenterServiceImpl implements SportCenterService {
     @Override
     public SportCenterDetailsDTO getSportCenterById(Long sportCenterId) {
             List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenterId);
-        return new SportCenterDetailsDTO(sportCenterRepository.findById(sportCenterId).orElseThrow(), images);
+            return new SportCenterDetailsDTO(sportCenterRepository.findById(sportCenterId).orElseThrow(), images);
     }
 
     @Override
@@ -117,6 +121,8 @@ public class SportCenterServiceImpl implements SportCenterService {
     public Void deactivateSportCenter(Long sportCenterId, String reason) {
         SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
         Status status = statusRepository.findByStatusType("INACTIVE").orElseThrow();
+        List<Field> fields = sportCenter.getFields();
+        fields.forEach(field -> fieldService.deactivateField(field.getFieldId(), "Sport center deactivated"));
         EntityStatus entityStatus = EntityStatus.builder()
                 .status(status)
                 .sportCenter(sportCenter)
@@ -124,6 +130,16 @@ public class SportCenterServiceImpl implements SportCenterService {
                 .build();
         entityStatusRepository.save(entityStatus);
         return null;
+    }
+
+    @Override
+    public List<FieldsMetadataDTO> getSportCenterFields(Long sportCenterId) {
+        SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
+        return sportCenter.getFields().stream().filter(field -> {
+            List<EntityStatus> statuses = field.getFieldStatuses();
+            return field.getFieldStatuses().get(statuses.size() - 1)
+                    .getStatus().getStatusType().equals("ACTIVE");
+        }).map(FieldsMetadataDTO::new).collect(Collectors.toList());
     }
 
     @SneakyThrows

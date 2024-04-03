@@ -3,6 +3,7 @@ package org.zavrsni.backend.sportCenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
 
@@ -39,5 +40,10 @@ public class SportCenterController {
     @PutMapping("/deactivate/{sportCenterId}")
     public ResponseEntity<Void> deactivateSportCenter(@PathVariable Long sportCenterId, @RequestBody String reason) {
         return ResponseEntity.ok(sportCenterService.deactivateSportCenter(sportCenterId, reason));
+    }
+
+    @GetMapping("/fields/{sportCenterId}")
+    public ResponseEntity<List<FieldsMetadataDTO>> getSportCenterFields(@PathVariable Long sportCenterId) {
+        return ResponseEntity.ok(sportCenterService.getSportCenterFields(sportCenterId));
     }
 }

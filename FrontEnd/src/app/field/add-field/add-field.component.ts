@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FieldService } from '../field.service';
+import { ConfirmDialogComponent } from '../../sport-center/edit-sport-center/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-field',
@@ -17,8 +19,10 @@ import { FieldService } from '../field.service';
 export class AddFieldComponent implements OnInit {
   private fieldService = inject(FieldService);
   private formBuilder = inject(FormBuilder);
+  private dialog = inject(MatDialog);
 
   @Input() sportCenterId!: any;
+  @Input() fieldId!: any;
   @Output() closeFormEvent = new EventEmitter<string>();
 
   protected role = localStorage.getItem('role');
@@ -34,7 +38,7 @@ export class AddFieldComponent implements OnInit {
     '30 min',
     '45 min',
     '1 h',
-    '1 h 15 min ',
+    '1 h 15 min',
     '1 h 30 min',
     '1 h 45 min',
     '2 h',
@@ -43,7 +47,7 @@ export class AddFieldComponent implements OnInit {
     '5 min',
     '10 min',
     '15 min',
-    '20 min ',
+    '20 min',
     '25 min',
     '30 min',
     '45 min',
@@ -110,13 +114,78 @@ export class AddFieldComponent implements OnInit {
         console.error('Error:', error);
       },
     });
+    if (this.fieldId) {
+      this.fieldService.getFieldById(this.fieldId).subscribe({
+        next: (data: any) => {
+          this.addForm.controls.fieldName.setValue(data.fieldName);
+          this.addForm.controls.sport.setValue(data.sport);
+          this.sportSelected = true;
+          if (data.minResTime / 60 >= 1) {
+            let hours = Math.floor(data.minResTime / 60);
+            let minutes =
+              data.minResTime % 60 ? ' ' + (data.minResTime % 60) + ' min' : '';
+            this.addForm.controls.minResTime.setValue(hours + ' h' + minutes);
+          } else {
+            this.addForm.controls.minResTime.setValue(data.minResTime + ' min');
+          }
+          this.resTimeSelected = true;
+          if (data.timeSlot / 60 >= 1) {
+            let hours = Math.floor(data.timeSlot / 60);
+            let minutes =
+              data.timeSlot % 60 ? ' ' + (data.timeSlot % 60) + ' min' : '';
+            this.addForm.controls.timeSlot.setValue(hours + ' h' + minutes);
+          } else {
+            this.addForm.controls.timeSlot.setValue(data.timeSlot + ' min');
+          }
+          this.timeSlotSelected = true;
+          this.addForm.controls.description.setValue(data.description);
+          for (let i of data.fieldAvailabilities) {
+            this.fieldAvailability[
+              this.days.findIndex((x) => x.name === i.dayOfWeek)
+            ] = 1;
+            (this.addForm.controls as { [key: string]: any })[
+              i.dayOfWeek
+            ].setValue(i.startTime + '-' + i.endTime);
+          }
+          for (let i of data.images) {
+            this.url.push('data:image/png;base64,' + i);
+          }
+          const images = this.addForm.get('images') as FormArray;
+          for (let i of data.images) {
+            images.push(
+              this.formBuilder.control(
+                this.base64toFile(
+                  'data:image/png;base64,' + i,
+                  'picture.jpg',
+                  'image/jpeg',
+                ),
+              ),
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Error:', error);
+        },
+      });
+    }
   }
 
   addField() {
     if (this.addForm.valid && this.fieldAvailability.includes(1)) {
+      this.addForm.markAllAsTouched();
+      for (let i = 0; i < this.days.length; i++) {
+        if (
+          this.fieldAvailability[i] &&
+          this.checkWorkHours(this.days[i].name)
+        ) {
+          console.log('Form is invalid');
+          console.log(this.addForm);
+          return;
+        }
+      }
       const formData = new FormData();
       formData.append('fieldName', this.addForm.controls.fieldName.value);
-      formData.append('sportId', this.addForm.controls.sport.value);
+      formData.append('sportName', this.addForm.controls.sport.value);
       formData.append(
         'minResTime',
         this.convertTimeToMinutes(
@@ -163,15 +232,25 @@ export class AddFieldComponent implements OnInit {
           fieldAvailabilities[i].endTime,
         );
       }
-      this.fieldService.addField(formData).subscribe({
-        next: (data) => {
-          console.log('Field added successfully');
-          this.closeFormEvent.emit();
-        },
-        error: (error) => {
-          console.error('Error:', error);
-        },
-      });
+      if (this.fieldId) {
+        this.fieldService.editField(formData, this.fieldId).subscribe({
+          next: () => {
+            location.reload();
+          },
+          error: (error) => {
+            console.error('Error:', error);
+          },
+        });
+      } else {
+        this.fieldService.addField(formData).subscribe({
+          next: () => {
+            location.reload();
+          },
+          error: (error) => {
+            console.error('Error:', error);
+          },
+        });
+      }
     } else {
       console.log('Form is invalid');
       console.log(this.addForm);
@@ -192,10 +271,6 @@ export class AddFieldComponent implements OnInit {
     this.url.splice(id, 1);
     const images = this.addForm.get('images') as FormArray;
     images.removeAt(id);
-  }
-
-  CloseForm() {
-    this.closeFormEvent.emit();
   }
 
   checkSportSelected(event: any) {
@@ -221,10 +296,20 @@ export class AddFieldComponent implements OnInit {
 
   checkWorkHours(name: string) {
     let workHours = (this.addForm.controls as { [key: string]: any })[name];
-    if (!workHours.invalid) {
-      let date1 = new Date(`1970-01-01T${workHours.value.split('-')[0]}:00`);
-      let date2 = new Date(`1970-01-01T${workHours.value.split('-')[1]}:00`);
+    if (!workHours.invalid && workHours.value !== '' && workHours.touched) {
+      let time1 = workHours.value.split('-')[0];
+      let time2 = workHours.value.split('-')[1];
+      if (time1.split(':')[0].length === 1) {
+        time1 = '0' + time1;
+      }
+      if (time2.split(':')[0].length === 1) {
+        time2 = '0' + time2;
+      }
+      let date1 = new Date(`1970-01-01T${time1}:00`);
+      let date2 = new Date(`1970-01-01T${time2}:00`);
       return date1 >= date2;
+    } else if (!workHours.touched) {
+      return false;
     }
     return true;
   }
@@ -241,5 +326,31 @@ export class AddFieldComponent implements OnInit {
       return parseInt(value.split(' ')[0]) * 60;
     }
     return 0;
+  }
+
+  base64toFile(base64String: string, fileName: string, mimeType: string): File {
+    const base64Data = base64String.split(',')[1];
+    const binaryString = atob(base64Data);
+    const byteArray = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      byteArray[i] = binaryString.charCodeAt(i);
+    }
+    const blob = new Blob([byteArray], { type: mimeType });
+    return new File([blob], fileName, { type: mimeType });
+  }
+
+  deleteField() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: 'teren',
+    });
+    dialogRef.afterClosed().subscribe((reason: any) => {
+      if (reason) {
+        this.fieldService.deleteField(this.fieldId, reason).subscribe({
+          next: () => {
+            this.closeFormEvent.emit(this.addForm.controls.fieldName.value);
+          },
+        });
+      }
+    });
   }
 }

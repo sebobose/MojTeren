@@ -1,20 +1,19 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirm-dialog',
   template: `
     <div class="delete-dialog">
-      <h1>Obriši sportski centar</h1>
+      <h1>Obriši {{ data }}</h1>
       <p>
-        Jeste li sigurni da želite obrisati ovaj sportski centar? Ova akcija je
+        Jeste li sigurni da želite obrisati ovaj {{ data }}? Ova akcija je
         nepovratna.
       </p>
       <textarea
         #deleteReason
         class="delete-reason-input"
         placeholder="Unesite razlog brisanja..."
-        (keydown.enter)="deleteSC(); $event.preventDefault()"
       ></textarea>
       <div>
         <button class="button" (click)="onNoClick()">Odustani</button>
@@ -68,9 +67,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ConfirmDialogComponent {
   private dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
-
+  public data = inject(MAT_DIALOG_DATA);
   @ViewChild('deleteReason') deleteReason!: any;
   showError = false;
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -83,6 +83,4 @@ export class ConfirmDialogComponent {
     }
     this.dialogRef.close(searchValue);
   }
-
-  deleteSC() {}
 }

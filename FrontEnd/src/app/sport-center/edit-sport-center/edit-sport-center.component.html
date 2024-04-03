@@ -2,7 +2,10 @@
   <div class="sport-center-container center flex">
     <div>
       <h1>Uredite sportski centar</h1>
-      <p>Promjenom naziva, adrese ili fotografija sportski centar će se ponovno morati potvrditi od strane admina!</p>
+      <p>
+        Promjenom naziva, adrese ili fotografija sportski centar će se ponovno
+        morati potvrditi od strane admina!
+      </p>
     </div>
     <form
       [formGroup]="addForm"
@@ -52,13 +55,22 @@
       <div class="form-container image-input">
         <label class="button image-button">
           Odaberite fotografije
-          <input class="hide-file-input" type="file" (change)="handleFileInput($event)" required />
+          <input
+            class="hide-file-input"
+            type="file"
+            (change)="handleFileInput($event)"
+            required
+          />
         </label>
       </div>
       @if (url.length > 0) {
         <div class="image-container">
           @for (u of url; track $index) {
-            <div [id]="$index" class="img-container" (click)="onDeleteImg($index)">
+            <div
+              [id]="$index"
+              class="img-container"
+              (click)="onDeleteImg($index)"
+            >
               <img class="img" [src]="u" alt="" />
               <mat-icon class="delete">close</mat-icon>
             </div>
@@ -66,19 +78,53 @@
         </div>
       }
       <div class="flex">
-        <button type="button" class="button" (click)="CloseForm()">Odustani</button>
+        <button type="button" class="button" (click)="CloseForm()">
+          Odustani
+        </button>
         <button type="submit" class="button">Spremi</button>
-        <button type="button" class="button delete-button" (click)="deleteSportCenter()">Obriši sportski centar</button>
+        <button
+          type="button"
+          class="button delete-button"
+          (click)="deleteSportCenter()"
+        >
+          Obriši sportski centar
+        </button>
       </div>
     </form>
     <div class="fields">
       <div class="fields-header">
         <h2>Tereni</h2>
-        <button class="button" [disabled]="addFieldForm" (click)="addField()">Dodaj teren</button>
+        <button class="button" [disabled]="addFieldForm" (click)="addField()">
+          Dodaj teren
+        </button>
       </div>
       @if (addFieldForm) {
         <div>
-          <app-add-field (closeFormEvent)="addField()" [sportCenterId]="sportCenterId"></app-add-field>
+          <app-add-field
+            (closeFormEvent)="closeAddFieldForm($event)"
+            [sportCenterId]="sportCenterId"
+          ></app-add-field>
+        </div>
+      }
+      @for (field of fields; track field) {
+        <div class="field">
+          <div class="field-metadata">
+            <h3>{{ field.fieldName }}</h3>
+            <button
+              class="button"
+              [disabled]="editingField === field.fieldId"
+              (click)="editField(field.fieldId)"
+            >
+              Uredi
+            </button>
+          </div>
+          @if (editingField === field.fieldId) {
+            <app-add-field
+              (closeFormEvent)="closeAddFieldForm($event)"
+              [sportCenterId]="sportCenterId"
+              [fieldId]="field.fieldId"
+            ></app-add-field>
+          }
         </div>
       }
     </div>

@@ -16,12 +16,15 @@ export class EditSportCenterComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
+
   private oldData: any;
   private imagesChanged: boolean = false;
   protected addFieldForm: boolean = false;
   protected role = localStorage.getItem('role');
   url: any = [];
   sportCenterId: any;
+  fields: any;
+  editingField: any = null;
 
   addForm = this.formBuilder.nonNullable.group(
     {
@@ -61,6 +64,11 @@ export class EditSportCenterComponent implements OnInit {
           }
         },
       });
+    });
+    this.sportCenterService.getSportCenterFields(this.sportCenterId).subscribe({
+      next: (data: any) => {
+        this.fields = data;
+      },
     });
   }
 
@@ -138,7 +146,9 @@ export class EditSportCenterComponent implements OnInit {
   }
 
   deleteSportCenter() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: 'sportski centar',
+    });
     dialogRef.afterClosed().subscribe((reason: any) => {
       if (reason) {
         this.sportCenterService
@@ -153,5 +163,19 @@ export class EditSportCenterComponent implements OnInit {
   }
   addField() {
     this.addFieldForm = !this.addFieldForm;
+    this.editingField = null;
+  }
+
+  editField(fieldId: any) {
+    this.editingField = fieldId;
+    this.addFieldForm = false;
+  }
+
+  closeAddFieldForm(fieldName: any) {
+    if (fieldName) {
+      this.fields = this.fields.filter((f: any) => f.fieldName !== fieldName);
+    }
+    this.addFieldForm = false;
+    this.editingField = null;
   }
 }

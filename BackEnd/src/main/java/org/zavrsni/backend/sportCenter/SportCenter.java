@@ -32,7 +32,7 @@ public class SportCenter {
     @NotNull
     private String address;
 
-    @OneToMany(mappedBy = "sportCenter", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sportCenter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Field> fields;
 
     @ManyToOne

@@ -36,7 +36,9 @@
               #sportSelect
             >
               @for (sport of sports; track sport.name) {
-                <mat-option value="{{ sport.id }}">{{ sport.name }}</mat-option>
+                <mat-option value="{{ sport.name }}">{{
+                  sport.name
+                }}</mat-option>
               }
             </mat-select>
             <label
@@ -129,9 +131,11 @@
       <div class="form-container days-input">
         @for (day of days; track $index) {
           <div class="day-container">
-            <mat-checkbox (change)="dayChecked($index)">{{
-              day.value
-            }}</mat-checkbox>
+            <mat-checkbox
+              [checked]="fieldAvailability[$index] === 1"
+              (change)="dayChecked($index)"
+              >{{ day.value }}</mat-checkbox
+            >
             @if (fieldAvailability[$index]) {
               <div class="form-field day-input">
                 <input
@@ -179,10 +183,19 @@
         </div>
       }
       <div class="flex">
-        <button type="button" class="button" (click)="CloseForm()">
+        <button type="button" class="button" (click)="closeFormEvent.emit()">
           Odustani
         </button>
         <button type="submit" class="button">Spremi</button>
+        @if(fieldId) {
+          <button
+            type="button"
+            class="button delete-button"
+            (click)="deleteField()"
+          >
+            Obriši teren
+          </button>
+        }
       </div>
     </form>
   </div>

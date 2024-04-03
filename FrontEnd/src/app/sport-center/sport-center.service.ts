@@ -60,4 +60,11 @@ export class SportCenterService {
       this.createHeader(),
     );
   }
+
+  getSportCenterFields(sportCenterId: any) {
+    return this.http.get(
+      environment.BASE_API_URL + '/sport-center/fields/' + sportCenterId,
+      this.createHeader(),
+    );
+  }
 }

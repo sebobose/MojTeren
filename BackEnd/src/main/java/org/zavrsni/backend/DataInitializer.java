@@ -7,9 +7,13 @@ import org.zavrsni.backend.role.RoleService;
 import org.zavrsni.backend.sport.SportService;
 import org.zavrsni.backend.status.StatusService;
 import org.zavrsni.backend.user.UserService;
+import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class DataInitializer {
+
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    private String ddlAuto;
 
     private final RoleService roleService;
     private final SportService sportService;
@@ -31,6 +35,9 @@ public class DataInitializer {
 
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
+        if (ddlAuto.equals("none")) {
+            return;
+        }
         for (String role : roles) {
             roleService.createRole(role);
         }
