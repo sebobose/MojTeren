@@ -18,21 +18,27 @@ public class SportCenterDetailsDTO {
     private Long sportCenterId;
     private String sportCenterName;
     private String owner;
-    private String address;
+    private String streetAndNumber;
+    private String cityName;
+    private Long zipCode;
     private List<byte[]> images;
 
     public SportCenterDetailsDTO(SportCenter sportCenter ) {
         this.sportCenterId = sportCenter.getSportCenterId();
         this.sportCenterName = sportCenter.getSportCenterName();
         this.owner = sportCenter.getOwner().getEmail();
-        this.address = sportCenter.getAddress();
+        this.cityName = sportCenter.getAddress().getCity().getCityName();
+        this.zipCode = sportCenter.getAddress().getCity().getZipCode();
+        this.streetAndNumber = sportCenter.getAddress().getStreetAndNumber();
     }
 
     public SportCenterDetailsDTO(SportCenter sportCenter, List<Image> images) {
         this.sportCenterId = sportCenter.getSportCenterId();
         this.sportCenterName = sportCenter.getSportCenterName();
         this.owner = sportCenter.getOwner().getEmail();
-        this.address = sportCenter.getAddress();
+        this.cityName = sportCenter.getAddress().getCity().getCityName();
+        this.zipCode = sportCenter.getAddress().getCity().getZipCode();
+        this.streetAndNumber = sportCenter.getAddress().getStreetAndNumber();
         this.images = images.stream().map(Image::getImage).toList();
     }
 }

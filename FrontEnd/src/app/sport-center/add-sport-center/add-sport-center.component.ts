@@ -16,12 +16,15 @@ export class AddSportCenterComponent implements OnInit {
 
   protected role = localStorage.getItem('role');
   url: any = [];
+  wrongAddress: boolean = false;
 
   addForm = this.formBuilder.nonNullable.group(
     {
       email: ['', [Validators.email]],
       sportCenterName: ['', [Validators.required]],
-      address: ['', [Validators.required]],
+      streetAndNumber: ['', [Validators.required]],
+      zipCode: ['', [Validators.required]],
+      cityName: ['', [Validators.required]],
       images: this.formBuilder.array([]),
     },
     {
@@ -43,7 +46,12 @@ export class AddSportCenterComponent implements OnInit {
         'sportCenterName',
         this.addForm.controls.sportCenterName.value,
       );
-      formData.append('address', this.addForm.controls.address.value);
+      formData.append(
+        'streetAndNumber',
+        this.addForm.controls.streetAndNumber.value,
+      );
+      formData.append('zipCode', this.addForm.controls.zipCode.value);
+      formData.append('cityName', this.addForm.controls.cityName.value);
       const images = this.addForm.get('images') as FormArray;
       for (let i = 0; i < this.addForm.controls.images.value.length; i++) {
         formData.append('images', images.at(i).value);
@@ -52,6 +60,9 @@ export class AddSportCenterComponent implements OnInit {
       this.sportCenterService.addSportCenter(formData).subscribe({
         next: () => {
           this.CloseForm();
+        },
+        error: () => {
+          this.wrongAddress = true;
         },
       });
     }

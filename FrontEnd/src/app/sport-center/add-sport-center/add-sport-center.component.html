@@ -49,21 +49,60 @@
           }
         </div>
         <div class="form-container">
-          <div class="form-field address">
+          <div class="form-field">
             <input
-              formControlName="address"
+              formControlName="streetAndNumber"
               type="text"
               required
-              id="address"
+              id="streetAndNumber"
               placeholder=""
             />
-            <label for="address">Adresa</label>
+            <label for="streetAndNumber">Ulica i kućni broj</label>
           </div>
           @if (
-            (addForm.controls.address.dirty || form.submitted) &&
-            !addForm.controls.address.valid
+            (addForm.controls.streetAndNumber.dirty || form.submitted) &&
+            !addForm.controls.streetAndNumber.valid
+            ) {
+            <span class="form-error">Morate unijeti ulicu i kućni broj!</span>
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field">
+            <input
+              formControlName="zipCode"
+              type="text"
+              required
+              id="zipCode"
+              placeholder=""
+            />
+            <label for="zipCode">Poštanski broj</label>
+          </div>
+          @if (
+            (addForm.controls.zipCode.dirty || form.submitted) &&
+            !addForm.controls.zipCode.valid
           ) {
-            <span class="form-error">Morate unijeti adresu!</span>
+            <span class="form-error">Morate unijeti poštanski broj!</span>
+          }
+        </div>
+        <div class="form-container">
+          <div class="form-field">
+            <input
+              formControlName="cityName"
+              type="text"
+              required
+              id="cityName"
+              placeholder=""
+            />
+            <label for="cityName">Grad</label>
+          </div>
+          @if (
+            (addForm.controls.cityName.dirty || form.submitted) &&
+            !addForm.controls.cityName.valid
+            ) {
+            <span class="form-error">Morate unijeti grad!</span>
+          }
+          @if (form.submitted && wrongAddress) {
+            <span class="form-error">Poštanski broj i grad se ne podudaraju!</span>
           }
         </div>
       </div>

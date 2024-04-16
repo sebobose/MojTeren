@@ -18,8 +18,8 @@
 }
 
 .text-input {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 33% 33% 34%;
 }
 
 h1 {

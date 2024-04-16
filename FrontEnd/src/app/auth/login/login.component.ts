@@ -45,7 +45,7 @@ export class LoginComponent {
               });
               break;
             case 'ATHLETE':
-              this.router.navigate(['/home-athlete']).then(() => {
+              this.router.navigate(['/home']).then(() => {
                 window.location.reload();
               });
               break;

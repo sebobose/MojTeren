@@ -5,6 +5,10 @@ import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.zavrsni.backend.address.Address;
+import org.zavrsni.backend.address.AddressRepository;
+import org.zavrsni.backend.city.City;
+import org.zavrsni.backend.city.CityRepository;
 import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.entityStatus.EntityStatusRepository;
 import org.zavrsni.backend.field.Field;
@@ -43,6 +47,8 @@ public class SportCenterServiceImpl implements SportCenterService {
         private final StatusRepository statusRepository;
         private final EntityStatusRepository entityStatusRepository;
         private final FieldService fieldService;
+        private final CityRepository cityRepository;
+        private final AddressRepository addressRepository;
 
         @Override
         @SneakyThrows
@@ -52,11 +58,21 @@ public class SportCenterServiceImpl implements SportCenterService {
                 compressedImages.add(compressImage(image));
             }
 
+            City city = cityRepository.findByCityName(addSportCenterDTO.getCityName());
+            if (city == null || !Objects.equals(city.getZipCode(), addSportCenterDTO.getZipCode())) {
+                throw new Exception("City and zip code do not match");
+            }
+            Address address = Address.builder()
+                    .streetAndNumber(addSportCenterDTO.getStreetAndNumber())
+                    .city(city)
+                    .build();
+            addressRepository.save(address);
+
             User owner = userRepository.findByEmail(addSportCenterDTO.getEmail()).orElseThrow();
             SportCenter sportCenter = SportCenter.builder()
                     .owner(owner)
                     .sportCenterName(addSportCenterDTO.getSportCenterName())
-                    .address(addSportCenterDTO.getAddress())
+                    .address(address)
                     .build();
             sportCenterRepository.save(sportCenter);
 
@@ -91,11 +107,22 @@ public class SportCenterServiceImpl implements SportCenterService {
     }
 
     @Override
+    @SneakyThrows
     public Void updateSportCenter(Long sportCenterId, AddSportCenterDTO addSportCenterDTO) {
         List<byte[]> compressedImages = new ArrayList<>();
         for(MultipartFile image : addSportCenterDTO.getImages()){
             compressedImages.add(compressImage(image));
         }
+
+        City city = cityRepository.findByCityName(addSportCenterDTO.getCityName());
+        if (city == null || !Objects.equals(city.getZipCode(), addSportCenterDTO.getZipCode())) {
+            throw new Exception("City and zip code do not match");
+        }
+        Address address = Address.builder()
+                .streetAndNumber(addSportCenterDTO.getStreetAndNumber())
+                .city(city)
+                .build();
+        addressRepository.save(address);
 
         SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -112,7 +139,7 @@ public class SportCenterServiceImpl implements SportCenterService {
         imageRepository.deleteAll(images);
         compressedImages.stream().map(image -> new Image(image, sportCenter)).forEach(imageRepository::save);
         sportCenter.setSportCenterName(addSportCenterDTO.getSportCenterName());
-        sportCenter.setAddress(addSportCenterDTO.getAddress());
+        sportCenter.setAddress(address);
         sportCenterRepository.save(sportCenter);
         return null;
     }

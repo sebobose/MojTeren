@@ -16,6 +16,8 @@ public class AddSportCenterDTO {
 
     private String email;
     private String sportCenterName;
-    private String address;
+    private String streetAndNumber;
+    private String cityName;
+    private Long zipCode;
     private List<MultipartFile> images;
 }

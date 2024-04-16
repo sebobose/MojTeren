@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zavrsni.backend.address.Address;
 import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.image.Image;
@@ -29,8 +30,8 @@ public class SportCenter {
 
     private String location;
 
-    @NotNull
-    private String address;
+    @ManyToOne
+    private Address address;
 
     @OneToMany(mappedBy = "sportCenter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Field> fields;
@@ -38,7 +39,7 @@ public class SportCenter {
     @ManyToOne
     private User owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "sportCenter")
     private List<Image> images;
 
     @OneToMany(mappedBy = "sportCenter")

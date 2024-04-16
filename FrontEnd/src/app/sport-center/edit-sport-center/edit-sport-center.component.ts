@@ -25,12 +25,15 @@ export class EditSportCenterComponent implements OnInit {
   sportCenterId: any;
   fields: any;
   editingField: any = null;
+  wrongAddress: boolean = false;
 
   addForm = this.formBuilder.nonNullable.group(
     {
       email: ['', [Validators.email]],
       sportCenterName: ['', [Validators.required]],
-      address: ['', [Validators.required]],
+      streetAndNumber: ['', [Validators.required]],
+      zipCode: ['', [Validators.required]],
+      cityName: ['', [Validators.required]],
       images: this.formBuilder.array([]),
     },
     {
@@ -46,7 +49,9 @@ export class EditSportCenterComponent implements OnInit {
           this.oldData = data;
           this.addForm.controls.email.setValue(data.owner);
           this.addForm.controls.sportCenterName.setValue(data.sportCenterName);
-          this.addForm.controls.address.setValue(data.address);
+          this.addForm.controls.streetAndNumber.setValue(data.streetAndNumber);
+          this.addForm.controls.zipCode.setValue(data.zipCode);
+          this.addForm.controls.cityName.setValue(data.cityName);
           for (let i of data.images) {
             this.url.push('data:image/png;base64,' + i);
           }
@@ -88,7 +93,10 @@ export class EditSportCenterComponent implements OnInit {
       if (
         this.oldData.sportCenterName ===
           this.addForm.controls.sportCenterName.value &&
-        this.oldData.address === this.addForm.controls.address.value &&
+        this.oldData.streetAndNumber ===
+          this.addForm.controls.streetAndNumber.value &&
+        this.oldData.zipCode === this.addForm.controls.zipCode.value &&
+        this.oldData.cityName === this.addForm.controls.cityName.value &&
         !this.imagesChanged
       ) {
         this.CloseForm();
@@ -99,7 +107,12 @@ export class EditSportCenterComponent implements OnInit {
           'sportCenterName',
           this.addForm.controls.sportCenterName.value,
         );
-        formData.append('address', this.addForm.controls.address.value);
+        formData.append(
+          'streetAndNumber',
+          this.addForm.controls.streetAndNumber.value,
+        );
+        formData.append('zipCode', this.addForm.controls.zipCode.value);
+        formData.append('cityName', this.addForm.controls.cityName.value);
         const images = this.addForm.get('images') as FormArray;
         for (let i = 0; i < this.addForm.controls.images.value.length; i++) {
           formData.append('images', images.at(i).value);
@@ -109,6 +122,9 @@ export class EditSportCenterComponent implements OnInit {
           .subscribe({
             next: () => {
               this.CloseForm();
+            },
+            error: () => {
+              this.wrongAddress = true;
             },
           });
       }
