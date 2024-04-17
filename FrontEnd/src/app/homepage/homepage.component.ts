@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
@@ -8,25 +8,34 @@ import {
 import { HomepageService } from './homepage.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import * as L from 'leaflet';
+import { GoogleMap } from '@angular/google-maps';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
 })
-export class HomepageComponent implements OnInit, AfterViewInit {
+export class HomepageComponent implements OnInit {
   private homepageService = inject(HomepageService);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild('searchArea') searchArea!: any;
+  @ViewChild(GoogleMap) mapComponent!: GoogleMap;
 
-  private map: any;
-  private center: L.LatLngExpression = L.latLng(45.1, 15.2);
-  markersGroup: any;
+  options: google.maps.MapOptions = {
+    center: { lat: 45.8, lng: 15.97 },
+    zoom: 12,
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullscreenControl: false,
+  };
   activeSport: any = 'Nogomet';
   sports: any;
+  markers: any = [];
+  lat: any;
+  lng: any;
   filterForm = this.formBuilder.nonNullable.group(
     {
       distanceChange: [10],
@@ -58,51 +67,40 @@ export class HomepageComponent implements OnInit, AfterViewInit {
         console.error('Error:', error);
       },
     });
-    // let mymap = L.map('map', {
-    //   center: [45.1, 15.2],
-    //   zoom: 7,
-    // });
-    //
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   maxZoom: 18,
-    //   minZoom: 3,
-    //   attribution:
-    //     '&copy; <a href="https://www.openstreetmap.org/copyright"></a>',
-    // }).addTo(mymap);
-    // mymap.addLayer(L.layerGroup());
   }
 
-  ngAfterViewInit(): void {
-    this.initMap();
+  onMapReady() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          this.mapComponent.googleMap?.setCenter(pos);
+          this.getLocations();
+        },
+        () => {
+          console.log('Unable to retrieve your location');
+        },
+      );
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
   }
 
   getSport(sport: any) {
     this.activeSport = sport.name;
   }
 
-  doSearch() {
-    let address = this.searchArea.nativeElement.value;
+  doSearch() {}
 
-    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + address)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.length > 0) {
-          let latlng: [number, number] = [
-            parseFloat(data[0].lat),
-            parseFloat(data[0].lon),
-          ];
-          this.map.setView(latlng, 13);
-          L.marker(latlng).addTo(this.map).bindPopup(address).openPopup();
-        } else {
-          alert('Adresa nije pronađena');
-        }
-      })
-      .catch((error) => {
-        console.error('Došlo je do greške:', error);
-      });
+  applyFilters() {
+    this.markers = [];
+    this.getLocations();
   }
-
-  applyFilters() {}
 
   convertMinutesToTime(minutes: number): string {
     let hours = Math.floor(minutes / 60);
@@ -110,67 +108,32 @@ export class HomepageComponent implements OnInit, AfterViewInit {
     return `${hours}:${mins < 10 ? '0' : ''}${mins}`;
   }
 
-  private initMap(): void {
-    this.map = L.map('map', {
-      center: this.center,
-      zoom: 7,
-    });
+  private getLocations() {
+    let form = {
+      latitude: this.lat,
+      longitude: this.lng,
+      distance: this.filterForm.value.distanceChange,
+      date: this.filterForm.value.date,
+      timeLow: this.filterForm.value.timeChangeLow,
+      timeHigh: this.filterForm.value.timeChangeHigh,
+      sport: this.activeSport,
+    };
 
-    const tiles = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        maxZoom: 18,
-        minZoom: 3,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright"></a>',
+    this.homepageService.getSportCenters(form).subscribe({
+      next: (data: any) => {
+        for (let i = 0; i < data.length; i++) {
+          this.markers.push({
+            position: {
+              lat: parseFloat(data[i].latitude),
+              lng: parseFloat(data[i].longitude),
+            },
+          });
+        }
+        this.changeDetectorRef.detectChanges();
       },
-    );
-
-    var customIcon = L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png', // Specify the path to your custom icon image
-      iconSize: [22, 32], // Set the size of the icon
-      iconAnchor: [16, 32], // Set the anchor point of the icon (relative to its size)
-      popupAnchor: [0, -32], // Set the anchor point for popups (relative to its size)
-    });
-    //
-    // var baseMaps = {
-    //   OpenStreetMap: tiles,
-    // };
-
-    tiles.addTo(this.map);
-
-    // a layer group, used here like a container for markers
-    this.markersGroup = L.layerGroup();
-    this.map.addLayer(this.markersGroup);
-
-    this.map.on('click', (e: any) => {
-      fetch(
-        'https://nominatim.openstreetmap.org/search?format=json&q=' +
-          e.latlng.lat +
-          ',' +
-          e.latlng.lng,
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          if (data.length > 0) {
-            let latlng: [number, number] = [
-              parseFloat(data[0].lat),
-              parseFloat(data[0].lon),
-            ];
-            this.map.setView(latlng, 13);
-            L.marker(latlng)
-              .addTo(this.map)
-              .bindPopup(data[0].display_name)
-              .openPopup();
-          } else {
-            alert('Adresa nije pronađena');
-          }
-        })
-        .catch((error) => {
-          console.error('Došlo je do greške:', error);
-        });
-      return;
+      error: (error) => {
+        console.error('Error:', error);
+      },
     });
   }
 }

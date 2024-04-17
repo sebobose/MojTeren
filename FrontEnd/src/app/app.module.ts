@@ -43,10 +43,10 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
 import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
 import { ConfirmDialogComponent } from './sport-center/edit-sport-center/confirm-dialog.component';
-import { MatButton } from '@angular/material/button';
 import { AddFieldComponent } from './field/add-field/add-field.component';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -104,6 +104,7 @@ export const MY_DATE_FORMATS = {
     MatSelect,
     MatOption,
     MatCheckbox,
+    GoogleMapsModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },

@@ -46,7 +46,7 @@
           @if (
             (addForm.controls.streetAndNumber.dirty || form.submitted) &&
             !addForm.controls.streetAndNumber.valid
-            ) {
+          ) {
             <span class="form-error">Morate unijeti ulicu i kućni broj!</span>
           }
         </div>
@@ -64,7 +64,7 @@
           @if (
             (addForm.controls.zipCode.dirty || form.submitted) &&
             !addForm.controls.zipCode.valid
-            ) {
+          ) {
             <span class="form-error">Morate unijeti poštanski broj!</span>
           }
         </div>
@@ -82,11 +82,11 @@
           @if (
             (addForm.controls.cityName.dirty || form.submitted) &&
             !addForm.controls.cityName.valid
-            ) {
+          ) {
             <span class="form-error">Morate unijeti grad!</span>
           }
           @if (form.submitted && wrongAddress) {
-            <span class="form-error">Poštanski broj i grad se ne podudaraju!</span>
+            <span class="form-error">Adresa je neispravna!</span>
           }
         </div>
       </div>
@@ -116,6 +116,9 @@
           }
         </div>
       }
+      @if (form.submitted && url.length === 0) {
+        <span class="form-error">Morate dodati bar jednu sliku!</span>
+      }
       <div class="flex">
         <button type="button" class="button" (click)="CloseForm()">
           Odustani
@@ -138,10 +141,10 @@
         </button>
       </div>
       @if (addFieldForm) {
-          <app-add-field
-            (closeFormEvent)="closeAddFieldForm($event)"
-            [sportCenterId]="sportCenterId"
-          ></app-add-field>
+        <app-add-field
+          (closeFormEvent)="closeAddFieldForm($event)"
+          [sportCenterId]="sportCenterId"
+        ></app-add-field>
       }
       @for (field of fields; track field) {
         <div class="field">

@@ -102,7 +102,7 @@
             <span class="form-error">Morate unijeti grad!</span>
           }
           @if (form.submitted && wrongAddress) {
-            <span class="form-error">Poštanski broj i grad se ne podudaraju!</span>
+            <span class="form-error">Adresa je neispravna!</span>
           }
         </div>
       </div>
@@ -122,6 +122,9 @@
             </div>
           }
         </div>
+      }
+      @if (form.submitted && url.length === 0) {
+        <span class="form-error">Morate dodati bar jednu sliku!</span>
       }
       <div class="flex">
         <button type="button" class="button" (click)="CloseForm()">Odustani</button>

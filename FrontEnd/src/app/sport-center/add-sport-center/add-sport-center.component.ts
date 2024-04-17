@@ -39,32 +39,60 @@ export class AddSportCenterComponent implements OnInit {
     }
   }
   addSportCenter() {
-    if (this.addForm.valid) {
+    if (this.addForm.valid && this.url.length > 0) {
       let formData = new FormData();
-      formData.append('email', this.addForm.controls.email.value);
-      formData.append(
-        'sportCenterName',
-        this.addForm.controls.sportCenterName.value,
-      );
-      formData.append(
-        'streetAndNumber',
-        this.addForm.controls.streetAndNumber.value,
-      );
-      formData.append('zipCode', this.addForm.controls.zipCode.value);
-      formData.append('cityName', this.addForm.controls.cityName.value);
-      const images = this.addForm.get('images') as FormArray;
-      for (let i = 0; i < this.addForm.controls.images.value.length; i++) {
-        formData.append('images', images.at(i).value);
-      }
+      let address =
+        this.addForm.controls.streetAndNumber.value +
+        ', ' +
+        this.addForm.controls.zipCode.value +
+        ' ' +
+        this.addForm.controls.cityName.value;
 
-      this.sportCenterService.addSportCenter(formData).subscribe({
-        next: () => {
-          this.CloseForm();
-        },
-        error: () => {
-          this.wrongAddress = true;
-        },
-      });
+      this.sportCenterService
+        .getPosition(encodeURIComponent(address))
+        .subscribe({
+          next: (data: any) => {
+            if (data.status == 'OK') {
+              let lat = data.results[0].geometry.location.lat;
+              let lng = data.results[0].geometry.location.lng;
+              formData.append('latitude', lat);
+              formData.append('longitude', lng);
+              formData.append('email', this.addForm.controls.email.value);
+              formData.append(
+                'sportCenterName',
+                this.addForm.controls.sportCenterName.value,
+              );
+              formData.append(
+                'streetAndNumber',
+                this.addForm.controls.streetAndNumber.value,
+              );
+              formData.append('zipCode', this.addForm.controls.zipCode.value);
+              formData.append('cityName', this.addForm.controls.cityName.value);
+              const images = this.addForm.get('images') as FormArray;
+              for (
+                let i = 0;
+                i < this.addForm.controls.images.value.length;
+                i++
+              ) {
+                formData.append('images', images.at(i).value);
+              }
+
+              this.sportCenterService.addSportCenter(formData).subscribe({
+                next: () => {
+                  this.CloseForm();
+                },
+                error: () => {
+                  this.wrongAddress = true;
+                },
+              });
+            }
+          },
+          error: (error) => {
+            console.error('Error:', error);
+            this.wrongAddress = true;
+            return;
+          },
+        });
     }
   }
 

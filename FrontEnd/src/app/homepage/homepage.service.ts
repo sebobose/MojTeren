@@ -11,4 +11,8 @@ export class HomepageService {
   getSports() {
     return this.http.get(environment.BASE_API_URL + '/sport/all');
   }
+
+  getSportCenters(form: any) {
+    return this.http.post(environment.BASE_API_URL + '/sport-center/all', form);
+  }
 }

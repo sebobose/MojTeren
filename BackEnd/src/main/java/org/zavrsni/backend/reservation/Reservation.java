@@ -11,6 +11,7 @@ import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.user.User;
 
 import java.sql.Time;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -23,6 +24,9 @@ public class Reservation {
     @Id
     @GeneratedValue
     private Long reservationId = 0L;
+
+    @NotNull
+    private Date date;
 
     @NotNull
     private Time startTime;

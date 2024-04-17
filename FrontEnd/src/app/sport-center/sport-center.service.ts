@@ -67,4 +67,13 @@ export class SportCenterService {
       this.createHeader(),
     );
   }
+
+  getPosition(address: any) {
+    return this.http.get(
+      'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+        address +
+        '&key=' +
+        environment.GOOGLE_MAPS_API_KEY,
+    );
+  }
 }

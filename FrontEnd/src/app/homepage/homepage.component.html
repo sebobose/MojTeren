@@ -59,11 +59,18 @@
         <button type="submit" class="button">Pretraži</button>
       </div>
     </form>
-    <div class="map-container">
-      <div class="map-frame">
-        <div id="map"></div>
-      </div>
-    </div>
+      <google-map
+        height="600px"
+        width="100%"
+        [options]="options"
+        (mapInitialized)="onMapReady()"
+        >
+        @for(marker of markers; track marker.longitude) {
+          <map-marker
+            [position]="marker.position"
+          ></map-marker>
+        }
+      </google-map>
     <div class="field-details">
       <span>Detalji</span>
     </div>
@@ -73,7 +80,7 @@
       <textarea
         #searchArea
         class="search-field-input"
-        placeholder="Pretraži terene"
+        placeholder="Pretraži"
         (keydown.enter)="doSearch(); $event.preventDefault()"
       ></textarea>
       <mat-icon>search</mat-icon>

@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                         req
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/sport/all").permitAll()
+                                .requestMatchers("/sport-center/all").permitAll()
                                 .requestMatchers("/user/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport-center/admin/**").hasAuthority("ADMIN")

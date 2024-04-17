@@ -19,5 +19,7 @@ public class AddSportCenterDTO {
     private String streetAndNumber;
     private String cityName;
     private Long zipCode;
+    private String longitude;
+    private String latitude;
     private List<MultipartFile> images;
 }

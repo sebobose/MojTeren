@@ -17,6 +17,7 @@ import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
+import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
 import org.zavrsni.backend.status.Status;
 import org.zavrsni.backend.status.StatusRepository;
@@ -65,8 +66,11 @@ public class SportCenterServiceImpl implements SportCenterService {
             Address address = Address.builder()
                     .streetAndNumber(addSportCenterDTO.getStreetAndNumber())
                     .city(city)
+                    .longitude(addSportCenterDTO.getLongitude())
+                    .latitude(addSportCenterDTO.getLatitude())
                     .build();
             addressRepository.save(address);
+            System.out.println("longitude: " + addSportCenterDTO.getLongitude());
 
             User owner = userRepository.findByEmail(addSportCenterDTO.getEmail()).orElseThrow();
             SportCenter sportCenter = SportCenter.builder()
@@ -121,6 +125,8 @@ public class SportCenterServiceImpl implements SportCenterService {
         Address address = Address.builder()
                 .streetAndNumber(addSportCenterDTO.getStreetAndNumber())
                 .city(city)
+                .longitude(addSportCenterDTO.getLongitude())
+                .latitude(addSportCenterDTO.getLatitude())
                 .build();
         addressRepository.save(address);
 
@@ -169,6 +175,71 @@ public class SportCenterServiceImpl implements SportCenterService {
         }).map(FieldsMetadataDTO::new).collect(Collectors.toList());
     }
 
+    @Override
+    public List<SportCenterDetailsDTO> getAllSportCenters(FilteredSportCenterDTO filteredSportCenterDTO) {
+        List<SportCenter> sportCenters = sportCenterRepository.findAll();
+        List<SportCenter> activeSportCenters = sportCenters.stream()
+                .filter(sportCenter -> {
+                    List<EntityStatus> statuses = sportCenter.getSportCenterStatuses();
+                    return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
+                            .getStatus().getStatusType().equals("ACTIVE");
+                }).toList();
+
+        List<SportCenter> distanceFilteredSportCenters = activeSportCenters.stream()
+                .filter(sportCenter -> {
+                    double distance = calculateDistance(Double.parseDouble(sportCenter.getAddress().getLatitude()),
+                            Double.parseDouble(sportCenter.getAddress().getLongitude()),
+                            Double.parseDouble(filteredSportCenterDTO.getLatitude()),
+                            Double.parseDouble(filteredSportCenterDTO.getLongitude()));
+                    return distance <= filteredSportCenterDTO.getDistance();
+                }).toList();
+
+        List<Field> fields = distanceFilteredSportCenters.stream()
+                .map(SportCenter::getFields)
+                .flatMap(List::stream)
+                .toList();
+
+        List<Field> sportFilteredFields = fields.stream()
+                .filter(field -> {
+                    List<EntityStatus> statuses = field.getFieldStatuses();
+                    return field.getFieldStatuses().get(statuses.size() - 1)
+                            .getStatus().getStatusType().equals("ACTIVE") &&
+                            field.getSport().getSportName().equals(filteredSportCenterDTO.getSport());
+                }).toList();
+
+        return sportFilteredFields.stream().map(Field::getSportCenter).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+//        if (filteredSportCenterDTO.getDate() == null) {
+//            return sportFilteredFields.stream().map(Field::getSportCenter).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+//        }
+//        else {
+//            Time timeLow = Time.valueOf(filteredSportCenterDTO.getTimeLow());
+//            Time timeHigh = Time.valueOf(filteredSportCenterDTO.getTimeHigh());
+//            List<Field> dateFilteredFields = sportFilteredFields.stream()
+//                    .filter(field -> {
+//                        List<Reservation> reservations = field.getReservations().stream().filter(reservation -> {
+//                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+//                            return reservation.getReservationStatuses().get(statuses.size() - 1)
+//                                    .getStatus().getStatusType().equals("ACTIVE");
+//                        }).toList();
+//                        for (Reservation reservation : reservations) {
+//                            if (reservation.getDate().toString().equals(filteredSportCenterDTO.getDate()) &&
+//                                    reservation.getStartTime().before(timeLow) &&
+//                                    reservation.getEndTime().after(timeLow)) {
+//                                return false;
+//                            }
+//                        }
+//                        return field.getFieldStatuses().get(statuses.size() - 1)
+//                                .getStatus().getStatusType().equals("ACTIVE") &&
+//                                field.getReservations().stream().anyMatch(reservation -> {
+//                                    return reservation.getDate().toString().equals(filteredSportCenterDTO.getDate()) &&
+//                                            reservation.getTime().compareTo(filteredSportCenterDTO.getTimeLow()) >= 0 &&
+//                                            reservation.getTime().compareTo(filteredSportCenterDTO.getTimeHigh()) <= 0;
+//                                });
+//                    }).toList();
+//        }
+
+    }
+
     @SneakyThrows
     public static byte[] compressImage(MultipartFile image) {
             if (image.getSize() <= 0.5 * 1024 * 1024) {
@@ -196,6 +267,25 @@ public class SportCenterServiceImpl implements SportCenterService {
 
         // Convert the compressed image to a byte array
         return compressedOutputStream.toByteArray();
+    }
+
+    public static double calculateDistance(double startLat, double startLong,
+                                           double endLat, double endLong) {
+
+        double dLat  = Math.toRadians((endLat - startLat));
+        double dLong = Math.toRadians((endLong - startLong));
+
+        startLat = Math.toRadians(startLat);
+        endLat   = Math.toRadians(endLat);
+
+        double a = haversin(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversin(dLong);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return 6371 * c;
+    }
+
+    public static double haversin(double val) {
+        return Math.pow(Math.sin(val / 2), 2);
     }
 
 }

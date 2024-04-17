@@ -21,6 +21,8 @@ public class SportCenterDetailsDTO {
     private String streetAndNumber;
     private String cityName;
     private Long zipCode;
+    private String longitude;
+    private String latitude;
     private List<byte[]> images;
 
     public SportCenterDetailsDTO(SportCenter sportCenter ) {
@@ -30,6 +32,8 @@ public class SportCenterDetailsDTO {
         this.cityName = sportCenter.getAddress().getCity().getCityName();
         this.zipCode = sportCenter.getAddress().getCity().getZipCode();
         this.streetAndNumber = sportCenter.getAddress().getStreetAndNumber();
+        this.longitude = sportCenter.getAddress().getLongitude();
+        this.latitude = sportCenter.getAddress().getLatitude();
     }
 
     public SportCenterDetailsDTO(SportCenter sportCenter, List<Image> images) {
@@ -39,6 +43,8 @@ public class SportCenterDetailsDTO {
         this.cityName = sportCenter.getAddress().getCity().getCityName();
         this.zipCode = sportCenter.getAddress().getCity().getZipCode();
         this.streetAndNumber = sportCenter.getAddress().getStreetAndNumber();
+        this.longitude = sportCenter.getAddress().getLongitude();
+        this.latitude = sportCenter.getAddress().getLatitude();
         this.images = images.stream().map(Image::getImage).toList();
     }
 }

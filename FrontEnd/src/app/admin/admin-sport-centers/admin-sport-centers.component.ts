@@ -35,8 +35,6 @@ export class AdminSportCentersComponent implements OnInit {
           return item.sportCenterName;
         case 'owner':
           return item.owner;
-        case 'address':
-          return item.address;
         default:
           return item.sportCenterName;
       }
@@ -82,5 +80,7 @@ export interface SportCenterData {
   sportCenterId: number;
   sportCenterName: string;
   owner: string;
-  address: string;
+  cityName: string;
+  zipCode: string;
+  streetAndNumber: string;
 }

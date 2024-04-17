@@ -2,6 +2,7 @@ package org.zavrsni.backend.sportCenter;
 
 import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
+import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface SportCenterService {
     Void deactivateSportCenter(Long sportCenterId, String reason);
 
     List<FieldsMetadataDTO> getSportCenterFields(Long sportCenterId);
+
+    List<SportCenterDetailsDTO> getAllSportCenters(FilteredSportCenterDTO filteredSportCenterDTO);
 }

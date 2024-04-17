@@ -25,6 +25,12 @@ public class Address {
     @NotNull
     private String streetAndNumber;
 
+    @NotNull
+    private String longitude;
+
+    @NotNull
+    private String latitude;
+
     @ManyToOne
     private City city;
 
