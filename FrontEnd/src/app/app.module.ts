@@ -47,6 +47,7 @@ import { AddFieldComponent } from './field/add-field/add-field.component';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { CarouselComponent } from './carousel/carousel.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -72,6 +73,7 @@ export const MY_DATE_FORMATS = {
     EditSportCenterComponent,
     ConfirmDialogComponent,
     AddFieldComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,

@@ -36,6 +36,8 @@ export class HomepageComponent implements OnInit {
   markers: any = [];
   lat: any;
   lng: any;
+  sportCenters: any;
+  activeSportCenter: any = null;
   filterForm = this.formBuilder.nonNullable.group(
     {
       distanceChange: [10],
@@ -93,6 +95,7 @@ export class HomepageComponent implements OnInit {
 
   getSport(sport: any) {
     this.activeSport = sport.name;
+    this.applyFilters();
   }
 
   doSearch() {}
@@ -121,13 +124,22 @@ export class HomepageComponent implements OnInit {
 
     this.homepageService.getSportCenters(form).subscribe({
       next: (data: any) => {
+        console.log(data);
+        this.sportCenters = data;
         for (let i = 0; i < data.length; i++) {
           this.markers.push({
             position: {
               lat: parseFloat(data[i].latitude),
               lng: parseFloat(data[i].longitude),
             },
+            sportCenter: data[i],
           });
+          this.sportCenters[i].distance = data[i].distance.toFixed(1);
+          if (data[i].fields.length == 1) {
+            this.sportCenters[i].fieldNum = '1 teren';
+          } else {
+            this.sportCenters[i].fieldNum = data[i].fields.length + ' terena';
+          }
         }
         this.changeDetectorRef.detectChanges();
       },
@@ -135,5 +147,10 @@ export class HomepageComponent implements OnInit {
         console.error('Error:', error);
       },
     });
+  }
+
+  getSportCenter(sportCenter: any) {
+    this.activeSportCenter = sportCenter;
+    this.changeDetectorRef.detectChanges();
   }
 }

@@ -59,21 +59,41 @@
         <button type="submit" class="button">Pretraži</button>
       </div>
     </form>
+    <div class="map-container-main">
       <google-map
         height="600px"
         width="100%"
         [options]="options"
         (mapInitialized)="onMapReady()"
-        >
-        @for(marker of markers; track marker.longitude) {
-          <map-marker
-            [position]="marker.position"
-          ></map-marker>
+      >
+        @for (marker of markers; track marker.longitude) {
+          <map-marker [position]="marker.position" (mapClick)="getSportCenter(marker.sportCenter)"></map-marker>
         }
       </google-map>
-    <div class="field-details">
-      <span>Detalji</span>
     </div>
+    @if (activeSportCenter) {
+      <div class="sport-center-details-container">
+        <div class="sport-center-details-header">
+          <span>
+            {{ activeSportCenter.sportCenterName }}
+          </span>
+          <span class="font-20">
+            {{ activeSportCenter.streetAndNumber }}, {{ activeSportCenter.cityName }}
+          </span>
+
+        </div>
+        <div class="carousel-and-fields">
+          <div class="carousel">
+            <app-carousel
+              [slides]="activeSportCenter.images"
+            ></app-carousel>
+          </div>
+          <div class="fields">
+
+          </div>
+        </div>
+      </div>
+    }
   </div>
   <div class="homepage-right-sidebar">
     <div class="search">
@@ -84,6 +104,24 @@
         (keydown.enter)="doSearch(); $event.preventDefault()"
       ></textarea>
       <mat-icon>search</mat-icon>
+    </div>
+    <div class="sport-centers-container">
+      @for (sportCenter of sportCenters; track sportCenter.id) {
+        <div class="side-bar-sport-center" (click)="getSportCenter(sportCenter)">
+          <div class="side-bar-info align-left">
+            <span class="sport-center-name">{{ sportCenter.sportCenterName }}</span>
+            <span class="sport-center-address">
+              {{ sportCenter.streetAndNumber }}, {{ sportCenter.cityName }}
+            </span>
+          </div>
+          <div class="side-bar-info align-right">
+            <span> {{ sportCenter.distance }} km </span>
+            <span>
+              {{ sportCenter.fieldNum }}
+            </span>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>

@@ -207,7 +207,20 @@ public class SportCenterServiceImpl implements SportCenterService {
                             field.getSport().getSportName().equals(filteredSportCenterDTO.getSport());
                 }).toList();
 
-        return sportFilteredFields.stream().map(Field::getSportCenter).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+        List<SportCenter> sportCentersList = sportFilteredFields.stream().map(Field::getSportCenter).toList();
+
+        return sportCentersList.stream().map(sportCenter -> {
+            List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());
+            double distance = calculateDistance(Double.parseDouble(sportCenter.getAddress().getLatitude()),
+                    Double.parseDouble(sportCenter.getAddress().getLongitude()),
+                    Double.parseDouble(filteredSportCenterDTO.getLatitude()),
+                    Double.parseDouble(filteredSportCenterDTO.getLongitude()));
+            List<Field> fieldsList = sportFilteredFields.stream()
+                    .filter(field -> field.getSportCenter().getSportCenterId().equals(sportCenter.getSportCenterId()))
+                    .toList();
+            return new SportCenterDetailsDTO(sportCenter, images, fieldsList, distance);
+        }).collect(Collectors.toList());
+
 //        if (filteredSportCenterDTO.getDate() == null) {
 //            return sportFilteredFields.stream().map(Field::getSportCenter).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
 //        }

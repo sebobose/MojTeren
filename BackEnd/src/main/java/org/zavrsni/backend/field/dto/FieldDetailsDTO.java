@@ -34,4 +34,12 @@ public class FieldDetailsDTO {
         this.images = images.stream().map(Image::getImage).toList();
         this.fieldAvailabilities = fieldAvailabilities.stream().map(FieldAvailabilityDTO::new).toList();
     }
+
+    public FieldDetailsDTO(Field field) {
+        this.fieldName = field.getFieldName();
+        this.sport = field.getSport().getSportName();
+        this.minResTime = field.getMinResTime();
+        this.timeSlot = field.getTimeSlot();
+        this.description = field.getDescription();
+    }
 }
