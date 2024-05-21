@@ -11,8 +11,7 @@
 .homepage-left-sidebar {
   overflow: auto;
   width: 15%;
-  height: 125%;
-  border-right: #646669 2px solid;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +19,7 @@
 
 .side-bar-item {
   width: 100%;
-  height: 7%;
+  height: 9%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,9 +37,8 @@
 
 .homepage-right-sidebar {
   overflow-y: auto;
-  width: 25%;
-  height: 125%;
-  border-left: #646669 2px solid;
+  width: 20%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +86,7 @@
 mat-icon {
   color: #e2b714;
   position: absolute;
-  top: 28px;
+  top: 42%;
   right: 10%;
   z-index: 2;
   &:hover {
@@ -101,7 +99,6 @@ mat-icon {
   border-radius: 10px;
   border: 1px solid #927979;
   background: transparent;
-  margin: 20px 20px 50px;
   resize: none;
   overflow: hidden;
   padding: 5px 40px 5px 5px;
@@ -109,6 +106,7 @@ mat-icon {
   z-index: 1;
   height: 25px;
   color: #d1d0c5;
+  width: 70%;
 
   &:focus {
     outline: none;
@@ -117,6 +115,11 @@ mat-icon {
 
 .search {
   position: relative;
+  height: 19%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider-container {
@@ -228,13 +231,15 @@ input.my-custom-input {
 
 .side-bar-sport-center {
   width: 90%;
-  height: 7%;
+  height: fit-content;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: column;
   border-radius: 10px;
   background-color: #434447;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  cursor: default;
 }
 
 .side-bar-info {
@@ -251,13 +256,6 @@ input.my-custom-input {
   width: 30%;
   align-items: flex-end;
   padding-right: 20px;
-}
-
-.side-bar-sport-center:hover {
-  background-color: #b8bec5;
-  color: #646669;
-  transition: 0.3s all;
-  cursor: pointer;
 }
 
 .sport-center-name {
@@ -296,11 +294,33 @@ input.my-custom-input {
 }
 
 .carousel {
-  margin: 20px;
+  width: 95%;
 }
 
 .carousel-and-fields {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.sport-center-info {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notactive:hover {
+  background-color: #b8bec5;
+  color: #646669;
+  transition: 0.3s all;
+  cursor: pointer;
+}
+
+.reserve-field {
+  color: #646669;
+  background: #b8bec5;
+  margin-top: 10px;
 }

@@ -29,10 +29,10 @@
 }
 
 .image {
-  height: 240px;
-  width: 320px;
-  border: 1px solid #d1d0c5;
-  object-fit: cover;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
 }
 
 .rightArrow {

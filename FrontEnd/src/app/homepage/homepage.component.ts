@@ -50,6 +50,7 @@ export class HomepageComponent implements OnInit {
     },
   );
   minDate: any = new Date();
+  mapHeight: any = window.innerHeight * 0.65 + 'px';
 
   ngOnInit(): void {
     if (localStorage.getItem('role') === 'ADMIN') {
@@ -150,7 +151,35 @@ export class HomepageComponent implements OnInit {
   }
 
   getSportCenter(sportCenter: any) {
+    if (this.activeSportCenter == sportCenter) {
+      return;
+    }
     this.activeSportCenter = sportCenter;
-    this.changeDetectorRef.detectChanges();
+    this.options.center = {
+      lat: parseFloat(sportCenter.latitude),
+      lng: parseFloat(sportCenter.longitude),
+    };
+    if (this.options.zoom == 12) {
+      this.options.zoom = 16;
+      this.mapComponent.googleMap?.setOptions(this.options);
+      this.changeDetectorRef.detectChanges();
+    } else {
+      this.options.zoom = 12;
+      this.mapComponent.googleMap?.setOptions(this.options);
+      this.changeDetectorRef.detectChanges();
+      setTimeout(() => {
+        this.options.zoom = 16;
+        this.mapComponent.googleMap?.setOptions(this.options);
+        this.changeDetectorRef.detectChanges();
+      }, 1000);
+    }
+  }
+
+  goToSportCenterFields() {
+    this.router
+      .navigate(['/reservations/' + this.activeSportCenter.sportCenterId])
+      .then(() => {
+        window.location.reload();
+      });
   }
 }
