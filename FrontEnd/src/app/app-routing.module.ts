@@ -11,9 +11,11 @@ import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
 import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'reservations/:sport/:id', component: ReservationsComponent },
   { path: 'login', component: LoginComponent, canActivate: [AuthLoginGuard] },
   {
     path: 'register',

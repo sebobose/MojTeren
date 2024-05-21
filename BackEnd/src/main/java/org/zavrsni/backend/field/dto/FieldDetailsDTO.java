@@ -8,6 +8,7 @@ import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.fieldAvailability.FieldAvailability;
 import org.zavrsni.backend.fieldAvailability.dto.FieldAvailabilityDTO;
 import org.zavrsni.backend.image.Image;
+import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class FieldDetailsDTO {
     private String description;
     private List<byte[]> images;
     private List<FieldAvailabilityDTO> fieldAvailabilities;
+    private SportCenterDetailsDTO sportCenter;
 
     public FieldDetailsDTO(Field field, List<Image> images, List<FieldAvailability> fieldAvailabilities) {
         this.fieldName = field.getFieldName();
@@ -41,5 +43,16 @@ public class FieldDetailsDTO {
         this.minResTime = field.getMinResTime();
         this.timeSlot = field.getTimeSlot();
         this.description = field.getDescription();
+    }
+
+    public FieldDetailsDTO(Field field, List<Image> images, List<FieldAvailability> fieldAvailabilities, SportCenterDetailsDTO sportCenter) {
+        this.fieldName = field.getFieldName();
+        this.sport = field.getSport().getSportName();
+        this.minResTime = field.getMinResTime();
+        this.timeSlot = field.getTimeSlot();
+        this.description = field.getDescription();
+        this.images = images.stream().map(Image::getImage).toList();
+        this.fieldAvailabilities = fieldAvailabilities.stream().map(FieldAvailabilityDTO::new).toList();
+        this.sportCenter = sportCenter;
     }
 }

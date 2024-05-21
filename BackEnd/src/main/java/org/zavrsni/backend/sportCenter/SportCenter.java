@@ -39,7 +39,7 @@ public class SportCenter {
     @ManyToOne
     private User owner;
 
-    @OneToMany(mappedBy = "sportCenter")
+    @OneToMany(mappedBy = "sportCenter", cascade = CascadeType.ALL)
     private List<Image> images;
 
     @OneToMany(mappedBy = "sportCenter")

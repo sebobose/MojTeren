@@ -48,6 +48,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CarouselComponent } from './carousel/carousel.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -74,6 +75,7 @@ export const MY_DATE_FORMATS = {
     ConfirmDialogComponent,
     AddFieldComponent,
     CarouselComponent,
+    ReservationsComponent,
   ],
   imports: [
     BrowserModule,

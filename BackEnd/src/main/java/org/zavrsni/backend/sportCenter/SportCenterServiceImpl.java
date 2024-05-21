@@ -1,5 +1,6 @@
 package org.zavrsni.backend.sportCenter;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,6 +54,7 @@ public class SportCenterServiceImpl implements SportCenterService {
 
         @Override
         @SneakyThrows
+        @Transactional
         public Void addSportCenter(AddSportCenterDTO addSportCenterDTO) {
             List<byte[]> compressedImages = new ArrayList<>();
             for(MultipartFile image : addSportCenterDTO.getImages()){

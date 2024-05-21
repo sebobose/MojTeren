@@ -177,7 +177,12 @@ export class HomepageComponent implements OnInit {
 
   goToSportCenterFields() {
     this.router
-      .navigate(['/reservations/' + this.activeSportCenter.sportCenterId])
+      .navigate([
+        '/reservations/' +
+          this.activeSport +
+          '/' +
+          this.activeSportCenter.sportCenterId,
+      ])
       .then(() => {
         window.location.reload();
       });

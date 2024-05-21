@@ -10,4 +10,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT COUNT(r) FROM Reservation r WHERE r.field IN :fields")
     Long countReservationsByFields(List<Field> fields);
+
+    List<Reservation> findAllByField(Field field);
 }

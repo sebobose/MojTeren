@@ -37,9 +37,9 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation")
     private List<EntityStatus> reservationStatuses;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Field field;
 }
