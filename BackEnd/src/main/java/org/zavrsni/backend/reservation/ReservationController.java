@@ -3,8 +3,8 @@ package org.zavrsni.backend.reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.zavrsni.backend.field.dto.FieldDetailsDTO;
 import org.zavrsni.backend.reservation.dto.ReservationDTO;
+import org.zavrsni.backend.sportCenter.dto.SportCenterReservationsDTO;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class ReservationController {
     }
 
     @GetMapping("/sport-center/{sport}/{sportCenterId}")
-    public ResponseEntity<List<FieldDetailsDTO>> getSportCenterFields(@PathVariable Long sportCenterId,
-                                                                      @PathVariable String sport) {
+    public ResponseEntity<SportCenterReservationsDTO> getSportCenterFields(@PathVariable Long sportCenterId,
+                                                                           @PathVariable String sport) {
         return ResponseEntity.ok(reservationService.getSportCenterFields(sportCenterId, sport));
     }
 }

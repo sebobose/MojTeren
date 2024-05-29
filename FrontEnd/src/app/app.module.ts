@@ -49,6 +49,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ReservationsComponent } from './reservations/reservations.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { GalleryComponent } from './gallery/gallery.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -76,6 +79,7 @@ export const MY_DATE_FORMATS = {
     AddFieldComponent,
     CarouselComponent,
     ReservationsComponent,
+    GalleryComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +113,10 @@ export const MY_DATE_FORMATS = {
     MatOption,
     MatCheckbox,
     GoogleMapsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },

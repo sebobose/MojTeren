@@ -28,8 +28,6 @@ public class SportCenter {
     @NotNull
     private String sportCenterName;
 
-    private String location;
-
     @ManyToOne
     private Address address;
 

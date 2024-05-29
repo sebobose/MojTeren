@@ -13,7 +13,7 @@ import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.reservation.dto.ReservationDTO;
 import org.zavrsni.backend.sportCenter.SportCenter;
 import org.zavrsni.backend.sportCenter.SportCenterRepository;
-import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
+import org.zavrsni.backend.sportCenter.dto.SportCenterReservationsDTO;
 import org.zavrsni.backend.user.User;
 
 import java.text.SimpleDateFormat;
@@ -81,11 +81,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FieldDetailsDTO> getSportCenterFields(Long sportCenterId, String sport) {
+    public SportCenterReservationsDTO getSportCenterFields(Long sportCenterId, String sport) {
         SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow(
                 () -> new IllegalArgumentException("Sport center not found"));
 
-        return sportCenter.getFields().stream().filter(field -> {
+        List<FieldDetailsDTO> fields = sportCenter.getFields().stream().filter(field -> {
             List<EntityStatus> fieldStatuses = field.getFieldStatuses();
             String statusType = fieldStatuses.get(fieldStatuses.size() - 1).getStatus().getStatusType();
             String Fieldsport = field.getSport().getSportName();
@@ -93,7 +93,9 @@ public class ReservationServiceImpl implements ReservationService {
         }).map(field -> {
             List<Image> images = imageRepository.findAllByField(field);
             List<FieldAvailability> fieldAvailabilities = fieldAvailabilityRepository.findAllByField(field);
-            return new FieldDetailsDTO(field, images, fieldAvailabilities, new SportCenterDetailsDTO(sportCenter));
+            return new FieldDetailsDTO(field, images, fieldAvailabilities);
         }).toList();
+
+        return new SportCenterReservationsDTO(sportCenter, sport, fields);
     }
 }

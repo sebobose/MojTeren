@@ -209,7 +209,7 @@ public class SportCenterServiceImpl implements SportCenterService {
                             field.getSport().getSportName().equals(filteredSportCenterDTO.getSport());
                 }).toList();
 
-        List<SportCenter> sportCentersList = sportFilteredFields.stream().map(Field::getSportCenter).toList();
+        List<SportCenter> sportCentersList = sportFilteredFields.stream().map(Field::getSportCenter).distinct().toList();
 
         return sportCentersList.stream().map(sportCenter -> {
             List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());

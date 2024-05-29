@@ -1,0 +1,60 @@
+.dialog-container {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #323437;
+  color: #d1d0c5;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.side-bar-images {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 12% 12% 12% 12% 12% 12% 12% 12%;
+  grid-auto-flow: column;
+  justify-content: center;
+  height: 98%;
+  width: 20%;
+  margin-left: 10px;
+  padding-top: 15px;
+}
+
+.side-bar-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+}
+.side-image {
+  height: 90%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.main-image {
+  width: 75%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  img {
+    height: 95%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    object-fit: cover;
+    margin: 20px;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  font-size: 30px;
+  color: #d1d0c5;
+  cursor: pointer;
+}

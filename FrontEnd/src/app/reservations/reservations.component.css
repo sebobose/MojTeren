@@ -1,0 +1,118 @@
+.main-container{
+  margin: 20px;
+}
+
+.sport-center-header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.header-name {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.header-address {
+  margin-top: 10px;
+  font-size: 25px;
+}
+
+.header-sport {
+  width: 100%;
+  height: 20px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: end;
+}
+
+.header-select {
+  width: 15%;
+  margin-right: 20px;
+}
+
+mat-select {
+  color: #d1d0c5;
+  --mat-select-enabled-arrow-color: #d1d0c5;
+  font-size: 16px;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  --mat-select-panel-background-color: #323437;
+  --mat-option-selected-state-label-text-color: #e2b714;
+  color: #d1d0c5;
+}
+
+::ng-deep mat-pseudo-checkbox {
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: transparent;
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  color: #d1d0c5;
+  font-size: 16px;
+}
+
+.field-select {
+  width: calc(100% - 2px);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.field-name {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border: 2px solid #646669;
+  border-left: none;
+  cursor: pointer;
+}
+
+.left {
+  border-left: 1px solid #646669;
+}
+
+.notop {
+  border-top: none;
+}
+
+.active {
+  color: #e2b714;
+}
+
+.calendar {
+  height: 600px;
+}
+
+::ng-deep .cal-week-view {
+  background-color: transparent;
+  border-top: 1px solid #646669;
+}
+
+mwl-calendar-week-view {
+  width: 500px;
+}
+
+.time-and-gallery {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.time-select {
+  width: 200px;
+  margin-right: 20px;
+  span {
+    color: #e2b714;
+    display: block;
+    margin-bottom: 5px;
+  }
+}

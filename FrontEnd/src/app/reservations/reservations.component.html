@@ -1,9 +1,62 @@
 <div class="main-container">
-  <div class="header">
-<!--    <span class="header-name">{{sportCenter.sportCenterName}}</span>-->
-  </div>
-  <div>
-
-  </div>
+  @if (sportCenter) {
+    <div class="sport-center-header">
+      <span class="header-name">{{ sportCenter.sportCenterName }}</span>
+      <span class="header-address"
+      >{{ sportCenter.streetAndNumber }}, {{ sportCenter.cityName }}</span
+      >
+      <div class="header-sport">
+        <div class="header-select">
+          <mat-select
+            id="sport"
+            (selectionChange)="checkSportSelected($event)"
+            class="center"
+            [(value)]="sportCenter.currentSport"
+          >
+            @for (sport of sportCenter.sports; track sport) {
+              <mat-option value="{{ sport }}">{{ sport }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+      <div class="field-select">
+        @for (field of sportCenter.fields; track $index) {
+          <span
+            class="field-name"
+            [ngClass]="{ left: $index % 5 == 0, notop: $index > 4, active: field == currentField }"
+            (click)="changeCurrentField(field)">{{ field.fieldName }}</span
+          >
+        }
+      </div>
+    </div>
+    <div class="time-and-gallery">
+      <div class="time-select">
+        <span>Trajanje termina:</span>
+        <mat-select
+          id="time"
+          (selectionChange)="checkTimeSelected($event)"
+          class="center"
+          value="1 h"
+          [(value)]="currentField.timeSelected"
+        >
+          @for (time of currentField.timeSlots; track time) {
+            <mat-option value="{{ time }}">{{ time }}</mat-option>
+          }
+        </mat-select>
+      </div>
+        <button class="button" type="button" (click)="showGallery()">
+          Galerija
+        </button>
+    </div>
+        <div class="calendar">
+          <mwl-calendar-week-view
+            [viewDate]="viewDate"
+            [events]="reservations"
+            (eventClicked)="eventClicked($event.event)"
+            [dayStartHour]="minHours"
+            [dayEndHour]="maxHours"
+          >
+          </mwl-calendar-week-view>
+        </div>
+  }
 </div>
-
