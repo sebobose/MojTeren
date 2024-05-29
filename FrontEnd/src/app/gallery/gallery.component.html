@@ -1,20 +1,26 @@
 <div class="dialog-container">
-  <div class="main-image">
-    <img [src]="'data:image/png;base64, ' + mainImage" alt="mainImage" />
+  <div class="images-container">
+    <div class="main-image">
+      <img [src]="'data:image/png;base64, ' + mainImage" alt="mainImage" />
+    </div>
+    <div class="side-bar-images">
+      @for (image of images; track $index) {
+        <div class="side-bar-image">
+          <img
+            class="side-image"
+            [src]="'data:image/png;base64, ' + image"
+            alt="image"
+            (click)="changeMainImage($index)"
+          />
+        </div>
+      }
+    </div>
+    <div class="close-button">
+      <mat-icon (click)="closeGallery()">close</mat-icon>
+    </div>
   </div>
-  <div class="side-bar-images">
-    @for (image of images; track $index) {
-      <div class="side-bar-image">
-        <img
-          class="side-image"
-          [src]="'data:image/png;base64, ' + image"
-          alt="image"
-          (click)="changeMainImage($index)"
-        />
-      </div>
-    }
-  </div>
-  <div class="close-button">
-    <mat-icon (click)="closeGallery()">close</mat-icon>
+  <div class="field-details">
+    <span>{{description}}</span>
   </div>
 </div>
+

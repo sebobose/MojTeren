@@ -30,6 +30,7 @@ export class ReservationsComponent implements OnInit {
     this.reservationService
       .getSportCenter(this.sportCenterId, sport)
       .subscribe((sportCenter: any) => {
+        console.log(sportCenter);
         this.sportCenter = sportCenter;
         this.currentField = sportCenter.fields[0];
         this.setTimes();
@@ -117,10 +118,10 @@ export class ReservationsComponent implements OnInit {
   }
 
   showGallery() {
-    const dialogRef = this.dialog.open(GalleryComponent, {
+    this.dialog.open(GalleryComponent, {
       width: '80%',
       height: '75%',
-      data: this.currentField.images,
+      data: [this.currentField.images, this.currentField.description],
     });
   }
 }

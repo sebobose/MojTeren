@@ -9,11 +9,15 @@ import { ReservationsComponent } from '../reservations/reservations.component';
 })
 export class GalleryComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<ReservationsComponent>);
-  public images = inject(MAT_DIALOG_DATA);
+  public data = inject(MAT_DIALOG_DATA);
   public mainImage: any;
+  public images: any;
+  public description: any;
 
   ngOnInit() {
+    this.images = this.data[0];
     this.mainImage = this.images[0];
+    this.description = this.data[1];
   }
 
   changeMainImage(index: number) {
