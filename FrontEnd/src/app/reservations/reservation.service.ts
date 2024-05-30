@@ -18,20 +18,13 @@ export class ReservationService {
     };
   }
 
-  getReservations(
-    sport: string | null,
-    sportCenterId: string | null,
-    date: Date,
-  ) {
-    console.log(date.toISOString().split('T')[0]);
+  getReservations(date: Date, fieldId: string | null) {
     return this.http.get(
       environment.BASE_API_URL +
-        '/reservations/sport-center/' +
-        sport +
+        '/reservations/by-week/' +
+        date.toISOString().split('T')[0] +
         '/' +
-        sportCenterId +
-        '/' +
-        date.toISOString().split('T')[0],
+        fieldId,
     );
   }
 
@@ -42,6 +35,14 @@ export class ReservationService {
         sport +
         '/' +
         sportCenterId,
+    );
+  }
+
+  makeReservation(data: any) {
+    return this.http.post(
+      environment.BASE_API_URL + '/reservations/add',
+      data,
+      this.createHeader(),
     );
   }
 }

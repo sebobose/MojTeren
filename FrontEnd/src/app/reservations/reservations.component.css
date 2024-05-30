@@ -88,8 +88,8 @@ mat-select {
   color: #e2b714;
 }
 
-.calendar {
-  height: 600px;
+.margin {
+  height: 30px;
 }
 
 ::ng-deep .cal-week-view {

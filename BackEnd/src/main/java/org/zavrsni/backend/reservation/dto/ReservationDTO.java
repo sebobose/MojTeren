@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.reservation.Reservation;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -17,6 +20,7 @@ public class ReservationDTO {
     private String endTime;
     private String username;
     private String field;
+    private String statusMessage;
 
     public ReservationDTO(Reservation reservation, String role) {
         this.reservationId = reservation.getReservationId();
@@ -25,6 +29,8 @@ public class ReservationDTO {
         this.endTime = reservation.getEndTime().toString();
         if (role.equals("FIELD_OWNER")) {
             this.username = reservation.getUser().getUsername();
+            List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
+            this.statusMessage = reservationStatuses.get(reservationStatuses.size() - 1).getStatusComment();
         }
         this.field = reservation.getField().getFieldName();
     }

@@ -1,12 +1,15 @@
 package org.zavrsni.backend.reservation;
 
+import org.zavrsni.backend.reservation.dto.AddReservationDTO;
 import org.zavrsni.backend.reservation.dto.ReservationDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterReservationsDTO;
 
 import java.util.List;
 
 public interface ReservationService {
-    List<ReservationDTO> getReservations(Long sportCenterId, String date, String sport);
+    List<ReservationDTO> getReservations(String date, Long fieldId);
 
     SportCenterReservationsDTO getSportCenterFields(Long sportCenterId, String sport);
+
+    AddReservationDTO addReservation(AddReservationDTO addReservationDTO);
 }

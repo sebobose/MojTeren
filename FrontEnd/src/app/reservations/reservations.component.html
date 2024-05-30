@@ -40,7 +40,6 @@
           <span>Trajanje termina:</span>
           <mat-select
             id="time"
-            (selectionChange)="checkTimeSelected($event)"
             class="center"
             value="1 h"
             [(value)]="currentField.timeSelected"
@@ -55,32 +54,49 @@
         </button>
       </div>
       <div class="calendar-buttons" (click)="weekChanged()">
-        <div mwlCalendarPreviousView class="button calendar-btn border-right left-border" [view]="view" [(viewDate)]="viewDate">
+        <div
+          mwlCalendarPreviousView
+          class="button calendar-btn border-right left-border"
+          [view]="view"
+          [(viewDate)]="viewDate"
+        >
           Prethodni
         </div>
-        <div mwlCalendarToday class="button calendar-btn border-right" [(viewDate)]="viewDate">
+        <div
+          mwlCalendarToday
+          class="button calendar-btn border-right"
+          [(viewDate)]="viewDate"
+        >
           Danas
         </div>
-        <div mwlCalendarNextView class="button calendar-btn right-border" [view]="view" [(viewDate)]="viewDate">
+        <div
+          mwlCalendarNextView
+          class="button calendar-btn right-border"
+          [view]="view"
+          [(viewDate)]="viewDate"
+        >
           Sljedeći
         </div>
       </div>
     </div>
-
-    <div class="calendar">
-      <mwl-calendar-week-view
-        [viewDate]="viewDate"
-        [events]="reservations"
-        (eventClicked)="eventClicked($event.event)"
-        [dayStartHour]="minHours"
-        [dayEndHour]="maxHours - 1"
-        [hourSegments]="hourSegments"
-        (hourSegmentClicked)="makeReservation($event)"
-        (mouseover)="draggedIn($event)"
-        (mouseleave)="checkLastDraggedIn()"
-        [locale]="locale"
-      >
-      </mwl-calendar-week-view>
-    </div>
+    @if (showCalendar) {
+      <div>
+        <mwl-calendar-week-view
+          [viewDate]="viewDate"
+          [events]="reservations"
+          (eventClicked)="eventClicked($event.event)"
+          [dayStartHour]="minHours"
+          [dayEndHour]="maxHours - 1"
+          [hourSegments]="hourSegments"
+          (hourSegmentClicked)="makeReservation($event)"
+          (mouseover)="draggedIn($event)"
+          (mouseleave)="checkLastDraggedIn()"
+          [locale]="locale"
+        >
+        </mwl-calendar-week-view>
+        <div class="margin">
+        </div>
+      </div>
+    }
   }
 </div>

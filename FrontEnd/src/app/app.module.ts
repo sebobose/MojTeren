@@ -54,6 +54,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GalleryComponent } from './gallery/gallery.component';
 import { registerLocaleData } from '@angular/common';
 import localeHr from '@angular/common/locales/hr';
+import { ReservationDialogComponent } from './reservations/reservation-dialog.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -84,6 +85,7 @@ registerLocaleData(localeHr);
     CarouselComponent,
     ReservationsComponent,
     GalleryComponent,
+    ReservationDialogComponent,
   ],
   imports: [
     BrowserModule,

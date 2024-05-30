@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FieldDetailsDTO {
 
+    private Long fieldId;
     private String fieldName;
     private String sport;
     private Long minResTime;
@@ -28,6 +29,7 @@ public class FieldDetailsDTO {
     private SportCenterDetailsDTO sportCenter;
 
     public FieldDetailsDTO(Field field, List<Image> images, List<FieldAvailability> fieldAvailabilities) {
+        this.fieldId = field.getFieldId();
         this.fieldName = field.getFieldName();
         this.sport = field.getSport().getSportName();
         this.minResTime = field.getMinResTime();
@@ -43,16 +45,5 @@ public class FieldDetailsDTO {
         this.minResTime = field.getMinResTime();
         this.timeSlot = field.getTimeSlot();
         this.description = field.getDescription();
-    }
-
-    public FieldDetailsDTO(Field field, List<Image> images, List<FieldAvailability> fieldAvailabilities, SportCenterDetailsDTO sportCenter) {
-        this.fieldName = field.getFieldName();
-        this.sport = field.getSport().getSportName();
-        this.minResTime = field.getMinResTime();
-        this.timeSlot = field.getTimeSlot();
-        this.description = field.getDescription();
-        this.images = images.stream().map(Image::getImage).toList();
-        this.fieldAvailabilities = fieldAvailabilities.stream().map(FieldAvailabilityDTO::new).toList();
-        this.sportCenter = sportCenter;
     }
 }

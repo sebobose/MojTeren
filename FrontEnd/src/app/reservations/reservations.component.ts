@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ReservationService } from './reservation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -9,6 +15,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { GalleryComponent } from '../gallery/gallery.component';
 import { CustomDateFormatter } from '../custom/custom-date-formatter.provider';
+import { ReservationDialogComponent } from './reservation-dialog.component';
 
 @Component({
   selector: 'app-reservations',
@@ -27,6 +34,7 @@ export class ReservationsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+
   protected sportCenter: any;
   protected currentField: any;
   protected sportCenterId: any;
@@ -38,15 +46,14 @@ export class ReservationsComponent implements OnInit {
   protected hourSegments: any;
   protected view: CalendarView = CalendarView.Week;
   protected locale: string = 'hr';
+  protected showCalendar: boolean = false;
 
   ngOnInit(): void {
-    this.pushReservations();
     this.sportCenterId = this.route.snapshot.paramMap.get('id');
     const sport = this.route.snapshot.paramMap.get('sport');
     this.reservationService
       .getSportCenter(this.sportCenterId, sport)
       .subscribe((sportCenter: any) => {
-        console.log(sportCenter);
         this.sportCenter = sportCenter;
         this.currentField = sportCenter.fields[0];
         this.setTimes();
@@ -54,12 +61,7 @@ export class ReservationsComponent implements OnInit {
         this.minHours = this.getMinHours(this.currentField);
         this.hourSegments = 60 / this.currentField.timeSlot;
         this.removeNonWorkingHours();
-        this.reservationService
-          .getReservations(sport, this.sportCenterId, new Date())
-          .subscribe((reservations) => {
-            // this.pushReservations();
-            console.log(reservations);
-          });
+        this.getReservations(new Date());
       });
   }
 
@@ -77,7 +79,9 @@ export class ReservationsComponent implements OnInit {
     this.minHours = this.getMinHours(field);
     this.setTimes();
     this.reservations = [];
+    this.showCalendar = false;
     this.removeNonWorkingHours();
+    this.getReservations(this.viewDate);
   }
 
   eventClicked(event: CalendarEvent) {
@@ -113,10 +117,6 @@ export class ReservationsComponent implements OnInit {
       }
     }
     return minHours.getHours();
-  }
-
-  checkTimeSelected($event: any) {
-    console.log($event.value);
   }
 
   private setTimes() {
@@ -210,24 +210,6 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
-  private pushReservations() {
-    let reservation = {
-      start: new Date('2024-06-07T08:00:00.000Z'),
-      end: new Date('2024-06-07T09:49:19.208Z'),
-      title: 'A draggable and resizable event',
-      color: {
-        primary: '#e3bc08',
-        secondary: '#FDF1BA',
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    };
-    this.reservations.push(reservation);
-  }
-
   private timeStringToMinutes() {
     let time = this.currentField.timeSelected;
     let minutes = 0;
@@ -246,6 +228,10 @@ export class ReservationsComponent implements OnInit {
   }
 
   makeReservation($event: { date: Date; sourceEvent: MouseEvent }) {
+    if (!localStorage.getItem('token')) {
+      alert('Morate biti prijavljeni za rezerviranje termina.');
+      return;
+    }
     let timeSelectedMinutes = this.timeStringToMinutes();
     if (
       this.lastDraggedIn.size <
@@ -272,11 +258,46 @@ export class ReservationsComponent implements OnInit {
         return;
       }
     }
+    let startMinutes = $event.date.getMinutes().toString();
+    let endMinutes = eventEnd.getMinutes().toString();
+    if (startMinutes.length < 2) startMinutes = '0' + startMinutes;
+    if (endMinutes.length < 2) endMinutes = '0' + endMinutes;
+    let date = $event.date.toISOString().split('T')[0].split('-');
+    date.reverse().join('.');
+    const dialogRef = this.dialog.open(ReservationDialogComponent, {
+      width: '600px',
+      height: '450px',
+      data: {
+        sportCenterName: this.sportCenter.sportCenterName,
+        fieldName: this.currentField.fieldName,
+        date: date,
+        startTime: $event.date.getHours() + ':' + startMinutes,
+        endTime: eventEnd.getHours() + ':' + endMinutes,
+      },
+    });
+    dialogRef.afterClosed().subscribe((reason: any) => {
+      if (reason) {
+        let data = {
+          fieldId: this.currentField.fieldId,
+          date: $event.date,
+          startTime: $event.date.getHours() + ':' + startMinutes,
+          endTime: eventEnd.getHours() + ':' + endMinutes,
+          message: reason[1],
+        };
+        this.reservationService.makeReservation(data).subscribe({
+          next: () => {
+            window.location.reload();
+          },
+        });
+      }
+    });
   }
 
   weekChanged() {
     this.reservations = [];
+    this.showCalendar = false;
     this.removeNonWorkingHours();
+    this.getReservations(this.viewDate);
   }
 
   private removeNonWorkingHours() {
@@ -345,7 +366,6 @@ export class ReservationsComponent implements OnInit {
       );
       this.reservations.push(this.createClosedReservation(start, end));
     }
-    console.log(this.reservations);
   }
 
   private getMonday() {
@@ -371,5 +391,32 @@ export class ReservationsComponent implements OnInit {
       },
       draggable: false,
     };
+  }
+
+  private getReservations(date: Date) {
+    this.reservationService
+      .getReservations(date, this.currentField.fieldId)
+      .subscribe((reservations: any) => {
+        for (let i = 0; i < reservations.length; i++) {
+          let reservation = {
+            start: new Date(
+              reservations[i].date + 'T' + reservations[i].startTime,
+            ),
+            end: new Date(reservations[i].date + 'T' + reservations[i].endTime),
+            title: 'Rezervirano',
+            color: {
+              primary: '#e3bc08',
+              secondary: '#FDF1BA',
+            },
+            resizable: {
+              beforeStart: false,
+              afterEnd: false,
+            },
+            draggable: false,
+          };
+          this.reservations.push(reservation);
+        }
+        this.showCalendar = true;
+      });
   }
 }
