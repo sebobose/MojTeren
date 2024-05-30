@@ -38,7 +38,7 @@ import {
   MatTable,
 } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { CustomPaginatorIntl } from './custom-angular-material/custom-paginator-intl';
+import { CustomPaginatorIntl } from './custom/custom-paginator-intl';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
 import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
@@ -52,6 +52,8 @@ import { ReservationsComponent } from './reservations/reservations.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GalleryComponent } from './gallery/gallery.component';
+import { registerLocaleData } from '@angular/common';
+import localeHr from '@angular/common/locales/hr';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -61,6 +63,8 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD/MM/YYYY',
   },
 };
+
+registerLocaleData(localeHr);
 
 @NgModule({
   declarations: [

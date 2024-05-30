@@ -93,18 +93,28 @@ mat-select {
 }
 
 ::ng-deep .cal-week-view {
-  background-color: transparent;
-  border-top: 1px solid #646669;
+  background-color: #323437;
 }
 
-mwl-calendar-week-view {
-  width: 500px;
+::ng-deep .cal-week-view .cal-hour-odd {
+  background-color: #323437;
+}
+
+::ng-deep .cal-week-view .cal-time-events .cal-day-columns:not(.cal-resize-active) .cal-hour-segment:hover {
+  cursor: pointer;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: center;
 }
 
 .time-and-gallery {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   margin-bottom: 20px;
+  margin-right: 40px;
+  width: 64%;
 }
 
 .time-select {
@@ -115,4 +125,51 @@ mwl-calendar-week-view {
     display: block;
     margin-bottom: 5px;
   }
+}
+
+.calendar-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36%;
+  padding-right: 20px;
+}
+
+.calendar-btn {
+  width: 33%;
+  height: 20px;
+  border-radius: 0;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.border-right {
+  border-right: 1px solid #646669;
+}
+
+.left-border {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.right-border {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+::ng-deep .cal-week-view .cal-header.cal-weekend span {
+  color: #d1d0c5;
+}
+
+::ng-deep .cal-week-view .cal-header.cal-today {
+  background-color: #323437;
+  color: #e2b714;
+}
+
+::ng-deep .cal-week-view .cal-day-headers .cal-header:hover,
+.cal-week-view .cal-day-headers .cal-drag-over {
+  background-color: #323437;
+  cursor: pointer;
 }
