@@ -48,13 +48,15 @@ import { MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CarouselComponent } from './carousel/carousel.component';
-import { ReservationsComponent } from './reservations/reservations.component';
+import { FieldReservationsComponent } from './reservations/field-reservations/field-reservations.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GalleryComponent } from './gallery/gallery.component';
 import { registerLocaleData } from '@angular/common';
 import localeHr from '@angular/common/locales/hr';
-import { ReservationDialogComponent } from './reservations/reservation-dialog.component';
+import { MakeReservationDialogComponent } from './reservations/field-reservations/make-reservation-dialog.component';
+import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
+import { DelReservationDialogComponent } from './reservations/user-reservations/del-reservation-dialog.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -83,9 +85,11 @@ registerLocaleData(localeHr);
     ConfirmDialogComponent,
     AddFieldComponent,
     CarouselComponent,
-    ReservationsComponent,
+    FieldReservationsComponent,
     GalleryComponent,
-    ReservationDialogComponent,
+    MakeReservationDialogComponent,
+    UserReservationsComponent,
+    DelReservationDialogComponent,
   ],
   imports: [
     BrowserModule,

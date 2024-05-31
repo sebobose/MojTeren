@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ReservationsComponent } from '../reservations/reservations.component';
+import { FieldReservationsComponent } from '../reservations/field-reservations/field-reservations.component';
 
 @Component({
   selector: 'app-gallery',
@@ -8,7 +8,7 @@ import { ReservationsComponent } from '../reservations/reservations.component';
   styleUrl: './gallery.component.css',
 })
 export class GalleryComponent implements OnInit {
-  private dialogRef = inject(MatDialogRef<ReservationsComponent>);
+  private dialogRef = inject(MatDialogRef<FieldReservationsComponent>);
   public data = inject(MAT_DIALOG_DATA);
   public mainImage: any;
   public images: any;

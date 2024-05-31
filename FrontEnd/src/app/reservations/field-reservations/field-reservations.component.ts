@@ -1,11 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { ReservationService } from './reservation.service';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ReservationService } from '../reservation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CalendarDateFormatter,
@@ -13,14 +7,14 @@ import {
   CalendarView,
 } from 'angular-calendar';
 import { MatDialog } from '@angular/material/dialog';
-import { GalleryComponent } from '../gallery/gallery.component';
-import { CustomDateFormatter } from '../custom/custom-date-formatter.provider';
-import { ReservationDialogComponent } from './reservation-dialog.component';
+import { GalleryComponent } from '../../gallery/gallery.component';
+import { CustomDateFormatter } from '../../custom/custom-date-formatter.provider';
+import { MakeReservationDialogComponent } from './make-reservation-dialog.component';
 
 @Component({
   selector: 'app-reservations',
-  templateUrl: './reservations.component.html',
-  styleUrl: './reservations.component.css',
+  templateUrl: './field-reservations.component.html',
+  styleUrl: './field-reservations.component.css',
   providers: [
     {
       provide: CalendarDateFormatter,
@@ -28,7 +22,7 @@ import { ReservationDialogComponent } from './reservation-dialog.component';
     },
   ],
 })
-export class ReservationsComponent implements OnInit {
+export class FieldReservationsComponent implements OnInit {
   @ViewChild('weekView') weekView: any;
   private reservationService = inject(ReservationService);
   private route = inject(ActivatedRoute);
@@ -232,6 +226,7 @@ export class ReservationsComponent implements OnInit {
       alert('Morate biti prijavljeni za rezerviranje termina.');
       return;
     }
+
     let timeSelectedMinutes = this.timeStringToMinutes();
     if (
       this.lastDraggedIn.size <
@@ -240,6 +235,15 @@ export class ReservationsComponent implements OnInit {
       alert('Molimo odaberite ispravan termin rezervacije.');
       return;
     }
+
+    let eventEnd = new Date($event.date);
+    let dateNow = new Date();
+    eventEnd.setMinutes($event.date.getMinutes() + timeSelectedMinutes);
+    if ($event.date < dateNow || eventEnd < dateNow) {
+      alert('Molimo odaberite ispravan termin rezervacije.');
+      return;
+    }
+
     let sameDayReservations: any = this.reservations.filter((reservation) => {
       return (
         reservation.start.getDate() == $event.date.getDate() &&
@@ -247,8 +251,7 @@ export class ReservationsComponent implements OnInit {
         reservation.start.getFullYear() == $event.date.getFullYear()
       );
     });
-    let eventEnd = new Date($event.date);
-    eventEnd.setMinutes($event.date.getMinutes() + timeSelectedMinutes);
+
     for (let i = 0; i < sameDayReservations.length; i++) {
       if (
         $event.date < sameDayReservations[i].start &&
@@ -264,7 +267,7 @@ export class ReservationsComponent implements OnInit {
     if (endMinutes.length < 2) endMinutes = '0' + endMinutes;
     let date = $event.date.toISOString().split('T')[0].split('-');
     date.reverse().join('.');
-    const dialogRef = this.dialog.open(ReservationDialogComponent, {
+    const dialogRef = this.dialog.open(MakeReservationDialogComponent, {
       width: '600px',
       height: '450px',
       data: {

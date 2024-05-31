@@ -27,4 +27,10 @@ export class HeaderComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/login']).then(() => window.location.reload());
   }
+
+  myReservations() {
+    this.router
+      .navigate(['/user-reservations'])
+      .then(() => window.location.reload());
+  }
 }

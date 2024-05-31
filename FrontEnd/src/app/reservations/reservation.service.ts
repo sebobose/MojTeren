@@ -45,4 +45,19 @@ export class ReservationService {
       this.createHeader(),
     );
   }
+
+  getUserReservations() {
+    return this.http.get(
+      environment.BASE_API_URL + '/reservations/user',
+      this.createHeader(),
+    );
+  }
+
+  cancelReservation(reservationId: any, reason: any) {
+    return this.http.put(
+      environment.BASE_API_URL + '/reservations/cancel/' + reservationId,
+      reason,
+      this.createHeader(),
+    );
+  }
 }

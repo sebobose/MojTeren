@@ -2,7 +2,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-reservation-dialog',
+  selector: 'app-make-reservation-dialog',
   template: `
     <div class="main-dialog">
       <div class="padding">
@@ -67,8 +67,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     `,
   ],
 })
-export class ReservationDialogComponent {
-  private dialogRef = inject(MatDialogRef<ReservationDialogComponent>);
+export class MakeReservationDialogComponent {
+  private dialogRef = inject(MatDialogRef<MakeReservationDialogComponent>);
   public data = inject(MAT_DIALOG_DATA);
   @ViewChild('reservationMessage') reservationMessage!: any;
 

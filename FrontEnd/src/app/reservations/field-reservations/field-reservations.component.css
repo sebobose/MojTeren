@@ -173,3 +173,8 @@ mat-select {
   background-color: #323437;
   cursor: pointer;
 }
+
+.calendar {
+  margin-right: 50px;
+  margin-left: 50px;
+}

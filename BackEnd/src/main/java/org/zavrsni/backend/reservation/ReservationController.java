@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.zavrsni.backend.reservation.dto.AddReservationDTO;
 import org.zavrsni.backend.reservation.dto.ReservationDTO;
+import org.zavrsni.backend.reservation.dto.UserReservationDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterReservationsDTO;
 
 import java.util.List;
@@ -33,4 +34,14 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.addReservation(addReservationDTO));
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<UserReservationDTO>> getUserReservations() {
+        return ResponseEntity.ok(reservationService.getUserReservations());
+    }
+
+    @PutMapping("/cancel/{reservationId}")
+    public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId, @RequestBody String reason) {
+        reservationService.cancelReservation(reservationId, reason);
+        return ResponseEntity.ok().build();
+    }
 }
