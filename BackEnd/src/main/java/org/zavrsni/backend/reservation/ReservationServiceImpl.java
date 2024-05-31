@@ -189,6 +189,10 @@ public class ReservationServiceImpl implements ReservationService {
     public void cancelReservation(Long reservationId, String reason) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(
                 () -> new IllegalArgumentException("Reservation not found"));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!reservation.getUser().getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("You are not authorized to cancel this reservation");
+        }
         List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
         EntityStatus lastStatus = reservationStatuses.get(reservationStatuses.size() - 1);
         if (lastStatus.getStatus().getStatusType().equals("ACTIVE")) {

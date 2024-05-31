@@ -11,17 +11,37 @@
     </div>
   } @else if (role == "ATHLETE") {
     <div class="header-login">
-      <span class="header-login" (click)="myReservations()">Moje rezervacije</span>
-      <span class="header-login">Profil</span>
+      <span
+        class="header-login"
+        [class.selected]="active === '/user-reservations'"
+        (click)="changePage('/user-reservations')"
+        >Moje rezervacije</span
+      >
+      <span
+        class="header-login"
+        [class.selected]="active === '/user-profile'"
+        (click)="changePage('/user-profile')"
+        >Profil</span
+      >
       <span class="header-login" (click)="logout()">Odjava</span>
     </div>
   } @else if (role == "FIELD_OWNER") {
     <div class="header-login">
       <div class="header-login">
-        <span class="header-login">Moji tereni</span>
+        <span
+          class="header-login"
+          [class.selected]="active === '/field-owner/sport-centers'"
+          (click)="changePage('/field-owner/sport-centers')"
+          >Moji tereni</span
+        >
       </div>
       <div class="header-login">
-        <span class="header-login">Profil</span>
+        <span
+          class="header-login"
+          [class.selected]="active === '/user-profile'"
+          (click)="changePage('/user-profile')"
+          >Profil</span
+        >
       </div>
       <div class="header-login">
         <span class="header-login" (click)="logout()">Odjava</span>

@@ -13,6 +13,8 @@ import { AddSportCenterComponent } from './sport-center/add-sport-center/add-spo
 import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-sport-center.component';
 import { FieldReservationsComponent } from './reservations/field-reservations/field-reservations.component';
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { OwnerSportCenterComponent } from './sport-center/owner-sport-center/owner-sport-center.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -48,8 +50,8 @@ export const routes: Routes = [
     data: { requiredRole: 'ADMIN' },
   },
   {
-    path: 'field-owner/home',
-    component: HomepageComponent,
+    path: 'field-owner/sport-centers',
+    component: OwnerSportCenterComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'FIELD_OWNER' },
   },
@@ -71,6 +73,12 @@ export const routes: Routes = [
     component: UserReservationsComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ATHLETE' },
+  },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: ['ATHLETE', 'FIELD_OWNER'] },
   },
 ];
 

@@ -2,10 +2,7 @@ package org.zavrsni.backend.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zavrsni.backend.user.dto.UserDTO;
 
 import java.util.List;
@@ -28,5 +25,15 @@ public class UserController {
     @GetMapping("/check-token")
     public ResponseEntity<Map<String, String>> checkToken() {
         return userService.checkToken();
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getProfile() {
+        return userService.getProfile();
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<Void> editProfile(@RequestBody UserDTO userDTO) {
+        return userService.editProfile(userDTO);
     }
 }

@@ -57,6 +57,8 @@ import localeHr from '@angular/common/locales/hr';
 import { MakeReservationDialogComponent } from './reservations/field-reservations/make-reservation-dialog.component';
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
 import { DelReservationDialogComponent } from './reservations/user-reservations/del-reservation-dialog.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { OwnerSportCenterComponent } from './sport-center/owner-sport-center/owner-sport-center.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -90,6 +92,8 @@ registerLocaleData(localeHr);
     MakeReservationDialogComponent,
     UserReservationsComponent,
     DelReservationDialogComponent,
+    UserProfileComponent,
+    OwnerSportCenterComponent,
   ],
   imports: [
     BrowserModule,

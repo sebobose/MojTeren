@@ -58,7 +58,7 @@ export class HomepageComponent implements OnInit {
         window.location.reload();
       });
     } else if (localStorage.getItem('role') === 'FIELD_OWNER') {
-      this.router.navigate(['/field-owner/home']).then(() => {
+      this.router.navigate(['/field-owner/sport-centers']).then(() => {
         window.location.reload();
       });
     }

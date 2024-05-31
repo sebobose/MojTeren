@@ -1,0 +1,99 @@
+<div class="main-container">
+  <div class="form-border">
+    <h1>Uredite profil</h1>
+    <form
+      [formGroup]="editForm"
+      (ngSubmit)="editProfile()"
+      class="flex center"
+      #form="ngForm"
+    >
+      <div>
+        <div>
+          <div class="form-field">
+            <input
+              formControlName="email"
+              type="text"
+              required
+              id="email"
+              placeholder=""
+            />
+            <label for="email">Email</label>
+          </div>
+        </div>
+        <div>
+          <div class="form-field">
+            <input
+              formControlName="firstName"
+              type="text"
+              required
+              id="firstName"
+              placeholder=""
+            />
+            <label for="firstName">Ime</label>
+          </div>
+          @if (
+            (editForm.controls.firstName.dirty || form.submitted) &&
+            !editForm.controls.firstName.valid
+            ) {
+            <span class="form-error">Morate unijeti ime!</span>
+          }
+        </div>
+        <div>
+          <div class="form-field">
+            <input
+              formControlName="lastName"
+              type="text"
+              required
+              id="lastName"
+              placeholder=""
+            />
+            <label for="lastName">Prezime</label>
+          </div>
+          @if (
+            (editForm.controls.lastName.dirty || form.submitted) &&
+            !editForm.controls.lastName.valid
+            ) {
+            <span class="form-error">Morate unijeti prezime!</span>
+          }
+        </div>
+        <div>
+          <div class="form-field">
+            <input
+              formControlName="contact"
+              type="text"
+              required
+              id="contact"
+              placeholder=""
+            />
+            <label for="contact">Kontakt broj</label>
+          </div>
+        </div>
+        @if (
+          (editForm.controls.contact.dirty || form.submitted) &&
+          ((editForm.controls.contact.value.length != 10 &&
+              editForm.controls.contact.valid) ||
+            (editForm.controls.contact.value.length != 0 &&
+              !editForm.controls.contact.valid) ||
+            (form.submitted &&
+              editForm.controls.role.value == "FIELD_OWNER" &&
+              !editForm.controls.contact.valid))
+          ) {
+          <span class="form-error">Morate unijeti ispravan broj mobitela!</span>
+        }
+        <div>
+          <div class="form-field">
+            <input
+              formControlName="role"
+              type="text"
+              required
+              id="role"
+              placeholder=""
+            />
+            <label for="role">Uloga</label>
+          </div>
+        </div>
+        <button type="submit" class="button">Spremi</button>
+      </div>
+    </form>
+  </div>
+</div>

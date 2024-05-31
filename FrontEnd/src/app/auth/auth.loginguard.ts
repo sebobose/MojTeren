@@ -21,7 +21,7 @@ export class AuthLoginGuard {
           });
           break;
         case 'FIELD_OWNER':
-          this.router.navigate(['/field-owner/home']).then(() => {
+          this.router.navigate(['/field-owner/sport-centers']).then(() => {
             window.location.reload();
           });
           break;

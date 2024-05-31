@@ -11,4 +11,8 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     ResponseEntity<Map<String, String>> checkToken();
+
+    ResponseEntity<UserDTO> getProfile();
+
+    ResponseEntity<Void> editProfile(UserDTO userDTO);
 }

@@ -119,7 +119,7 @@ export class AddSportCenterComponent implements OnInit {
         window.location.reload();
       });
     } else {
-      this.router.navigate(['/field-owner/home']).then(() => {
+      this.router.navigate(['/field-owner/sport-centers']).then(() => {
         window.location.reload();
       });
     }

@@ -1,0 +1,21 @@
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+
+.form-border {
+  padding: 40px;
+  flex-direction: column;
+  border-radius: 20px;
+  border: #646669 2px solid;
+  width: fit-content;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 24px;
+}

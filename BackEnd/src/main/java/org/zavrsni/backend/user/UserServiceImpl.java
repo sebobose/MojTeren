@@ -45,4 +45,20 @@ public class UserServiceImpl implements UserService{
         return ResponseEntity.ok(Map.of("role", user.getRole().getRoleName(),
                 "email", user.getEmail()));
     }
+
+    @Override
+    public ResponseEntity<UserDTO> getProfile() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(new UserDTO(user));
+    }
+
+    @Override
+    public ResponseEntity<Void> editProfile(UserDTO userDTO) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setContactNumber(userDTO.getContact());
+        userRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
 }

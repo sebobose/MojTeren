@@ -40,7 +40,7 @@ export class LoginComponent {
               });
               break;
             case 'FIELD_OWNER':
-              this.router.navigate(['/home']).then(() => {
+              this.router.navigate(['/field-owner/sport-centers']).then(() => {
                 window.location.reload();
               });
               break;
