@@ -102,10 +102,22 @@ public class SportCenterServiceImpl implements SportCenterService {
         return sportCenterRepository.findAll().stream()
                 .filter(sportCenter -> {
                     List<EntityStatus> statuses = sportCenter.getSportCenterStatuses();
+                    if (user.getRole().getRoleName().equals("FIELD_OWNER")) {
+                        String status = sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
+                                .getStatus().getStatusType();
+                        return (sportCenter.getOwner().getEmail().equals(user.getEmail())) &&
+                                (status.equals("ACTIVE") || status.equals("PENDING") || status.equals("REJECTED"));
+                    }
                     return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
-                            .getStatus().getStatusType().equals("ACTIVE") && (user.getRole().getRoleName().equals("ADMIN") ||
-                            sportCenter.getOwner().getEmail().equals(user.getEmail()));
-                }).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
+                            .getStatus().getStatusType().equals("ACTIVE") &&
+                            user.getRole().getRoleName().equals("ADMIN");
+                }).map(sportCenter -> {
+                    String sport = "";
+                    if (!sportCenter.getFields().isEmpty()) {
+                        sport = sportCenter.getFields().get(0).getSport().getSportName();
+                    }
+                    return new SportCenterDetailsDTO(sportCenter, sport);
+                }).collect(Collectors.toList());
     }
 
     @Override

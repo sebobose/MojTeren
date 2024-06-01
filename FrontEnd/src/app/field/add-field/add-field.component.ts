@@ -43,16 +43,7 @@ export class AddFieldComponent implements OnInit {
     '1 h 45 min',
     '2 h',
   ];
-  timeSlots = [
-    '5 min',
-    '10 min',
-    '15 min',
-    '20 min',
-    '25 min',
-    '30 min',
-    '45 min',
-    '1 h',
-  ];
+  timeSlots = ['5 min', '10 min', '15 min', '20 min', '30 min', '1 h'];
   days: { name: string; value: string }[] = [
     {
       name: 'Monday',

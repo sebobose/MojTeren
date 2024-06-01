@@ -266,14 +266,13 @@ export class FieldReservationsComponent implements OnInit {
     if (startMinutes.length < 2) startMinutes = '0' + startMinutes;
     if (endMinutes.length < 2) endMinutes = '0' + endMinutes;
     let date = $event.date.toISOString().split('T')[0].split('-');
-    date.reverse().join('.');
     const dialogRef = this.dialog.open(MakeReservationDialogComponent, {
       width: '600px',
-      height: '450px',
+      height: '520px',
       data: {
         sportCenterName: this.sportCenter.sportCenterName,
         fieldName: this.currentField.fieldName,
-        date: date,
+        date: date.reverse().join('.'),
         startTime: $event.date.getHours() + ':' + startMinutes,
         endTime: eventEnd.getHours() + ':' + endMinutes,
       },
@@ -286,6 +285,7 @@ export class FieldReservationsComponent implements OnInit {
           startTime: $event.date.getHours() + ':' + startMinutes,
           endTime: eventEnd.getHours() + ':' + endMinutes,
           message: reason[1],
+          email: reason[2],
         };
         this.reservationService.makeReservation(data).subscribe({
           next: () => {
@@ -400,6 +400,7 @@ export class FieldReservationsComponent implements OnInit {
     this.reservationService
       .getReservations(date, this.currentField.fieldId)
       .subscribe((reservations: any) => {
+        console.log(reservations);
         for (let i = 0; i < reservations.length; i++) {
           let reservation = {
             start: new Date(

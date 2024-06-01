@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/sport-center/user/all").hasAnyAuthority("ADMIN", "FIELD_OWNER")
                                 .requestMatchers("/reservations/sport-center/**").permitAll()
                                 .requestMatchers("/reservations/by-week/**").permitAll()
+                                .requestMatchers("/reservations/check-user/**").hasAuthority("FIELD_OWNER")
                                 .requestMatchers("/user/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport-center/admin/**").hasAuthority("ADMIN")

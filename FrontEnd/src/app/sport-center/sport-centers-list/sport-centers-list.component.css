@@ -11,7 +11,7 @@
 }
 
 .sc-details {
-  margin: 0;
+  margin: 0 20px 0 0;
 }
 
 mat-icon {
@@ -76,4 +76,15 @@ mat-paginator {
 
 .mat-column-details, .mat-column-edit {
   width: 200px;
+}
+
+.table-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button:disabled {
+  background-color: #2f2f2f;
+  color: #4d4d4d;
+  cursor: default;
 }

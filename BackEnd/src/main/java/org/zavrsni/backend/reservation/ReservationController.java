@@ -44,4 +44,9 @@ public class ReservationController {
         reservationService.cancelReservation(reservationId, reason);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/check-user")
+    public ResponseEntity<Boolean> checkUser(@RequestBody String email) {
+        return ResponseEntity.ok(reservationService.checkUser(email));
+    }
 }

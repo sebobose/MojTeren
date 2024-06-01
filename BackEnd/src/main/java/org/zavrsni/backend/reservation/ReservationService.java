@@ -17,4 +17,6 @@ public interface ReservationService {
     List<UserReservationDTO> getUserReservations();
 
     void cancelReservation(Long reservationId, String reason);
+
+    Boolean checkUser(String email);
 }

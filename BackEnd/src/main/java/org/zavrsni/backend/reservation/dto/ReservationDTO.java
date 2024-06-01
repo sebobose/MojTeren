@@ -27,7 +27,7 @@ public class ReservationDTO {
         this.date = reservation.getDate().toString();
         this.startTime = reservation.getStartTime().toString();
         this.endTime = reservation.getEndTime().toString();
-        if (role.equals("FIELD_OWNER")) {
+        if (role.equals("FIELD_OWNER") || role.equals("ADMIN")) {
             this.username = reservation.getUser().getUsername();
             List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
             this.statusMessage = reservationStatuses.get(reservationStatuses.size() - 1).getStatusComment();

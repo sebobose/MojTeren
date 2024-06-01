@@ -28,9 +28,13 @@ public class SportCenterDetailsDTO {
     private List<byte[]> images;
     private List<FieldDetailsDTO> fields;
     private Double distance;
+    private String status;
+    private String statusReason;
+    private String sport;
 
-    public SportCenterDetailsDTO(SportCenter sportCenter ) {
+    public SportCenterDetailsDTO(SportCenter sportCenter, String sport ) {
         setBaseDetails(sportCenter);
+        this.sport = sport;
     }
 
     public SportCenterDetailsDTO(SportCenter sportCenter, List<Image> images) {
@@ -54,5 +58,8 @@ public class SportCenterDetailsDTO {
         this.streetAndNumber = sportCenter.getAddress().getStreetAndNumber();
         this.longitude = sportCenter.getAddress().getLongitude();
         this.latitude = sportCenter.getAddress().getLatitude();
+        int numStatuses = sportCenter.getSportCenterStatuses().size();
+        this.statusReason = sportCenter.getSportCenterStatuses().get(numStatuses - 1).getStatusComment();
+        this.status = sportCenter.getSportCenterStatuses().get(numStatuses - 1).getStatus().getStatusType();
     }
 }

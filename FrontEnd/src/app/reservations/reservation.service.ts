@@ -19,13 +19,16 @@ export class ReservationService {
   }
 
   getReservations(date: Date, fieldId: string | null) {
-    return this.http.get(
+    let url =
       environment.BASE_API_URL +
-        '/reservations/by-week/' +
-        date.toISOString().split('T')[0] +
-        '/' +
-        fieldId,
-    );
+      '/reservations/by-week/' +
+      date.toISOString().split('T')[0] +
+      '/' +
+      fieldId;
+    if (localStorage.getItem('token') === null) {
+      return this.http.get(url);
+    }
+    return this.http.get(url, this.createHeader());
   }
 
   getSportCenter(sportCenterId: string | null, sport: string | null) {
@@ -57,6 +60,15 @@ export class ReservationService {
     return this.http.put(
       environment.BASE_API_URL + '/reservations/cancel/' + reservationId,
       reason,
+      this.createHeader(),
+    );
+  }
+
+  checkUser(user: string) {
+    console.log(user);
+    return this.http.post(
+      environment.BASE_API_URL + '/reservations/check-user',
+      user,
       this.createHeader(),
     );
   }

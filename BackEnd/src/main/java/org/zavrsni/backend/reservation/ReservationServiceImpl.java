@@ -21,6 +21,7 @@ import org.zavrsni.backend.sportCenter.dto.SportCenterReservationsDTO;
 import org.zavrsni.backend.status.Status;
 import org.zavrsni.backend.status.StatusRepository;
 import org.zavrsni.backend.user.User;
+import org.zavrsni.backend.user.UserRepository;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final FieldRepository fieldRepository;
     private final StatusRepository statusRepository;
     private final EntityStatusRepository entityStatusRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<ReservationDTO> getReservations(String dateString, Long fieldId) {
@@ -61,16 +63,15 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<Reservation> reservations = reservationRepository.findAllByField(field);
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role;
-        if (principal instanceof String) {
-            role = "UNREGISTERED_USER";
-        }
-        else {
+        try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             role = user.getRole().getRoleName();
         }
-
+        catch (Exception e) {
+            role = "UNREGISTERED_USER";
+        }
+        String finalRole = role;
         return reservations.stream().filter(reservation -> {
             List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
             Calendar calendar = Calendar.getInstance();
@@ -80,7 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
             String statusType = reservationStatuses.get(reservationStatuses.size() - 1).getStatus().getStatusType();
             return week == reservationWeek && year == reservationYear &&
                     (statusType.equals("ACTIVE") || statusType.equals("FINISHED"));
-        }).map(reservation -> new ReservationDTO(reservation, role)).toList();
+        }).map(reservation -> new ReservationDTO(reservation, finalRole)).toList();
     }
 
     @Override
@@ -140,12 +141,20 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getRole().getRoleName().equals("FIELD_OWNER")) {
+            user = userRepository.findByEmail(addReservationDTO.getEmail()).orElseThrow(
+                    () -> new IllegalArgumentException("User not found"));
+            if (!user.getRole().getRoleName().equals("ATHLETE")) {
+                throw new IllegalArgumentException("Only athletes can reserve fields");
+            }
+        }
         Reservation reservation = Reservation.builder()
                 .date(addReservationDTO.getDate())
                 .startTime(startTime)
                 .endTime(endTime)
                 .field(field)
-                .user((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .user(user)
                 .build();
         reservationRepository.save(reservation);
 
@@ -203,5 +212,14 @@ public class ReservationServiceImpl implements ReservationService {
                     .build();
             entityStatusRepository.save(newStatus);
         }
+    }
+
+    @Override
+    public Boolean checkUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!user.getRole().getRoleName().equals("ATHLETE")) {
+            throw new IllegalArgumentException("Only athletes can reserve fields");
+        }
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ReservationService } from '../reservation.service';
 
 @Component({
   selector: 'app-make-reservation-dialog',
@@ -14,6 +15,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           Početak: {{ data.startTime }} <br />
           Kraj: {{ data.endTime }} <br />
         </p>
+        @if (role != 'ATHLETE') {
+          <textarea
+            #user
+            class="user-input"
+            placeholder="Unesite mail korisnika"
+          ></textarea>
+          @if (userError) {
+            <span class="form-error"
+              >Morate unijeti ispravan mail korisnika!</span
+            >
+          }
+        }
         <textarea
           #reservationMessage
           class="reservation-message-input"
@@ -46,6 +59,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
         height: 100px;
         width: 100%;
         color: #d1d0c5;
+        margin-top: 10px;
 
         &:focus {
           outline: none;
@@ -64,13 +78,36 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
       h1 {
         text-align: center;
       }
+      .user-input {
+        font-size: 20px;
+        border-radius: 10px;
+        border: 1px solid #927979;
+        background: transparent;
+        margin-bottom: 10px;
+        resize: none;
+        height: 30px;
+        width: 100%;
+        color: #d1d0c5;
+
+        &:focus {
+          outline: none;
+        }
+      }
+      .form-error {
+        margin: 10px;
+      }
     `,
   ],
 })
 export class MakeReservationDialogComponent {
   private dialogRef = inject(MatDialogRef<MakeReservationDialogComponent>);
+  private reservationService = inject(ReservationService);
+
   public data = inject(MAT_DIALOG_DATA);
+  public role = localStorage.getItem('role') || '';
+  public userError = false;
   @ViewChild('reservationMessage') reservationMessage!: any;
+  @ViewChild('user') user!: any;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -78,6 +115,27 @@ export class MakeReservationDialogComponent {
 
   onYesClick(): void {
     const reservationMessage = this.reservationMessage.nativeElement.value;
-    this.dialogRef.close(['yes', reservationMessage]);
+    if (this.role === 'FIELD_OWNER') {
+      let user = this.user.nativeElement.value;
+      if (user === '') {
+        this.userError = true;
+        return;
+      }
+      this.reservationService.checkUser(user).subscribe({
+        next: () => {
+          this.dialogRef.close(['yes', reservationMessage, user]);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          this.userError = true;
+        },
+      });
+    } else {
+      this.dialogRef.close([
+        'yes',
+        reservationMessage,
+        localStorage.getItem('email'),
+      ]);
+    }
   }
 }
