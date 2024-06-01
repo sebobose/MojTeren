@@ -18,14 +18,14 @@
       <td mat-cell *matCellDef="let element"> {{element.sportCenterName}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="owner">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Vlasnik </th>
-      <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
-    </ng-container>
-
     <ng-container matColumnDef="address">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Adresa </th>
       <td mat-cell *matCellDef="let element">{{element.streetAndNumber}}, {{element.zipCode}} {{element.cityName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="owner">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Vlasnik </th>
+      <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
     </ng-container>
 
 <!--    <ng-container matColumnDef="details">-->

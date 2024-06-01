@@ -8,6 +8,16 @@ import { environment } from '../../environments/environment';
 export class AdminService {
   private http = inject(HttpClient);
 
+  createHeader() {
+    let header = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    });
+    return {
+      headers: header,
+    };
+  }
+
   getUsers() {
     return this.http.get(
       environment.BASE_API_URL + '/user/admin/users',
@@ -17,7 +27,7 @@ export class AdminService {
 
   getSportCenterRequests() {
     return this.http.get(
-      environment.BASE_API_URL + '/user/admin/sport-center-requests',
+      environment.BASE_API_URL + '/sport-center/admin/requests',
       this.createHeader(),
     );
   }
@@ -43,19 +53,11 @@ export class AdminService {
       this.createHeader(),
     );
   }
-  createHeader() {
-    let header = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-    });
-    return {
-      headers: header,
-    };
-  }
 
-  getAdminSportCenters() {
-    return this.http.get(
-      environment.BASE_API_URL + '/sport-center/admin/all',
+  resolveRequest(sportCenterId: any, reason: any) {
+    return this.http.put(
+      environment.BASE_API_URL + '/sport-center/admin/resolve',
+      { sportCenterId: sportCenterId, decision: reason[0], reason: reason[1] },
       this.createHeader(),
     );
   }

@@ -20,6 +20,7 @@ import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
+import org.zavrsni.backend.sportCenter.dto.SportCenterRequestDTO;
 import org.zavrsni.backend.status.Status;
 import org.zavrsni.backend.status.StatusRepository;
 import org.zavrsni.backend.user.User;
@@ -72,7 +73,6 @@ public class SportCenterServiceImpl implements SportCenterService {
                     .latitude(addSportCenterDTO.getLatitude())
                     .build();
             addressRepository.save(address);
-            System.out.println("longitude: " + addSportCenterDTO.getLongitude());
 
             User owner = userRepository.findByEmail(addSportCenterDTO.getEmail()).orElseThrow();
             SportCenter sportCenter = SportCenter.builder()
@@ -97,12 +97,14 @@ public class SportCenterServiceImpl implements SportCenterService {
         }
 
     @Override
-    public List<SportCenterDetailsDTO> getAllSportCentersAdmin() {
+    public List<SportCenterDetailsDTO> getAllOwnerSportCenters() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return sportCenterRepository.findAll().stream()
                 .filter(sportCenter -> {
                     List<EntityStatus> statuses = sportCenter.getSportCenterStatuses();
                     return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
-                            .getStatus().getStatusType().equals("ACTIVE");
+                            .getStatus().getStatusType().equals("ACTIVE") && (user.getRole().getRoleName().equals("ADMIN") ||
+                            sportCenter.getOwner().getEmail().equals(user.getEmail()));
                 }).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
     }
 
@@ -124,15 +126,15 @@ public class SportCenterServiceImpl implements SportCenterService {
         if (city == null || !Objects.equals(city.getZipCode(), addSportCenterDTO.getZipCode())) {
             throw new Exception("City and zip code do not match");
         }
-        Address address = Address.builder()
-                .streetAndNumber(addSportCenterDTO.getStreetAndNumber())
-                .city(city)
-                .longitude(addSportCenterDTO.getLongitude())
-                .latitude(addSportCenterDTO.getLatitude())
-                .build();
-        addressRepository.save(address);
 
         SportCenter sportCenter = sportCenterRepository.findById(sportCenterId).orElseThrow();
+        Address address = sportCenter.getAddress();
+        address.setStreetAndNumber(addSportCenterDTO.getStreetAndNumber());
+        address.setCity(city);
+        address.setLongitude(addSportCenterDTO.getLongitude());
+        address.setLatitude(addSportCenterDTO.getLatitude());
+        addressRepository.save(address);
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Status status = user.getRole().getRoleName().equals("ADMIN") ?
                 statusRepository.findByStatusType("ACTIVE").orElseThrow() :
@@ -253,6 +255,32 @@ public class SportCenterServiceImpl implements SportCenterService {
 //                    }).toList();
 //        }
 
+    }
+
+    @Override
+    public List<SportCenterDetailsDTO> getSportCenterRequests() {
+        return sportCenterRepository.findAll().stream()
+                .filter(sportCenter -> {
+                    List<EntityStatus> statuses = sportCenter.getSportCenterStatuses();
+                    return sportCenter.getSportCenterStatuses().get(statuses.size() - 1)
+                            .getStatus().getStatusType().equals("PENDING");
+                }).map(sportCenter -> {
+                    List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());
+                    return new SportCenterDetailsDTO(sportCenter, images);
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Void resolveSportCenterRequest(SportCenterRequestDTO sportCenterRequestDTO) {
+        SportCenter sportCenter = sportCenterRepository.findById(sportCenterRequestDTO.getSportCenterId()).orElseThrow();
+        Status status = statusRepository.findByStatusType(sportCenterRequestDTO.getDecision()).orElseThrow();
+        EntityStatus entityStatus = EntityStatus.builder()
+                .status(status)
+                .sportCenter(sportCenter)
+                .statusComment(sportCenterRequestDTO.getReason())
+                .build();
+        entityStatusRepository.save(entityStatus);
+        return null;
     }
 
     @SneakyThrows

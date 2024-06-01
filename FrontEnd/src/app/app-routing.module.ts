@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { HomepageComponent } from './homepage/homepage.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
-import { AdminSportCentersComponent } from './admin/admin-sport-centers/admin-sport-centers.component';
+import { SportCentersListComponent } from './sport-center/sport-centers-list/sport-centers-list.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 import { AddSportCenterComponent } from './sport-center/add-sport-center/add-sport-center.component';
@@ -14,7 +14,6 @@ import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-
 import { FieldReservationsComponent } from './reservations/field-reservations/field-reservations.component';
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { OwnerSportCenterComponent } from './sport-center/owner-sport-center/owner-sport-center.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -32,10 +31,10 @@ export const routes: Routes = [
     data: { requiredRole: 'ADMIN' },
   },
   {
-    path: 'admin/sport-centers',
-    component: AdminSportCentersComponent,
+    path: 'sport-centers-list',
+    component: SportCentersListComponent,
     canActivate: [AuthGuard],
-    data: { requiredRole: 'ADMIN' },
+    data: { requiredRole: ['ADMIN', 'FIELD_OWNER'] },
   },
   {
     path: 'admin/users',
@@ -48,12 +47,6 @@ export const routes: Routes = [
     component: AdminSportsComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ADMIN' },
-  },
-  {
-    path: 'field-owner/sport-centers',
-    component: OwnerSportCenterComponent,
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'FIELD_OWNER' },
   },
   {
     path: 'add-sport-center',

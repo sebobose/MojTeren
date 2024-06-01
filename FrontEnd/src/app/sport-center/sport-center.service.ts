@@ -76,4 +76,11 @@ export class SportCenterService {
         environment.GOOGLE_MAPS_API_KEY,
     );
   }
+
+  getSportCenters() {
+    return this.http.get(
+      environment.BASE_API_URL + '/sport-center/user/all',
+      this.createHeader(),
+    );
+  }
 }

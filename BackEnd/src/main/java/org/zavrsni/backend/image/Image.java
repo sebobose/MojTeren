@@ -28,7 +28,7 @@ public class Image {
     @JdbcTypeCode(Types.VARBINARY)
     private byte[] image;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private SportCenter sportCenter;
 
     public Image(byte[] image, SportCenter sportCenter) {

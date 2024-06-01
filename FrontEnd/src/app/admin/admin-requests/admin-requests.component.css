@@ -1,0 +1,79 @@
+.sport-centers-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 20px 20px;
+  height: 10%;
+}
+
+.add-sport-center {
+  margin: 20px;
+  width: 200px;
+}
+
+.sc-details {
+  margin: 0;
+}
+
+mat-icon {
+  color: #e2b714;
+  position: absolute;
+  top: 28px;
+  right: 10%;
+  z-index: 2;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.search-field-input {
+  font-size: 20px;
+  border-radius: 10px;
+  border: 1px solid #927979;
+  background: transparent;
+  margin: 20px 20px 20px;
+  resize: none;
+  overflow: hidden;
+  padding: 5px 40px 5px 5px;
+  position: relative;
+  z-index: 1;
+  height: 25px;
+  color: #d1d0c5;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.search {
+  position: relative;
+}
+
+.sport-center-table {
+  margin: 30px;
+  border-radius: 20px;
+  border: #646669 2px solid;
+}
+
+table {
+  --mat-table-background-color: transparent;
+  --mat-table-header-headline-color: #e2b714;
+  --mat-table-row-item-label-text-color: #d1d0c5;
+  --mat-table-row-item-outline-color: #646669;
+}
+
+mat-paginator {
+  --mat-paginator-container-text-color: #d1d0c5;
+  --mat-paginator-container-background-color: transparent;
+  --mat-paginator-enabled-icon-color: #d1d0c5;
+  --mat-paginator-disabled-icon-color: #646669;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-column-details, .mat-column-edit {
+  width: 200px;
+}

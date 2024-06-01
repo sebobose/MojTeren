@@ -3,29 +3,25 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { AdminService } from '../admin.service';
+import { AdminService } from '../../admin/admin.service';
+import { SportCenterService } from '../sport-center.service';
 
 @Component({
-  selector: 'app-admin-sport-centers',
-  templateUrl: './admin-sport-centers.component.html',
-  styleUrl: './admin-sport-centers.component.css',
+  selector: 'app-sport-centers-list',
+  templateUrl: './sport-centers-list.component.html',
+  styleUrl: './sport-centers-list.component.css',
 })
-export class AdminSportCentersComponent implements OnInit {
+export class SportCentersListComponent implements OnInit {
   private router = inject(Router);
   private adminService = inject(AdminService);
+  private sportCenterService = inject(SportCenterService);
 
   @ViewChild('searchArea') searchArea!: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  displayedColumns: string[] = [
-    'sportCenterName',
-    'owner',
-    'address',
-    // 'details',
-    'edit',
-  ];
+  displayedColumns: string[] = ['sportCenterName', 'address', 'owner', 'edit'];
   dataSource: MatTableDataSource<SportCenterData> = new MatTableDataSource();
 
   ngOnInit(): void {
@@ -39,7 +35,7 @@ export class AdminSportCentersComponent implements OnInit {
           return item.sportCenterName;
       }
     };
-    this.adminService.getAdminSportCenters().subscribe({
+    this.sportCenterService.getSportCenters().subscribe({
       next: (data: any) => {
         this.dataSource = new MatTableDataSource<SportCenterData>(data);
         this.dataSource.paginator = this.paginator;

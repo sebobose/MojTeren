@@ -7,6 +7,7 @@ import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
+import org.zavrsni.backend.sportCenter.dto.SportCenterRequestDTO;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class SportCenterController {
         return ResponseEntity.ok(sportCenterService.addSportCenter(addSportCenterDTO));
     }
 
-    @GetMapping("/admin/all")
-    public ResponseEntity<List<SportCenterDetailsDTO>> getAllSportCentersAdmin() {
-        return ResponseEntity.ok(sportCenterService.getAllSportCentersAdmin());
+    @GetMapping("/user/all")
+    public ResponseEntity<List<SportCenterDetailsDTO>> getAllOwnerSportCenters() {
+        return ResponseEntity.ok(sportCenterService.getAllOwnerSportCenters());
     }
 
     @GetMapping("/{sportCenterId}")
@@ -52,4 +53,15 @@ public class SportCenterController {
     public ResponseEntity<List<SportCenterDetailsDTO>> getAllSportCenters(@RequestBody FilteredSportCenterDTO filteredSportCenterDTO) {
         return ResponseEntity.ok(sportCenterService.getAllSportCenters(filteredSportCenterDTO));
     }
+
+    @GetMapping("/admin/requests")
+    public ResponseEntity<List<SportCenterDetailsDTO>> getSportCenterRequests() {
+        return ResponseEntity.ok(sportCenterService.getSportCenterRequests());
+    }
+
+    @PutMapping("/admin/resolve")
+    public ResponseEntity<Void> resolveSportCenterRequest(@RequestBody SportCenterRequestDTO sportCenterRequestDTO) {
+        return ResponseEntity.ok(sportCenterService.resolveSportCenterRequest(sportCenterRequestDTO));
+    }
+
 }

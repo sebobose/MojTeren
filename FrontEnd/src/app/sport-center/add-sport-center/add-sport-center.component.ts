@@ -114,14 +114,8 @@ export class AddSportCenterComponent implements OnInit {
   }
 
   CloseForm() {
-    if (this.role === 'ADMIN') {
-      this.router.navigate(['/admin/sport-centers']).then(() => {
-        window.location.reload();
-      });
-    } else {
-      this.router.navigate(['/field-owner/sport-centers']).then(() => {
-        window.location.reload();
-      });
-    }
+    this.router.navigate(['/sport-centers-list']).then(() => {
+      window.location.reload();
+    });
   }
 }

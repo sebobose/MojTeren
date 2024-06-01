@@ -21,7 +21,7 @@ import {
 } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminRequestsComponent } from './admin/admin-requests/admin-requests.component';
-import { AdminSportCentersComponent } from './admin/admin-sport-centers/admin-sport-centers.component';
+import { SportCentersListComponent } from './sport-center/sport-centers-list/sport-centers-list.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminSportsComponent } from './admin/admin-sports/admin-sports.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -58,7 +58,7 @@ import { MakeReservationDialogComponent } from './reservations/field-reservation
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
 import { DelReservationDialogComponent } from './reservations/user-reservations/del-reservation-dialog.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { OwnerSportCenterComponent } from './sport-center/owner-sport-center/owner-sport-center.component';
+import { ScDialogComponent } from './sport-center/sc-dialog.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -79,7 +79,7 @@ registerLocaleData(localeHr);
     HeaderComponent,
     HomepageComponent,
     AdminRequestsComponent,
-    AdminSportCentersComponent,
+    SportCentersListComponent,
     AdminUsersComponent,
     AdminSportsComponent,
     AddSportCenterComponent,
@@ -93,7 +93,7 @@ registerLocaleData(localeHr);
     UserReservationsComponent,
     DelReservationDialogComponent,
     UserProfileComponent,
-    OwnerSportCenterComponent,
+    ScDialogComponent,
   ],
   imports: [
     BrowserModule,

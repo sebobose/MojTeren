@@ -143,14 +143,16 @@ export class EditSportCenterComponent implements OnInit {
                   formData.append('images', images.at(i).value);
                 }
 
-                this.sportCenterService.addSportCenter(formData).subscribe({
-                  next: () => {
-                    this.CloseForm();
-                  },
-                  error: () => {
-                    this.wrongAddress = true;
-                  },
-                });
+                this.sportCenterService
+                  .editSportCenter(formData, this.sportCenterId)
+                  .subscribe({
+                    next: () => {
+                      this.CloseForm();
+                    },
+                    error: () => {
+                      this.wrongAddress = true;
+                    },
+                  });
               }
             },
             error: (error) => {
@@ -183,15 +185,9 @@ export class EditSportCenterComponent implements OnInit {
   }
 
   CloseForm() {
-    if (this.role === 'ADMIN') {
-      this.router.navigate(['/admin/sport-centers']).then(() => {
-        window.location.reload();
-      });
-    } else {
-      this.router.navigate(['/field-owner/sport-centers']).then(() => {
-        window.location.reload();
-      });
-    }
+    this.router.navigate(['/sport-centers-list']).then(() => {
+      window.location.reload();
+    });
   }
 
   deleteSportCenter() {

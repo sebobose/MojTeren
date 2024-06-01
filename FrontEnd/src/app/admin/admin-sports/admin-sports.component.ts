@@ -45,14 +45,14 @@ export class AdminSportsComponent implements OnInit {
         this.dataSource = new MatTableDataSource<SportsData>(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        for (let element of this.dataSource.data) {
+          this.disabledButtons.set(element.sportName, element.fields > 0);
+        }
       },
       error: (error) => {
         console.error('Error:', error);
       },
     });
-    for (let element of this.dataSource.data) {
-      this.disabledButtons.set(element.sportName, element.fields > 0);
-    }
   }
 
   deleteSport(element: any) {
