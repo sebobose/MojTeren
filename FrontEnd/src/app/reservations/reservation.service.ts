@@ -65,10 +65,16 @@ export class ReservationService {
   }
 
   checkUser(user: string) {
-    console.log(user);
     return this.http.post(
       environment.BASE_API_URL + '/reservations/check-user',
       user,
+      this.createHeader(),
+    );
+  }
+
+  getCanceledReservations() {
+    return this.http.get(
+      environment.BASE_API_URL + '/reservations/canceled',
       this.createHeader(),
     );
   }

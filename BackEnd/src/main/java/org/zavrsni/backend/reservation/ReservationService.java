@@ -19,4 +19,6 @@ public interface ReservationService {
     void cancelReservation(Long reservationId, String reason);
 
     Boolean checkUser(String email);
+
+    List<UserReservationDTO> getCanceledReservations();
 }

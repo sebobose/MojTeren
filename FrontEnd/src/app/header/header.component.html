@@ -30,6 +30,14 @@
       <div class="header-login">
         <span
           class="header-login"
+          [class.selected]="active === '/canceled-reservations'"
+          (click)="changePage('/canceled-reservations')"
+        >Otkazane rezervacije</span
+        >
+      </div>
+      <div class="header-login">
+        <span
+          class="header-login"
           [class.selected]="active === '/sport-centers-list'"
           (click)="changePage('/sport-centers-list')"
           >Moji tereni</span

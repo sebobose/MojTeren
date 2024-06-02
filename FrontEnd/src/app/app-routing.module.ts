@@ -14,6 +14,7 @@ import { EditSportCenterComponent } from './sport-center/edit-sport-center/edit-
 import { FieldReservationsComponent } from './reservations/field-reservations/field-reservations.component';
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { CanceledReservationsComponent } from './reservations/canceled-reservations/canceled-reservations.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -72,6 +73,12 @@ export const routes: Routes = [
     component: UserProfileComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: ['ATHLETE', 'FIELD_OWNER'] },
+  },
+  {
+    path: 'canceled-reservations',
+    component: CanceledReservationsComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: ['FIELD_OWNER'] },
   },
 ];
 

@@ -49,4 +49,9 @@ public class ReservationController {
     public ResponseEntity<Boolean> checkUser(@RequestBody String email) {
         return ResponseEntity.ok(reservationService.checkUser(email));
     }
+
+    @GetMapping("/canceled")
+    public ResponseEntity<List<UserReservationDTO>> getCanceledReservations() {
+        return ResponseEntity.ok(reservationService.getCanceledReservations());
+    }
 }

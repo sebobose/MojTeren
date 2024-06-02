@@ -26,6 +26,7 @@ import org.zavrsni.backend.user.UserRepository;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -228,5 +229,26 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalArgumentException("Only athletes can reserve fields");
         }
         return true;
+    }
+
+    @Override
+    public List<UserReservationDTO> getCanceledReservations() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<SportCenter> sportCenters = sportCenterRepository.findAllByOwner(user);
+        List<Field> fields = sportCenters.stream().map(SportCenter::getFields).flatMap(List::stream).toList();
+        List<Reservation> reservations = new ArrayList<>();
+        for (Field field : fields) {
+            List<Reservation> fieldReservations = reservationRepository.findAllByField(field);
+            reservations.addAll(fieldReservations);
+        }
+
+        return reservations.stream().filter(reservation -> {
+            List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
+            EntityStatus lastStatus = reservationStatuses.get(reservationStatuses.size() - 1);
+            return lastStatus.getStatus().getStatusType().equals("INACTIVE");
+        }).map(reservation -> {
+            List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
+            return new UserReservationDTO(reservation, reservationStatuses.get(reservationStatuses.size() - 1));
+        }).toList();
     }
 }
