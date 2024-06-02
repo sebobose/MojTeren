@@ -31,7 +31,12 @@
       <td mat-cell *matCellDef="let element"> {{element.status}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="delete">
+    <ng-container matColumnDef="statusMessage">
+      <th mat-header-cell *matHeaderCellDef> Poruka uz rezervaciju </th>
+      <td mat-cell *matCellDef="let element"> {{element.statusMessage}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cancel">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <button [disabled]="disabledButtons.get(element.reservationId)" class="button" (click)="cancelReservation(element)">Otkaži</button>

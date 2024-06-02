@@ -22,7 +22,8 @@ export class UserReservationsComponent implements OnInit {
     'fieldName',
     'sportName',
     'status',
-    'delete',
+    'statusMessage',
+    'cancel',
   ];
   statusMap: any = {
     ACTIVE: 'Aktivna',
@@ -38,6 +39,7 @@ export class UserReservationsComponent implements OnInit {
   ngOnInit(): void {
     this.reservationService.getUserReservations().subscribe({
       next: (reservations: any) => {
+        console.log(reservations);
         for (let reservation of reservations) {
           let date = reservation.time.split(' ')[0];
           date = date.split('-').reverse().join('.');

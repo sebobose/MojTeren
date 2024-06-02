@@ -20,6 +20,7 @@ public class UserReservationDTO {
     private String fieldName;
     private String sportName;
     private String status;
+    private String statusMessage;
 
     public UserReservationDTO(Reservation reservation, EntityStatus status) {
         this.reservationId = reservation.getReservationId();
@@ -30,5 +31,6 @@ public class UserReservationDTO {
         this.fieldName = reservation.getField().getFieldName();
         this.sportName = reservation.getField().getSport().getSportName();
         this.status = status.getStatus().getStatusType();
+        this.statusMessage = status.getStatusComment();
     }
 }

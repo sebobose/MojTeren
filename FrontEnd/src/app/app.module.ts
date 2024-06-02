@@ -59,6 +59,7 @@ import { UserReservationsComponent } from './reservations/user-reservations/user
 import { DelReservationDialogComponent } from './reservations/user-reservations/del-reservation-dialog.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ScDialogComponent } from './sport-center/sc-dialog.component';
+import { ReservationDetailsDialog } from './reservations/field-reservations/reservation-details-dialog';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -94,6 +95,7 @@ registerLocaleData(localeHr);
     DelReservationDialogComponent,
     UserProfileComponent,
     ScDialogComponent,
+    ReservationDetailsDialog,
   ],
   imports: [
     BrowserModule,

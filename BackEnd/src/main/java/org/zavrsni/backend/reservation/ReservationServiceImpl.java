@@ -142,7 +142,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getRole().getRoleName().equals("FIELD_OWNER")) {
+        if (!user.getRole().getRoleName().equals("ATHLETE")) {
             user = userRepository.findByEmail(addReservationDTO.getEmail()).orElseThrow(
                     () -> new IllegalArgumentException("User not found"));
             if (!user.getRole().getRoleName().equals("ATHLETE")) {
@@ -199,8 +199,15 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(
                 () -> new IllegalArgumentException("Reservation not found"));
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!reservation.getUser().getEmail().equals(user.getEmail())) {
-            throw new IllegalArgumentException("You are not authorized to cancel this reservation");
+        if (user.getRole().getRoleName().equals("ATHLETE")) {
+            if (!reservation.getUser().getEmail().equals(user.getEmail())) {
+                throw new IllegalArgumentException("You are not authorized to cancel this reservation");
+            }
+        }
+        else if (user.getRole().getRoleName().equals("FIELD_OWNER")){
+            if (!reservation.getField().getSportCenter().getOwner().getEmail().equals(user.getEmail())) {
+                throw new IllegalArgumentException("You are not authorized to cancel this reservation");
+            }
         }
         List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
         EntityStatus lastStatus = reservationStatuses.get(reservationStatuses.size() - 1);

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GalleryComponent } from '../../gallery/gallery.component';
 import { CustomDateFormatter } from '../../custom/custom-date-formatter.provider';
 import { MakeReservationDialogComponent } from './make-reservation-dialog.component';
+import { ReservationDetailsDialog } from './reservation-details-dialog';
 
 @Component({
   selector: 'app-reservations',
@@ -41,6 +42,7 @@ export class FieldReservationsComponent implements OnInit {
   protected view: CalendarView = CalendarView.Week;
   protected locale: string = 'hr';
   protected showCalendar: boolean = false;
+  protected fullReservations: Map<any, any> = new Map();
 
   ngOnInit(): void {
     this.sportCenterId = this.route.snapshot.paramMap.get('id');
@@ -78,8 +80,41 @@ export class FieldReservationsComponent implements OnInit {
     this.getReservations(this.viewDate);
   }
 
-  eventClicked(event: CalendarEvent) {
-    console.log(event);
+  eventClicked(event: any) {
+    let startMinutes = event.start.getMinutes().toString();
+    let endMinutes = event.end.getMinutes().toString();
+    if (startMinutes.length < 2) startMinutes = '0' + startMinutes;
+    if (endMinutes.length < 2) endMinutes = '0' + endMinutes;
+    let date = event.start.toISOString().split('T')[0].split('-');
+    const dialogRef = this.dialog.open(ReservationDetailsDialog, {
+      width: '600px',
+      height: '620px',
+      data: {
+        name:
+          this.fullReservations.get(event.id).user.firstName +
+          ' ' +
+          this.fullReservations.get(event.id).user.lastName,
+        email: this.fullReservations.get(event.id).user.email,
+        contact: this.fullReservations.get(event.id).user.contact,
+        sportCenterName: this.sportCenter.sportCenterName,
+        fieldName: this.currentField.fieldName,
+        date: date.reverse().join('.'),
+        startTime: event.start.getHours() + ':' + startMinutes,
+        endTime: event.end.getHours() + ':' + endMinutes,
+        message: this.fullReservations.get(event.id).statusMessage,
+      },
+    });
+    dialogRef.afterClosed().subscribe((reason: any) => {
+      if (reason) {
+        this.reservationService
+          .cancelReservation(event.id, reason[1])
+          .subscribe({
+            next: () => {
+              window.location.reload();
+            },
+          });
+      }
+    });
   }
 
   private getMaxHours(currentField: any) {
@@ -374,8 +409,7 @@ export class FieldReservationsComponent implements OnInit {
   private getMonday() {
     let d = new Date(this.viewDate);
     d.setHours(0);
-    let day = d.getDay();
-    let diff = d.getDate() - day + (day == 0 ? -6 : 1);
+    let diff = d.getDate() - d.getDay() + 1;
     return new Date(d.setDate(diff));
   }
 
@@ -402,7 +436,12 @@ export class FieldReservationsComponent implements OnInit {
       .subscribe((reservations: any) => {
         console.log(reservations);
         for (let i = 0; i < reservations.length; i++) {
+          this.fullReservations.set(
+            reservations[i].reservationId,
+            reservations[i],
+          );
           let reservation = {
+            id: reservations[i].reservationId,
             start: new Date(
               reservations[i].date + 'T' + reservations[i].startTime,
             ),
