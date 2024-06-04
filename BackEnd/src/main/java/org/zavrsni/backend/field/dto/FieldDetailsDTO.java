@@ -40,6 +40,7 @@ public class FieldDetailsDTO {
     }
 
     public FieldDetailsDTO(Field field) {
+        this.fieldId = field.getFieldId();
         this.fieldName = field.getFieldName();
         this.sport = field.getSport().getSportName();
         this.minResTime = field.getMinResTime();

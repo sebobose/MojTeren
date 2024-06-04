@@ -31,6 +31,7 @@ public class SportCenterDetailsDTO {
     private String status;
     private String statusReason;
     private String sport;
+    private FieldDetailsDTO filteredField;
 
     public SportCenterDetailsDTO(SportCenter sportCenter, String sport ) {
         setBaseDetails(sportCenter);
@@ -47,6 +48,14 @@ public class SportCenterDetailsDTO {
         this.images = images.stream().map(Image::getImage).toList();
         this.fields = fields.stream().map(FieldDetailsDTO::new).toList();
         this.distance = distance;
+    }
+
+    public SportCenterDetailsDTO(SportCenter sportCenter, List<Image> images, List<Field> fields, Field field, Double distance) {
+        setBaseDetails(sportCenter);
+        this.images = images.stream().map(Image::getImage).toList();
+        this.fields = fields.stream().map(FieldDetailsDTO::new).toList();
+        this.distance = distance;
+        this.filteredField = new FieldDetailsDTO(field);
     }
 
     private void setBaseDetails(SportCenter sportCenter) {

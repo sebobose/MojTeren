@@ -15,8 +15,10 @@ import org.zavrsni.backend.entityStatus.EntityStatusRepository;
 import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.field.FieldService;
 import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
+import org.zavrsni.backend.fieldAvailability.FieldAvailability;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
+import org.zavrsni.backend.reservation.Reservation;
 import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
 import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
@@ -34,10 +36,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -223,50 +222,84 @@ public class SportCenterServiceImpl implements SportCenterService {
                             field.getSport().getSportName().equals(filteredSportCenterDTO.getSport());
                 }).toList();
 
-        List<SportCenter> sportCentersList = sportFilteredFields.stream().map(Field::getSportCenter).distinct().toList();
+        if (filteredSportCenterDTO.getDate() == null) {
+            List<SportCenter> sportCentersList = sportFilteredFields.stream().map(Field::getSportCenter).distinct().toList();
+            return sportCentersList.stream().map(sportCenter -> {
+                List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());
+                double distance = calculateDistance(Double.parseDouble(sportCenter.getAddress().getLatitude()),
+                        Double.parseDouble(sportCenter.getAddress().getLongitude()),
+                        Double.parseDouble(filteredSportCenterDTO.getLatitude()),
+                        Double.parseDouble(filteredSportCenterDTO.getLongitude()));
+                List<Field> fieldsList = sportFilteredFields.stream()
+                        .filter(field -> field.getSportCenter().getSportCenterId().equals(sportCenter.getSportCenterId()))
+                        .toList();
+                return new SportCenterDetailsDTO(sportCenter, images, fieldsList, distance);
+            }).collect(Collectors.toList());
+        }
 
-        return sportCentersList.stream().map(sportCenter -> {
-            List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());
-            double distance = calculateDistance(Double.parseDouble(sportCenter.getAddress().getLatitude()),
-                    Double.parseDouble(sportCenter.getAddress().getLongitude()),
-                    Double.parseDouble(filteredSportCenterDTO.getLatitude()),
-                    Double.parseDouble(filteredSportCenterDTO.getLongitude()));
-            List<Field> fieldsList = sportFilteredFields.stream()
-                    .filter(field -> field.getSportCenter().getSportCenterId().equals(sportCenter.getSportCenterId()))
-                    .toList();
-            return new SportCenterDetailsDTO(sportCenter, images, fieldsList, distance);
-        }).collect(Collectors.toList());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(filteredSportCenterDTO.getDate());
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayOfWeek = switch (day) {
+            case Calendar.MONDAY -> "Monday";
+            case Calendar.TUESDAY -> "Tuesday";
+            case Calendar.WEDNESDAY -> "Wednesday";
+            case Calendar.THURSDAY -> "Thursday";
+            case Calendar.FRIDAY -> "Friday";
+            case Calendar.SATURDAY -> "Saturday";
+            case Calendar.SUNDAY -> "Sunday";
+            default -> "";
+        };
 
-//        if (filteredSportCenterDTO.getDate() == null) {
-//            return sportFilteredFields.stream().map(Field::getSportCenter).map(SportCenterDetailsDTO::new).collect(Collectors.toList());
-//        }
-//        else {
-//            Time timeLow = Time.valueOf(filteredSportCenterDTO.getTimeLow());
-//            Time timeHigh = Time.valueOf(filteredSportCenterDTO.getTimeHigh());
-//            List<Field> dateFilteredFields = sportFilteredFields.stream()
-//                    .filter(field -> {
-//                        List<Reservation> reservations = field.getReservations().stream().filter(reservation -> {
-//                            List<EntityStatus> statuses = reservation.getReservationStatuses();
-//                            return reservation.getReservationStatuses().get(statuses.size() - 1)
-//                                    .getStatus().getStatusType().equals("ACTIVE");
-//                        }).toList();
-//                        for (Reservation reservation : reservations) {
-//                            if (reservation.getDate().toString().equals(filteredSportCenterDTO.getDate()) &&
-//                                    reservation.getStartTime().before(timeLow) &&
-//                                    reservation.getEndTime().after(timeLow)) {
-//                                return false;
-//                            }
-//                        }
-//                        return field.getFieldStatuses().get(statuses.size() - 1)
-//                                .getStatus().getStatusType().equals("ACTIVE") &&
-//                                field.getReservations().stream().anyMatch(reservation -> {
-//                                    return reservation.getDate().toString().equals(filteredSportCenterDTO.getDate()) &&
-//                                            reservation.getTime().compareTo(filteredSportCenterDTO.getTimeLow()) >= 0 &&
-//                                            reservation.getTime().compareTo(filteredSportCenterDTO.getTimeHigh()) <= 0;
-//                                });
-//                    }).toList();
-//        }
+        List<Field> dayFilteredFields = sportFilteredFields.stream()
+                .filter(field -> field.getFieldAvailabilities().stream()
+                        .anyMatch(fieldAvailability -> fieldAvailability.getDayOfWeek().equals(dayOfWeek)))
+                .toList();
 
+        List<SportCenterDetailsDTO> result = new ArrayList<>();
+        List<SportCenter> addedSportCenters = new ArrayList<>();
+        for (Field field : dayFilteredFields) {
+            if (addedSportCenters.contains(field.getSportCenter())) {
+                continue;
+            }
+            List<Reservation> dateFilteredReservations = field.getReservations().stream().filter(
+                    reservation -> {
+                        List<EntityStatus> statuses = reservation.getReservationStatuses();
+                        String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                        return reservation.getDate().toString().equals(filteredSportCenterDTO.getDate().toString()) &&
+                                lastStatus.equals("ACTIVE");
+                    })
+                    .sorted(Comparator.comparing(Reservation::getStartTime))
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+            FieldAvailability fieldAvailability = field.getFieldAvailabilities().stream()
+                    .filter(fieldAvailability1 -> fieldAvailability1.getDayOfWeek().equals(dayOfWeek))
+                    .findFirst().orElseThrow();
+
+            Reservation dayStart = Reservation.builder().endTime(fieldAvailability.getStartTime()).build();
+            Reservation dayEnd = Reservation.builder().startTime(fieldAvailability.getEndTime()).build();
+            dateFilteredReservations.add(0, dayStart);
+            dateFilteredReservations.add(dayEnd);
+            for (int i = 0; i < dateFilteredReservations.size() - 1; i++) {
+                Reservation current = dateFilteredReservations.get(i);
+                Reservation next = dateFilteredReservations.get(i + 1);
+                long diffInMillies = next.getStartTime().getTime() - current.getEndTime().getTime();
+                if (diffInMillies >= filteredSportCenterDTO.getReservationTime() * 60 * 1000) {
+                    List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(field.getSportCenter().getSportCenterId());
+                    double distance = calculateDistance(Double.parseDouble(field.getSportCenter().getAddress().getLatitude()),
+                            Double.parseDouble(field.getSportCenter().getAddress().getLongitude()),
+                            Double.parseDouble(filteredSportCenterDTO.getLatitude()),
+                            Double.parseDouble(filteredSportCenterDTO.getLongitude()));
+                    List<Field> fieldsList = sportFilteredFields.stream()
+                            .filter(field2 -> field2.getSportCenter().getSportCenterId().equals(field.getSportCenter().getSportCenterId()))
+                            .toList();
+                    result.add(new SportCenterDetailsDTO(field.getSportCenter(), images, fieldsList, field, distance));
+                    addedSportCenters.add(field.getSportCenter());
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -342,5 +375,4 @@ public class SportCenterServiceImpl implements SportCenterService {
     public static double haversin(double val) {
         return Math.pow(Math.sin(val / 2), 2);
     }
-
 }

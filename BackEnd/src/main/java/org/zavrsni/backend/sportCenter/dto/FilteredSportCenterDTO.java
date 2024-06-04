@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -14,8 +16,9 @@ public class FilteredSportCenterDTO {
     private String longitude;
     private String latitude;
     private Float distance;
-    private String date;
+    private Date date;
     private String timeLow;
     private String timeHigh;
     private String sport;
+    private Long reservationTime;
 }

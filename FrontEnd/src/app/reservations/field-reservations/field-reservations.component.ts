@@ -45,13 +45,27 @@ export class FieldReservationsComponent implements OnInit {
   protected fullReservations: Map<any, any> = new Map();
 
   ngOnInit(): void {
+    let fieldId: any = null;
+    this.route.queryParams.subscribe((params) => {
+      fieldId = params['field'];
+      if (params['date']) {
+        this.viewDate = new Date(params['date']);
+      }
+    });
     this.sportCenterId = this.route.snapshot.paramMap.get('id');
     const sport = this.route.snapshot.paramMap.get('sport');
     this.reservationService
       .getSportCenter(this.sportCenterId, sport)
       .subscribe((sportCenter: any) => {
         this.sportCenter = sportCenter;
-        this.currentField = sportCenter.fields[0];
+        if (fieldId) {
+          this.currentField = sportCenter.fields.find(
+            (field: any) => field.fieldId == fieldId,
+          );
+        } else {
+          this.currentField = sportCenter.fields[0];
+        }
+
         this.setTimes();
         this.maxHours = this.getMaxHours(this.currentField);
         this.minHours = this.getMinHours(this.currentField);

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { HomepageService } from './homepage.service';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { GoogleMap } from '@angular/google-maps';
 
 @Component({
@@ -38,19 +38,30 @@ export class HomepageComponent implements OnInit {
   lng: any;
   sportCenters: any;
   activeSportCenter: any = null;
-  filterForm = this.formBuilder.nonNullable.group(
+  filterForm: any = this.formBuilder.nonNullable.group(
     {
       distanceChange: [10],
       date: [''],
       timeChangeLow: [300],
       timeChangeHigh: [1439],
+      reservationTime: ['1 h'],
     },
     {
       updateOn: 'change',
     },
   );
   minDate: any = new Date();
-  mapHeight: any = window.innerHeight * 0.65 + 'px';
+  mapHeight: any = window.innerHeight * 0.6 + 'px';
+  timeSlots: string[] = [
+    '45 min',
+    '1 h',
+    '1 h 15 min',
+    '1 h 30 min',
+    '1 h 45 min',
+    '2 h',
+    '2 h 15 min',
+    '2 h 30 min',
+  ];
 
   ngOnInit(): void {
     if (localStorage.getItem('role') === 'ADMIN') {
@@ -113,14 +124,20 @@ export class HomepageComponent implements OnInit {
   }
 
   private getLocations() {
+    let reservationTime = this.convertTimeToMinutes(
+      this.filterForm.value.reservationTime,
+    );
+    let date = new Date(this.filterForm.value.date);
+    date.setHours(10);
     let form = {
       latitude: this.lat,
       longitude: this.lng,
       distance: this.filterForm.value.distanceChange,
-      date: this.filterForm.value.date,
+      date: date,
       timeLow: this.filterForm.value.timeChangeLow,
       timeHigh: this.filterForm.value.timeChangeHigh,
       sport: this.activeSport,
+      reservationTime: reservationTime,
     };
 
     this.homepageService.getSportCenters(form).subscribe({
@@ -142,6 +159,9 @@ export class HomepageComponent implements OnInit {
             this.sportCenters[i].fieldNum = data[i].fields.length + ' terena';
           }
         }
+        this.sportCenters.sort((a: any, b: any) => {
+          return a.distance - b.distance;
+        });
         this.changeDetectorRef.detectChanges();
       },
       error: (error) => {
@@ -176,15 +196,45 @@ export class HomepageComponent implements OnInit {
   }
 
   goToSportCenterFields() {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {},
+    };
+    if (this.activeSportCenter.filteredField) {
+      console.log(this.activeSportCenter.filteredField.fieldId);
+      navigationExtras.queryParams = {
+        field: this.activeSportCenter.filteredField.fieldId,
+        date: this.filterForm.value.date,
+      };
+    }
     this.router
-      .navigate([
-        '/reservations/' +
-          this.activeSport +
-          '/' +
-          this.activeSportCenter.sportCenterId,
-      ])
+      .navigate(
+        [
+          '/reservations/' +
+            this.activeSport +
+            '/' +
+            this.activeSportCenter.sportCenterId,
+        ],
+        navigationExtras,
+      )
       .then(() => {
         window.location.reload();
       });
+  }
+
+  private convertTimeToMinutes(reservationTime: any) {
+    let time = reservationTime;
+    let minutes = 0;
+    let hours = 0;
+    if (time.includes('h')) {
+      hours = parseInt(time.split(' ')[0]) * 60;
+    }
+    if (time.includes('min')) {
+      if (time.split(' ').length > 2) {
+        minutes = parseInt(time.split(' ')[2]);
+      } else {
+        minutes = parseInt(time.split(' ')[0]);
+      }
+    }
+    return hours + minutes;
   }
 }

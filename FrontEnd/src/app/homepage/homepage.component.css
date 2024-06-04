@@ -46,8 +46,9 @@
 
 .filters {
   width: 100%;
-  height: 15%;
+  height: 25%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border-bottom: #646669 2px solid;
@@ -86,7 +87,7 @@
 mat-icon {
   color: #e2b714;
   position: absolute;
-  top: 42%;
+  top: 44%;
   right: 10%;
   z-index: 2;
   &:hover {
@@ -115,20 +116,21 @@ mat-icon {
 
 .search {
   position: relative;
-  height: 19%;
+  height: 30%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .slider-container {
-  width: 30%;
+  width: 40%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
 }
 
 .slider-header {
@@ -209,11 +211,12 @@ input.my-custom-input {
   border-bottom: 1px solid #ccc;
   font-size: 18px;
   text-align: center;
+  height: 100%;
 }
 
 .time-filter {
   justify-content: normal;
-  width: 40%;
+  width: 50%;
 }
 
 .button {
@@ -323,4 +326,48 @@ input.my-custom-input {
   color: #646669;
   background: #b8bec5;
   margin-top: 10px;
+}
+
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.date-pick {
+  width: 37%;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-select {
+  width: 30%;
+  margin-right: 20px;
+  span {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
+mat-select {
+  color: #d1d0c5;
+  --mat-select-enabled-arrow-color: #d1d0c5;
+  font-size: 16px;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  --mat-select-panel-background-color: #323437;
+  --mat-option-selected-state-label-text-color: #e2b714;
+  color: #d1d0c5;
+}
+
+::ng-deep mat-pseudo-checkbox {
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: transparent;
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  color: #d1d0c5;
+  font-size: 16px;
 }
