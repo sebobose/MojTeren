@@ -42,7 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User(request, role);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        System.out.println(user);
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }

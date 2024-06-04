@@ -22,6 +22,7 @@ public class ReservationDTO {
     private String field;
     private String statusMessage;
     private UserDTO user;
+    private String sportCenterName;
 
     public ReservationDTO(Reservation reservation, String role) {
         this.reservationId = reservation.getReservationId();

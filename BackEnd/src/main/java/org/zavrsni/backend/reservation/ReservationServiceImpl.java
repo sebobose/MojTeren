@@ -1,6 +1,7 @@
 package org.zavrsni.backend.reservation;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.zavrsni.backend.entityStatus.EntityStatus;
@@ -12,6 +13,7 @@ import org.zavrsni.backend.fieldAvailability.FieldAvailability;
 import org.zavrsni.backend.fieldAvailability.FieldAvailabilityRepository;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
+import org.zavrsni.backend.mail.MailMessages;
 import org.zavrsni.backend.reservation.dto.AddReservationDTO;
 import org.zavrsni.backend.reservation.dto.ReservationDTO;
 import org.zavrsni.backend.reservation.dto.UserReservationDTO;
@@ -22,6 +24,7 @@ import org.zavrsni.backend.status.Status;
 import org.zavrsni.backend.status.StatusRepository;
 import org.zavrsni.backend.user.User;
 import org.zavrsni.backend.user.UserRepository;
+import org.zavrsni.backend.user.dto.UserDTO;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -42,6 +45,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final StatusRepository statusRepository;
     private final EntityStatusRepository entityStatusRepository;
     private final UserRepository userRepository;
+    private final MailMessages mailMessages;
 
     @Override
     public List<ReservationDTO> getReservations(String dateString, Long fieldId) {
@@ -196,6 +200,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @SneakyThrows
     public void cancelReservation(Long reservationId, String reason) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(
                 () -> new IllegalArgumentException("Reservation not found"));
@@ -210,15 +215,41 @@ public class ReservationServiceImpl implements ReservationService {
                 throw new IllegalArgumentException("You are not authorized to cancel this reservation");
             }
         }
-        List<EntityStatus> reservationStatuses = reservation.getReservationStatuses();
-        EntityStatus lastStatus = reservationStatuses.get(reservationStatuses.size() - 1);
-        if (lastStatus.getStatus().getStatusType().equals("ACTIVE")) {
-            EntityStatus newStatus = EntityStatus.builder()
-                    .status(statusRepository.findByStatusType("INACTIVE").orElseThrow())
-                    .statusComment(reason)
-                    .reservation(reservation)
-                    .build();
-            entityStatusRepository.save(newStatus);
+        EntityStatus newStatus = EntityStatus.builder()
+                .status(statusRepository.findByStatusType("INACTIVE").orElseThrow())
+                .statusComment(reason)
+                .reservation(reservation)
+                .build();
+        entityStatusRepository.save(newStatus);
+
+        String contact = "-";
+        if (!reservation.getUser().getContactNumber().isEmpty()) {
+            contact = reservation.getUser().getContactNumber();
+        }
+        UserDTO userDTO = UserDTO.builder()
+                .email(reservation.getUser().getEmail())
+                .firstName(reservation.getUser().getFirstName())
+                .lastName(reservation.getUser().getLastName())
+                .contact(contact)
+                .build();
+
+        ReservationDTO reservationDTO = ReservationDTO.builder()
+                .date(reservation.getDate().toString())
+                .startTime(reservation.getStartTime().toString())
+                .endTime(reservation.getEndTime().toString())
+                .field(reservation.getField().getFieldName())
+                .sportCenterName(reservation.getField().getSportCenter().getSportCenterName())
+                .user(userDTO)
+                .build();
+
+        String ownerMail = reservation.getField().getSportCenter().getOwner().getEmail();
+        switch (user.getRole().getRoleName()) {
+            case "ATHLETE" -> mailMessages.reservationCanceledByAthlete(reservationDTO, ownerMail, reason, "");
+            case "FIELD_OWNER" -> mailMessages.reservationCanceledByOwner(reservationDTO, reason, "vlasnika");
+            case "ADMIN" -> {
+                mailMessages.reservationCanceledByOwner(reservationDTO, reason, "administratora");
+                mailMessages.reservationCanceledByAthlete(reservationDTO, ownerMail, reason, " od strane administratora");
+            }
         }
     }
 
