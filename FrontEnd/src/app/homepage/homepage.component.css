@@ -343,8 +343,8 @@ input.my-custom-input {
 }
 
 .time-select {
-  width: 30%;
-  margin-right: 20px;
+  width: 50%;
+  margin-right: 40px;
   span {
     display: block;
     margin-bottom: 5px;
@@ -370,4 +370,10 @@ mat-select {
 ::ng-deep .mdc-list-item__primary-text {
   color: #d1d0c5;
   font-size: 16px;
+}
+
+.time-and-search {
+  display: flex;
+  justify-content: center;
+  width: 50%;
 }

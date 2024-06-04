@@ -110,7 +110,24 @@ export class HomepageComponent implements OnInit {
     this.applyFilters();
   }
 
-  doSearch() {}
+  doSearch() {
+    this.markers = [];
+    let form = {
+      latitude: this.lat,
+      longitude: this.lng,
+      sport: this.activeSport,
+      search: this.searchArea.nativeElement.value,
+    };
+    this.homepageService.searchSportCenters(form).subscribe({
+      next: (data: any) => {
+        this.sportCenters = data;
+        this.setMarkers(data);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
+  }
 
   applyFilters() {
     this.markers = [];
@@ -144,25 +161,7 @@ export class HomepageComponent implements OnInit {
       next: (data: any) => {
         console.log(data);
         this.sportCenters = data;
-        for (let i = 0; i < data.length; i++) {
-          this.markers.push({
-            position: {
-              lat: parseFloat(data[i].latitude),
-              lng: parseFloat(data[i].longitude),
-            },
-            sportCenter: data[i],
-          });
-          this.sportCenters[i].distance = data[i].distance.toFixed(1);
-          if (data[i].fields.length == 1) {
-            this.sportCenters[i].fieldNum = '1 teren';
-          } else {
-            this.sportCenters[i].fieldNum = data[i].fields.length + ' terena';
-          }
-        }
-        this.sportCenters.sort((a: any, b: any) => {
-          return a.distance - b.distance;
-        });
-        this.changeDetectorRef.detectChanges();
+        this.setMarkers(data);
       },
       error: (error) => {
         console.error('Error:', error);
@@ -236,5 +235,27 @@ export class HomepageComponent implements OnInit {
       }
     }
     return hours + minutes;
+  }
+
+  private setMarkers(data: any) {
+    for (let i = 0; i < data.length; i++) {
+      this.markers.push({
+        position: {
+          lat: parseFloat(data[i].latitude),
+          lng: parseFloat(data[i].longitude),
+        },
+        sportCenter: data[i],
+      });
+      this.sportCenters[i].distance = data[i].distance.toFixed(1);
+      if (data[i].fields.length == 1) {
+        this.sportCenters[i].fieldNum = '1 teren';
+      } else {
+        this.sportCenters[i].fieldNum = data[i].fields.length + ' terena';
+      }
+    }
+    this.sportCenters.sort((a: any, b: any) => {
+      return a.distance - b.distance;
+    });
+    this.changeDetectorRef.detectChanges();
   }
 }

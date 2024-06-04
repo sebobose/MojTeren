@@ -19,10 +19,7 @@ import org.zavrsni.backend.fieldAvailability.FieldAvailability;
 import org.zavrsni.backend.image.Image;
 import org.zavrsni.backend.image.ImageRepository;
 import org.zavrsni.backend.reservation.Reservation;
-import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
-import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
-import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
-import org.zavrsni.backend.sportCenter.dto.SportCenterRequestDTO;
+import org.zavrsni.backend.sportCenter.dto.*;
 import org.zavrsni.backend.status.Status;
 import org.zavrsni.backend.status.StatusRepository;
 import org.zavrsni.backend.user.User;
@@ -326,6 +323,35 @@ public class SportCenterServiceImpl implements SportCenterService {
                 .build();
         entityStatusRepository.save(entityStatus);
         return null;
+    }
+
+    @Override
+    public List<SportCenterDetailsDTO> searchSportCenters(SportCenterSearchDTO sportCenterSearchDTO) {
+        return sportCenterRepository.findAll().stream()
+                .filter(sportCenter -> sportCenter.getSportCenterName().toLowerCase()
+                        .contains(sportCenterSearchDTO.getSearch().toLowerCase()) &&
+                        sportCenter.getSportCenterStatuses().get(sportCenter.getSportCenterStatuses().size() - 1)
+                        .getStatus().getStatusType().equals("ACTIVE") &&
+                        isSportInSportCenter(sportCenter, sportCenterSearchDTO.getSport()))
+                .map(sportCenter -> {
+                    List<Field> sportFilteredFields = sportCenter.getFields().stream()
+                            .filter(field -> {
+                                List<EntityStatus> statuses = field.getFieldStatuses();
+                                return field.getFieldStatuses().get(statuses.size() - 1)
+                                        .getStatus().getStatusType().equals("ACTIVE") &&
+                                        field.getSport().getSportName().equals(sportCenterSearchDTO.getSport());
+                            }).toList();
+                    double distance = calculateDistance(Double.parseDouble(sportCenter.getAddress().getLatitude()),
+                            Double.parseDouble(sportCenter.getAddress().getLongitude()),
+                            Double.parseDouble(sportCenterSearchDTO.getLatitude()),
+                            Double.parseDouble(sportCenterSearchDTO.getLongitude()));
+                    List<Image> images = imageRepository.findAllBySportCenter_SportCenterId(sportCenter.getSportCenterId());
+                    return new SportCenterDetailsDTO(sportCenter, images, sportFilteredFields, distance);
+                }).collect(Collectors.toList());
+    }
+
+    private boolean isSportInSportCenter(SportCenter sportCenter, String sport) {
+        return sportCenter.getFields().stream().anyMatch(field -> field.getSport().getSportName().equals(sport));
     }
 
     @SneakyThrows

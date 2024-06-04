@@ -15,4 +15,11 @@ export class HomepageService {
   getSportCenters(form: any) {
     return this.http.post(environment.BASE_API_URL + '/sport-center/all', form);
   }
+
+  searchSportCenters(form: any) {
+    return this.http.post(
+      environment.BASE_API_URL + '/sport-center/search',
+      form,
+    );
+  }
 }

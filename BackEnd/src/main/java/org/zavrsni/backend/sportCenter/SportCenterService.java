@@ -1,10 +1,7 @@
 package org.zavrsni.backend.sportCenter;
 
 import org.zavrsni.backend.field.dto.FieldsMetadataDTO;
-import org.zavrsni.backend.sportCenter.dto.AddSportCenterDTO;
-import org.zavrsni.backend.sportCenter.dto.FilteredSportCenterDTO;
-import org.zavrsni.backend.sportCenter.dto.SportCenterDetailsDTO;
-import org.zavrsni.backend.sportCenter.dto.SportCenterRequestDTO;
+import org.zavrsni.backend.sportCenter.dto.*;
 
 import java.util.List;
 
@@ -27,4 +24,6 @@ public interface SportCenterService {
     List<SportCenterDetailsDTO> getSportCenterRequests();
 
     Void resolveSportCenterRequest(SportCenterRequestDTO sportCenterRequestDTO);
+
+    List<SportCenterDetailsDTO> searchSportCenters(SportCenterSearchDTO sportCenterSearchDTO);
 }

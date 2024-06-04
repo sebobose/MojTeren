@@ -58,21 +58,23 @@
           />
           <mat-datepicker #picker></mat-datepicker>
         </div>
-        <div class="time-select">
-          <span>Trajanje termina:</span>
-          <mat-select
-            formControlName="reservationTime"
-            id="time"
-            class="center"
-            value="1 h"
-          >
-            @for (time of timeSlots; track time) {
-              <mat-option value="{{ time }}">{{ time }}</mat-option>
-            }
-          </mat-select>
-        </div>
-        <div class="filters-button">
-          <button type="submit" class="button">Pretraži</button>
+        <div class="time-and-search">
+          <div class="time-select">
+            <span>Trajanje termina:</span>
+            <mat-select
+              formControlName="reservationTime"
+              id="time"
+              class="center"
+              value="1 h"
+            >
+              @for (time of timeSlots; track time) {
+                <mat-option value="{{ time }}">{{ time }}</mat-option>
+              }
+            </mat-select>
+          </div>
+          <div class="filters-button">
+            <button type="submit" class="button">Pretraži</button>
+          </div>
         </div>
       </div>
     </form>
@@ -100,7 +102,7 @@
         placeholder="Pretraži"
         (keydown.enter)="doSearch(); $event.preventDefault()"
       ></textarea>
-      <mat-icon>search</mat-icon>
+      <mat-icon (click)="doSearch()">search</mat-icon>
     </div>
     <div class="sport-centers-container">
       @for (sportCenter of sportCenters; track sportCenter.id) {
