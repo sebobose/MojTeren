@@ -6,9 +6,9 @@
       <td mat-cell *matCellDef="let element"> {{element.time}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="sportCenterName">
-      <th mat-header-cell *matHeaderCellDef> Sportski centar </th>
-      <td mat-cell *matCellDef="let element"> {{element.sportCenterName}} </td>
+    <ng-container matColumnDef="field">
+      <th mat-header-cell *matHeaderCellDef> Teren </th>
+      <td mat-cell *matCellDef="let element">{{element.fieldName}} ({{element.sportCenterName}}) </td>
     </ng-container>
 
     <ng-container matColumnDef="address">
@@ -16,14 +16,14 @@
       <td mat-cell *matCellDef="let element"> {{element.address}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="fieldName">
-      <th mat-header-cell *matHeaderCellDef> Teren </th>
-      <td mat-cell *matCellDef="let element"> {{element.fieldName}} </td>
-    </ng-container>
-
     <ng-container matColumnDef="sportName">
       <th mat-header-cell *matHeaderCellDef> Sport </th>
       <td mat-cell *matCellDef="let element"> {{element.sportName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Cijena </th>
+      <td mat-cell *matCellDef="let element"> {{element.price}} €</td>
     </ng-container>
 
     <ng-container matColumnDef="status">

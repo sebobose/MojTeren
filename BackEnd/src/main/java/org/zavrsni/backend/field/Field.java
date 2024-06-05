@@ -38,6 +38,9 @@ public class Field {
     @NotNull
     private String description;
 
+    @NotNull
+    private Double price;
+
     @OneToMany(mappedBy = "field")
     private List<Image> images;
 

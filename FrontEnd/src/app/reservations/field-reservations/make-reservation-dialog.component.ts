@@ -14,6 +14,7 @@ import { ReservationService } from '../reservation.service';
           Datum: {{ data.date }} <br />
           Početak: {{ data.startTime }} <br />
           Kraj: {{ data.endTime }} <br />
+          Cijena: {{ data.price }} € <br />
         </p>
         @if (role != 'ATHLETE') {
           <textarea
@@ -115,7 +116,7 @@ export class MakeReservationDialogComponent {
 
   onYesClick(): void {
     const reservationMessage = this.reservationMessage.nativeElement.value;
-    if (this.role === 'FIELD_OWNER') {
+    if (this.role === 'FIELD_OWNER' || this.role === 'ADMIN') {
       let user = this.user.nativeElement.value;
       if (user === '') {
         this.userError = true;

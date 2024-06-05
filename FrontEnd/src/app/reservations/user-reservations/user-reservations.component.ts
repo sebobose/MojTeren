@@ -17,10 +17,10 @@ export class UserReservationsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'time',
-    'sportCenterName',
+    'field',
     'address',
-    'fieldName',
     'sportName',
+    'price',
     'status',
     'statusMessage',
     'cancel',
@@ -41,6 +41,7 @@ export class UserReservationsComponent implements OnInit {
       next: (reservations: any) => {
         console.log(reservations);
         for (let reservation of reservations) {
+          reservation.price = parseFloat(reservation.price.toFixed(2));
           let date = reservation.time.split(' ')[0];
           date = date.split('-').reverse().join('.');
           let startTime = reservation.time.split(' ')[1];

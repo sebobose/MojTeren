@@ -52,13 +52,13 @@ export class SportCentersListComponent implements OnInit {
         } else if (this.role === 'FIELD_OWNER') {
           this.displayedColumns.splice(2, 0, 'status');
           this.displayedColumns.splice(3, 0, 'statusReason');
-          for (let element of this.dataSource.data) {
-            element.status = this.statusMap[element.status];
-            this.disabledButtons.set(
-              element.sportCenterId,
-              element.status != 'Aktivan' || element.sport == '',
-            );
-          }
+        }
+        for (let element of this.dataSource.data) {
+          element.status = this.statusMap[element.status];
+          this.disabledButtons.set(
+            element.sportCenterId,
+            element.status != 'Aktivan' || element.sport == '',
+          );
         }
       },
       error: (error) => {

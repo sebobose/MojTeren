@@ -26,7 +26,7 @@ export class AuthLoginGuard {
           });
           break;
         case 'ATHLETE':
-          this.router.navigate(['/home']).then(() => {
+          this.router.navigate(['/user-reservations']).then(() => {
             window.location.reload();
           });
           break;

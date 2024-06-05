@@ -21,6 +21,7 @@ public class AddFieldDTO {
         private Long timeSlot;
         private String description;
         private Long sportCenterId;
+        private Double price;
         private List<MultipartFile> images;
         private List<FieldAvailabilityDTO> fieldAvailabilities;
 }

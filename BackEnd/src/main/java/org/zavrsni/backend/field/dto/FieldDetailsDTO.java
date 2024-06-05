@@ -24,6 +24,7 @@ public class FieldDetailsDTO {
     private Long minResTime;
     private Long timeSlot;
     private String description;
+    private Double price;
     private List<byte[]> images;
     private List<FieldAvailabilityDTO> fieldAvailabilities;
     private SportCenterDetailsDTO sportCenter;
@@ -35,6 +36,7 @@ public class FieldDetailsDTO {
         this.minResTime = field.getMinResTime();
         this.timeSlot = field.getTimeSlot();
         this.description = field.getDescription();
+        this.price = field.getPrice();
         this.images = images.stream().map(Image::getImage).toList();
         this.fieldAvailabilities = fieldAvailabilities.stream().map(FieldAvailabilityDTO::new).toList();
     }
@@ -46,5 +48,6 @@ public class FieldDetailsDTO {
         this.minResTime = field.getMinResTime();
         this.timeSlot = field.getTimeSlot();
         this.description = field.getDescription();
+        this.price = field.getPrice();
     }
 }

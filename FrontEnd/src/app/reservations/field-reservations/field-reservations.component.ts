@@ -95,6 +95,10 @@ export class FieldReservationsComponent implements OnInit {
   }
 
   eventClicked(event: any) {
+    let price =
+      (this.currentField.price * this.timeStringToMinutes()) /
+      this.currentField.minResTime;
+    price = parseFloat(price.toFixed(2));
     let startMinutes = event.start.getMinutes().toString();
     let endMinutes = event.end.getMinutes().toString();
     if (startMinutes.length < 2) startMinutes = '0' + startMinutes;
@@ -110,6 +114,7 @@ export class FieldReservationsComponent implements OnInit {
           this.fullReservations.get(event.id).user.lastName,
         email: this.fullReservations.get(event.id).user.email,
         contact: this.fullReservations.get(event.id).user.contact,
+        price: price,
         sportCenterName: this.sportCenter.sportCenterName,
         fieldName: this.currentField.fieldName,
         date: date.reverse().join('.'),
@@ -310,6 +315,10 @@ export class FieldReservationsComponent implements OnInit {
         return;
       }
     }
+    let price =
+      (this.currentField.price * this.timeStringToMinutes()) /
+      this.currentField.minResTime;
+    price = parseFloat(price.toFixed(2));
     let startMinutes = $event.date.getMinutes().toString();
     let endMinutes = eventEnd.getMinutes().toString();
     if (startMinutes.length < 2) startMinutes = '0' + startMinutes;
@@ -317,13 +326,14 @@ export class FieldReservationsComponent implements OnInit {
     let date = $event.date.toISOString().split('T')[0].split('-');
     const dialogRef = this.dialog.open(MakeReservationDialogComponent, {
       width: '600px',
-      height: '520px',
+      height: '540px',
       data: {
         sportCenterName: this.sportCenter.sportCenterName,
         fieldName: this.currentField.fieldName,
         date: date.reverse().join('.'),
         startTime: $event.date.getHours() + ':' + startMinutes,
         endTime: eventEnd.getHours() + ':' + endMinutes,
+        price: price,
       },
     });
     dialogRef.afterClosed().subscribe((reason: any) => {

@@ -53,6 +53,7 @@ public class FieldServiceImpl implements FieldService {
                 .minResTime(addFieldDTO.getMinResTime())
                 .timeSlot(addFieldDTO.getTimeSlot())
                 .description(addFieldDTO.getDescription())
+                .price(addFieldDTO.getPrice())
                 .build();
         fieldRepository.save(field);
 
@@ -99,6 +100,7 @@ public class FieldServiceImpl implements FieldService {
         field.setTimeSlot(addFieldDTO.getTimeSlot());
         field.setDescription(addFieldDTO.getDescription());
         field.setSport(sport);
+        field.setPrice(addFieldDTO.getPrice());
         fieldRepository.save(field);
 
         List<Image> images = imageRepository.findAllByField_FieldId(fieldId);

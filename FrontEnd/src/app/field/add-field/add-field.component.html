@@ -110,6 +110,25 @@
             30min...</span
           >
         </div>
+        <div class="form-container">
+          <div class="form-field">
+            <input
+              formControlName="price"
+              type="text"
+              required
+              id="price"
+              placeholder=""
+            />
+            <label for="price">Cijena za najkraci termin</label>
+            <mat-icon class="euro-icon">euro_symbol</mat-icon>
+          </div>
+          @if (
+            (addForm.controls.price.dirty || form.submitted) &&
+            !addForm.controls.price.valid
+            ) {
+            <span class="form-error">Morate unijeti ispravnu cijenu!</span>
+          }
+        </div>
         <div class="form-container description">
           <div class="form-field description-field">
             <textarea

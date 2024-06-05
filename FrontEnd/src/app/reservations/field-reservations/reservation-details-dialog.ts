@@ -20,6 +20,7 @@ import { ReservationService } from '../reservation.service';
           Datum: {{ data.date }} <br />
           Početak: {{ data.startTime }} <br />
           Kraj: {{ data.endTime }} <br />
+          Cijena: {{ data.price }} € <br />
           {{ data.message }}
         </p>
         <h1>Želite li otkazati rezervaciju?</h1>
@@ -104,7 +105,6 @@ import { ReservationService } from '../reservation.service';
 })
 export class ReservationDetailsDialog implements OnInit {
   private dialogRef = inject(MatDialogRef<ReservationDetailsDialog>);
-  private reservationService = inject(ReservationService);
 
   public data = inject(MAT_DIALOG_DATA);
   public role = localStorage.getItem('role') || '';
@@ -115,7 +115,7 @@ export class ReservationDetailsDialog implements OnInit {
     if (this.data.contact == '') {
       this.data.contact = 'Nije unesen';
     }
-    if (this.data.message != undefined) {
+    if (this.data.message != undefined || this.data.message != '') {
       this.data.message = 'Poruka uz rezervaciju: ' + this.data.message;
     }
   }

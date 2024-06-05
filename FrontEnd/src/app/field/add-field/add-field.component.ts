@@ -34,6 +34,7 @@ export class AddFieldComponent implements OnInit {
   fieldAvailability = new Array(7).fill(0);
   workHoursPattern =
     '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]-([0-1]?[0-9]|2[0-3]):[0-5][0-9]$';
+  pricePattern = '^[0-9]+(\\.[0-9]{1,2})?$';
   minResTimes = [
     '30 min',
     '45 min',
@@ -81,6 +82,7 @@ export class AddFieldComponent implements OnInit {
       sport: ['', [Validators.required]],
       minResTime: ['', [Validators.required]],
       timeSlot: ['', [Validators.required]],
+      price: ['', [Validators.pattern(this.pricePattern)]],
       description: ['', [Validators.required]],
       Monday: ['', [Validators.pattern(this.workHoursPattern)]],
       Tuesday: ['', [Validators.pattern(this.workHoursPattern)]],
@@ -129,6 +131,7 @@ export class AddFieldComponent implements OnInit {
             this.addForm.controls.timeSlot.setValue(data.timeSlot + ' min');
           }
           this.timeSlotSelected = true;
+          this.addForm.controls.price.setValue(data.price);
           this.addForm.controls.description.setValue(data.description);
           for (let i of data.fieldAvailabilities) {
             this.fieldAvailability[
@@ -189,6 +192,7 @@ export class AddFieldComponent implements OnInit {
           this.addForm.controls.timeSlot.value,
         ).toString(),
       );
+      formData.append('price', this.addForm.controls.price.value);
       formData.append('description', this.addForm.controls.description.value);
       formData.append('sportCenterId', this.sportCenterId);
       const images = this.addForm.get('images') as FormArray;
