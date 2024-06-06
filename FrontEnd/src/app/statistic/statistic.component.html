@@ -1,0 +1,83 @@
+<form class="filters" [formGroup]="filterForm" (ngSubmit)="applyFilters()" #form="ngForm">
+  <div class="filter">
+    <span>Sportski centri:</span>
+    <mat-select
+      formControlName="sportCenters"
+      id="sportCenters"
+      class="center select"
+      multiple
+      (selectionChange)="getFields()"
+    >
+      @for (sportCenter of sportCenters; track sportCenter) {
+        <mat-option value="{{ sportCenter }}">{{ sportCenter }}</mat-option>
+      }
+    </mat-select>
+    @if ((filterForm.controls.sportCenters.dirty || form.submitted) &&
+    !filterForm.controls.sportCenters.valid
+      ) {
+      <span class="form-error">Morate odabrati barem jedan sportski centar!</span>
+    }
+  </div>
+  <div class="filter">
+    <span>Tereni:</span>
+    <mat-select
+      formControlName="fields"
+      id="fields"
+      class="center"
+      multiple
+      (selectionChange)="fieldChanged()"
+    >
+      @for (field of fields; track field) {
+        <mat-option value="{{ field }}">{{ field }}</mat-option>
+      }
+    </mat-select>
+    @if ((filterForm.controls.fields.dirty || form.submitted) &&
+    !filterForm.controls.fields.valid
+      ) {
+      <span class="form-error">Morate odabrati barem jedan teren!</span>
+    }
+  </div>
+  <div class="filter">
+    <span>Vrijeme:</span>
+    <mat-select
+      formControlName="period"
+      id="period"
+      class="center"
+      value="Bilo kad"
+    >
+      @for (period of periods; track period) {
+        <mat-option value="{{ period }}">{{ period }}</mat-option>
+      }
+    </mat-select>
+  </div>
+  <div class="filter form-field">
+    <input
+      [matDatepicker]="picker"
+      formControlName="date"
+      class="date-input"
+      placeholder="Odaberite datum"
+      readonly="readonly"
+      (click)="picker.open()"
+      (dateChange)="dateChanged()"
+    />
+    <mat-datepicker #picker></mat-datepicker>
+    @if ((filterForm.controls.date.dirty || form.submitted) &&
+    dateError
+      ) {
+      <span class="form-error">Morate odabrati datum!</span>
+    }
+  </div>
+  <div class="filter">
+    <button type="submit" class="button">Pretraži</button>
+  </div>
+</form>
+<div class="statistics-main">
+  <div class="statistics-table">
+    @for(statistic of statistics; track statistic) {
+      <div class="statistic">
+        <p class="statistic-name">{{ statistic[0] }}</p>
+        <p class="statistic-value">{{ statistic[1] }}</p>
+      </div>
+    }
+  </div>
+</div>

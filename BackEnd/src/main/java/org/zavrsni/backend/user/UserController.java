@@ -3,6 +3,9 @@ package org.zavrsni.backend.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zavrsni.backend.user.dto.FilteredStatisticsDTO;
+import org.zavrsni.backend.user.dto.GetStatisticDTO;
+import org.zavrsni.backend.user.dto.StatisticDTO;
 import org.zavrsni.backend.user.dto.UserDTO;
 
 import java.util.List;
@@ -35,5 +38,15 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<Void> editProfile(@RequestBody UserDTO userDTO) {
         return userService.editProfile(userDTO);
+    }
+
+    @GetMapping("/field-owner/statistics")
+    public ResponseEntity<List<StatisticDTO>> getSportCenterAndFields() {
+        return ResponseEntity.ok(userService.getSportCenterAndFields());
+    }
+
+    @PostMapping("/field-owner/statistics")
+    public ResponseEntity<FilteredStatisticsDTO> getFilteredStatistics(@RequestBody GetStatisticDTO getStatisticDTO) {
+        return ResponseEntity.ok(userService.getFilteredStatistics(getStatisticDTO));
     }
 }

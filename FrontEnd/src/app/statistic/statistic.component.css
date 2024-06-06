@@ -1,0 +1,143 @@
+.filters {
+  height: 10%;
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+  padding: 40px 0;
+}
+
+.filter {
+  width: 15%;
+  span {
+    font-size: 16px;
+    color: #e2b714;
+  }
+}
+
+.select {
+  font-size: 14px;
+}
+
+.date-input {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  font-size: 18px;
+  text-align: center;
+  height: 100%;
+}
+
+.form-field {
+  height: max-content;
+  margin-top: 16px;
+  border-bottom: none;
+}
+
+.form-error {
+  border-bottom: none;
+}
+
+mat-select {
+  color: #d1d0c5;
+  --mat-select-enabled-arrow-color: #d1d0c5;
+  font-size: 12px;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  --mat-select-panel-background-color: #323437;
+  --mat-option-selected-state-label-text-color: #e2b714;
+  color: #d1d0c5;
+}
+
+::ng-deep mat-pseudo-checkbox {
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: transparent;
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  color: #d1d0c5;
+  font-size: 12px;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked {
+  --mat-full-pseudo-checkbox-selected-icon-color: #e2b714;
+  --mat-full-pseudo-checkbox-selected-checkmark-color: #000;
+  --mat-full-pseudo-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
+}
+
+::ng-deep .mdc-label {
+  font-size: 14px;
+  color: #d1d0c5;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: rgba(226, 183, 20, 0.8) !important;
+}
+
+::ng-deep .mat-calendar-body-today {
+  background-color: rgba(226, 183, 20, 0.6) !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover {
+  --mat-datepicker-calendar-date-hover-state-background-color: rgba(226, 183, 20, 0.6) !important;
+
+}
+::ng-deep .ng-star-inserted {
+  --mat-datepicker-calendar-container-background-color: #323437;
+  --mat-datepicker-calendar-period-button-text-color: #e2b714;
+  --mat-datepicker-calendar-period-button-icon-color: #e2b714;
+  --mat-datepicker-calendar-navigation-button-icon-color: #e2b714;
+  --mat-datepicker-calendar-header-divider-color: #e2b714;
+  --mat-datepicker-calendar-header-text-color: #e2b714;
+  --mat-datepicker-calendar-date-today-outline-color: #e2b714;
+  --mat-datepicker-calendar-date-today-disabled-state-outline-color: #e2b714;
+  --mat-datepicker-calendar-date-text-color: #e2b714;
+  --mat-datepicker-calendar-body-label-text-color: #e2b714;
+  --mat-datepicker-calendar-date-focus-state-background-color: #323437;
+}
+
+input.my-custom-input {
+  background-color: #e2b714;
+  color: #333;
+}
+
+.statistics-main {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.statistics-table {
+  width: 80%;
+  height: 80%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  border-radius: 20px;
+  border: 2px solid #646669;
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding-left: 40px;
+}
+
+.statistic-name {
+  color: #e3bd2a;
+  font-size: 16px;
+}
+
+.statistic-value {
+  color: #d1d0c5;
+  font-size: 24px;
+}

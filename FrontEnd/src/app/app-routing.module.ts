@@ -15,6 +15,7 @@ import { FieldReservationsComponent } from './reservations/field-reservations/fi
 import { UserReservationsComponent } from './reservations/user-reservations/user-reservations.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CanceledReservationsComponent } from './reservations/canceled-reservations/canceled-reservations.component';
+import { StatisticComponent } from './statistic/statistic.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -80,6 +81,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { requiredRole: ['FIELD_OWNER'] },
   },
+  {
+    path: 'statistic',
+    component: StatisticComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: ['FIELD_OWNER', 'ADMIN'] },
+  },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

@@ -33,3 +33,32 @@
 .selected {
   color: #e0e0e0;
 }
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  margin-right: 30px;
+}
+
+.dropdown-options {
+  display: none;
+  position: absolute;
+  left: -36%;
+  overflow: auto;
+  background-color: #e3bd2a;
+  color: #323437;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  border: 1px solid #323437;
+  border-radius:5px;
+  width: 150px;
+}
+
+.dropdown:hover .dropdown-options {
+  display: block;
+}
+
+.dropdown-option {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+}

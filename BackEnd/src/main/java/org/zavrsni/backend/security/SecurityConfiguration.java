@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/reservations/check-user/**").hasAnyAuthority("ADMIN", "FIELD_OWNER")
                                 .requestMatchers("/reservations/canceled").hasAuthority("FIELD_OWNER")
                                 .requestMatchers("/user/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/user/field-owner/**").hasAuthority("FIELD_OWNER")
                                 .requestMatchers("/sport/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/sport-center/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/field/add").hasAnyAuthority("ADMIN", "FIELD_OWNER")
