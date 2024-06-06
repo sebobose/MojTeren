@@ -108,14 +108,14 @@ input.my-custom-input {
   align-items: center;
 }
 
-.statistics-table {
+.statistic-container {
+  height: 90%;
   width: 80%;
-  height: 80%;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-items: center;
+  padding: 20px 20px 20px 40px;
   border-radius: 20px;
   border: 2px solid #646669;
   box-shadow:
@@ -124,12 +124,21 @@ input.my-custom-input {
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
+.statistics-table {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+
+}
+
 .statistic {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  padding-left: 40px;
 }
 
 .statistic-name {
@@ -140,4 +149,17 @@ input.my-custom-input {
 .statistic-value {
   color: #d1d0c5;
   font-size: 24px;
+}
+
+.histogram-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  grid-column: span 3;
+}
+
+.histogram {
+  width: 33%;
 }

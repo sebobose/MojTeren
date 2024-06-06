@@ -62,6 +62,11 @@ import { ScDialogComponent } from './sport-center/sc-dialog.component';
 import { ReservationDetailsDialog } from './reservations/field-reservations/reservation-details-dialog';
 import { CanceledReservationsComponent } from './reservations/canceled-reservations/canceled-reservations.component';
 import { StatisticComponent } from './statistic/statistic.component';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -137,8 +142,10 @@ registerLocaleData(localeHr);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    BaseChartDirective,
   ],
   providers: [
+    provideCharts(withDefaultRegisterables()),
     { provide: MAT_DATE_LOCALE, useValue: 'hr-HR' },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.Map;
 
 @Builder
 @Data
@@ -21,4 +22,6 @@ public class FilteredStatisticsDTO {
     private Date creationDate;
     private Double averageReservationTime;
     private Double income;
+    private Map<Integer, Integer> reservationsByHour;
+    private Map<Integer, Integer> reservationsByLength;
 }

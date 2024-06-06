@@ -72,12 +72,34 @@
   </div>
 </form>
 <div class="statistics-main">
-  <div class="statistics-table">
-    @for(statistic of statistics; track statistic) {
-      <div class="statistic">
-        <p class="statistic-name">{{ statistic[0] }}</p>
-        <p class="statistic-value">{{ statistic[1] }}</p>
-      </div>
-    }
+  <div class="statistic-container">
+    <div class="statistics-table">
+      @for(statistic of statistics; track statistic) {
+        <div class="statistic">
+          <p class="statistic-name">{{ statistic[0] }}</p>
+          <p class="statistic-value">{{ statistic[1] }}</p>
+        </div>
+      }
+      @if (statistics.length > 0) {
+        <div class="histogram-container">
+          <div class="histogram">
+            <canvas baseChart
+                    [datasets]="periodsData.datasets"
+                    [labels]="periodsData.labels"
+                    [options]="histogramOptions"
+                    [type]="'bar'">
+            </canvas>
+          </div>
+          <div class="histogram">
+            <canvas baseChart
+                    [datasets]="lengthData.datasets"
+                    [labels]="lengthData.labels"
+                    [options]="histogramOptions"
+                    [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 </div>

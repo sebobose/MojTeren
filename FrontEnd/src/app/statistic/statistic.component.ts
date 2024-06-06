@@ -23,6 +23,50 @@ export class StatisticComponent implements OnInit {
   data: any;
   dateError: boolean = false;
   statistics: any = [];
+  public periodsData = {
+    labels: [
+      'Jutro (6:00-10:00)',
+      'Podne (10:00-15:00)',
+      'Poslijepodne (15:00-19:00)',
+      'Večer (19:00-24:00)',
+    ],
+    datasets: [
+      {
+        label: 'Broj rezervacija po vremenskom periodu',
+        data: [0, 0, 0, 0],
+        backgroundColor: ['#e3bd2a'],
+        borderColor: ['#e3bd2a'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  public lengthData = {
+    labels: ['< 1h', '1-2h', '> 2h'],
+    datasets: [
+      {
+        label: 'Broj rezervacija po trajanju',
+        data: [0, 0, 0],
+        backgroundColor: ['#e3bd2a'],
+        borderColor: ['#e3bd2a'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  public histogramOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: '#646669',
+        },
+      },
+      x: {
+        grid: {
+          color: '#646669',
+        },
+      },
+    },
+  };
 
   ngOnInit() {
     this.statisticsService.getSportCentersAndFields().subscribe((data: any) => {
@@ -51,6 +95,16 @@ export class StatisticComponent implements OnInit {
         }
         console.log(data);
         this.statistics = [];
+
+        for (let [length, count] of Object.entries(data.reservationsByLength)) {
+          // @ts-ignore
+          this.lengthData.datasets[0].data[length] = count;
+        }
+        for (let [hour, count] of Object.entries(data.reservationsByHour)) {
+          // @ts-ignore
+          this.periodsData.datasets[0].data[hour] = count;
+        }
+
         if (
           this.filterForm.value.sportCenters.includes('Svi') ||
           this.filterForm.value.sportCenters.length > 1

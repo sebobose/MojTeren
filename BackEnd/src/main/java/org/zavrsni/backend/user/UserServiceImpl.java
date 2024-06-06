@@ -135,9 +135,10 @@ public class UserServiceImpl implements UserService{
                 .creationDate(Date.valueOf(creationDate))
                 .averageReservationTime(this.findAverageReservationTime(reservations, getStatisticDTO.getPeriod(), getStatisticDTO.getDate()))
                 .income(this.findIncome(reservations, getStatisticDTO.getPeriod(), getStatisticDTO.getDate()))
+                .reservationsByHour(this.findReservationsByHour(reservations, getStatisticDTO.getPeriod(), getStatisticDTO.getDate()))
+                .reservationsByLength(this.findReservationsByLength(reservations, getStatisticDTO.getPeriod(), getStatisticDTO.getDate()))
                 .build();
     }
-
 
 
     private String findMostPopularField(List<Field> fields, String period, Calendar date) {
@@ -610,5 +611,189 @@ public class UserServiceImpl implements UserService{
                         }).mapToInt(reservation -> 1).sum())).orElseThrow().getSportCenterName();
             }
         }
+    }
+
+    private Map<Integer, Integer> findReservationsByHour(List<Reservation> reservations, String period, Calendar date) {
+        Map<Integer, Integer> reservationsByHour = new HashMap<>();
+        switch (period) {
+            case "Bilo kad" -> {
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            return lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED");
+                        })
+                        .forEach(reservation -> {
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getStartTime());
+                            int hour = reservationDate.get(Calendar.HOUR_OF_DAY);
+                            hour = this.calculateHour(hour);
+                            reservationsByHour.put(hour, reservationsByHour.getOrDefault(hour, 0) + 1);
+                        });
+            }
+            case "Mjesec" -> {
+                int selectedMonth = date.get(Calendar.MONTH);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.MONTH) == selectedMonth &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getStartTime());
+                            int hour = reservationDate.get(Calendar.HOUR_OF_DAY);
+                            hour = this.calculateHour(hour);
+                            reservationsByHour.put(hour, reservationsByHour.getOrDefault(hour, 0) + 1);
+                        });
+            }
+            case "Tjedan" -> {
+                int selectedWeek = date.get(Calendar.WEEK_OF_YEAR);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.WEEK_OF_YEAR) == selectedWeek &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getStartTime());
+                            int hour = reservationDate.get(Calendar.HOUR_OF_DAY);
+                            hour = this.calculateHour(hour);
+                            reservationsByHour.put(hour, reservationsByHour.getOrDefault(hour, 0) + 1);
+                        });
+            }
+            default -> {
+                int selectedDay = date.get(Calendar.DAY_OF_YEAR);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.DAY_OF_YEAR) == selectedDay &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getStartTime());
+                            int hour = reservationDate.get(Calendar.HOUR_OF_DAY);
+                            hour = this.calculateHour(hour);
+                            reservationsByHour.put(hour, reservationsByHour.getOrDefault(hour, 0) + 1);
+                        });
+            }
+        }
+        return reservationsByHour;
+    }
+
+    private int calculateHour(Integer hour) {
+        if (hour >= 6 && hour < 10)
+            return 0;
+        else if (hour >= 10 && hour < 15)
+            return 1;
+        else if (hour >= 15 && hour < 19)
+            return 2;
+        else if (hour >= 19 && hour <= 24)
+            return 3;
+        else
+            return 4;
+    }
+
+    private Map<Integer, Integer> findReservationsByLength(List<Reservation> reservations, String period, Calendar date) {
+        Map<Integer, Integer> reservationsByLength = new HashMap<>();
+        switch (period) {
+            case "Bilo kad" -> {
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            return lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED");
+                        })
+                        .forEach(reservation -> {
+                            int reservationLength = (int) (reservation.getEndTime().getTime() - reservation.getStartTime().getTime()) / (1000 * 60);
+                            int length = this.calculateLength(reservationLength);
+                            reservationsByLength.put(length, reservationsByLength.getOrDefault(length, 0) + 1);
+                        });
+            }
+            case "Mjesec" -> {
+                int selectedMonth = date.get(Calendar.MONTH);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.MONTH) == selectedMonth &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            int reservationLength = (int) (reservation.getEndTime().getTime() - reservation.getStartTime().getTime()) / (1000 * 60);
+                            int length = this.calculateLength(reservationLength);
+                            reservationsByLength.put(length, reservationsByLength.getOrDefault(length, 0) + 1);
+                        });
+            }
+            case "Tjedan" -> {
+                int selectedWeek = date.get(Calendar.WEEK_OF_YEAR);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.WEEK_OF_YEAR) == selectedWeek &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            int reservationLength = (int) (reservation.getEndTime().getTime() - reservation.getStartTime().getTime()) / (1000 * 60);
+                            int length = this.calculateLength(reservationLength);
+                            reservationsByLength.put(length, reservationsByLength.getOrDefault(length, 0) + 1);
+                        });
+            }
+            default -> {
+                int selectedDay = date.get(Calendar.DAY_OF_YEAR);
+                int selectedYear = date.get(Calendar.YEAR);
+                reservations.stream()
+                        .filter(reservation -> {
+                            List<EntityStatus> statuses = reservation.getReservationStatuses();
+                            String lastStatus = statuses.get(statuses.size() - 1).getStatus().getStatusType();
+                            Calendar reservationDate = Calendar.getInstance();
+                            reservationDate.setTime(reservation.getDate());
+                            return reservationDate.get(Calendar.YEAR) == selectedYear &&
+                                    reservationDate.get(Calendar.DAY_OF_YEAR) == selectedDay &&
+                                    (lastStatus.equals("ACTIVE") || lastStatus.equals("FINISHED"));
+                        })
+                        .forEach(reservation -> {
+                            int reservationLength = (int) (reservation.getEndTime().getTime() - reservation.getStartTime().getTime()) / (1000 * 60);
+                            int length = this.calculateLength(reservationLength);
+                            reservationsByLength.put(length, reservationsByLength.getOrDefault(length, 0) + 1);
+                        });
+            }
+        }
+        return reservationsByLength;
+    }
+
+    private int calculateLength(int reservationLength) {
+        if (reservationLength < 60)
+            return 0;
+        else if (reservationLength <= 120)
+            return 1;
+        else
+            return 2;
     }
 }
