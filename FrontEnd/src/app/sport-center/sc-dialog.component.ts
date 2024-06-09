@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   template: `
     <div class="main-dialog">
       <div class="padding">
-        <h1>Sportski centar {{ data.sportCenterName }}</h1>
+        <h1>{{ data.sportCenterName }}</h1>
         <p>
           Adresa: {{ data.streetAndNumber }}, {{ data.zipCode }}
           {{ data.cityName }} <br />

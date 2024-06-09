@@ -311,7 +311,7 @@ public class UserServiceImpl implements UserService{
                 return reservations.stream()
                         .filter(reservation -> {
                             List<EntityStatus> statuses = reservation.getReservationStatuses();
-                            return statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("CANCELED");
+                            return statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("INACTIVE");
                         })
                         .count();
             }
@@ -325,7 +325,7 @@ public class UserServiceImpl implements UserService{
                             reservationDate.setTime(reservation.getDate());
                             return reservationDate.get(Calendar.YEAR) == selectedYear &&
                                     reservationDate.get(Calendar.MONTH) == selectedMonth &&
-                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("CANCELED");
+                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("INACTIVE");
                         })
                         .count();
             }
@@ -339,7 +339,7 @@ public class UserServiceImpl implements UserService{
                             reservationDate.setTime(reservation.getDate());
                             return reservationDate.get(Calendar.YEAR) == selectedYear &&
                                     reservationDate.get(Calendar.WEEK_OF_YEAR) == selectedWeek &&
-                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("CANCELED");
+                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("INACTIVE");
                         })
                         .count();
             }
@@ -353,7 +353,7 @@ public class UserServiceImpl implements UserService{
                             reservationDate.setTime(reservation.getDate());
                             return reservationDate.get(Calendar.YEAR) == selectedYear &&
                                     reservationDate.get(Calendar.DAY_OF_YEAR) == selectedDay &&
-                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("CANCELED");
+                                    statuses.get(statuses.size() - 1).getStatus().getStatusType().equals("INACTIVE");
                         })
                         .count();
             }

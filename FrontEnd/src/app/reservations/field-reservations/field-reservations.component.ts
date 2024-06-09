@@ -87,6 +87,7 @@ export class FieldReservationsComponent implements OnInit {
     this.currentField = field;
     this.maxHours = this.getMaxHours(field);
     this.minHours = this.getMinHours(field);
+    this.hourSegments = 60 / this.currentField.timeSlot;
     this.setTimes();
     this.reservations = [];
     this.showCalendar = false;
