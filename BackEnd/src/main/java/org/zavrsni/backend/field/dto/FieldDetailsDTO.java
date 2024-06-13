@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zavrsni.backend.entityStatus.EntityStatus;
 import org.zavrsni.backend.field.Field;
 import org.zavrsni.backend.fieldAvailability.FieldAvailability;
 import org.zavrsni.backend.fieldAvailability.dto.FieldAvailabilityDTO;
@@ -28,6 +29,7 @@ public class FieldDetailsDTO {
     private List<byte[]> images;
     private List<FieldAvailabilityDTO> fieldAvailabilities;
     private SportCenterDetailsDTO sportCenter;
+    private Boolean hasActiveReservations;
 
     public FieldDetailsDTO(Field field, List<Image> images, List<FieldAvailability> fieldAvailabilities) {
         this.fieldId = field.getFieldId();
@@ -39,6 +41,10 @@ public class FieldDetailsDTO {
         this.price = field.getPrice();
         this.images = images.stream().map(Image::getImage).toList();
         this.fieldAvailabilities = fieldAvailabilities.stream().map(FieldAvailabilityDTO::new).toList();
+        this.hasActiveReservations = field.getReservations().stream().anyMatch(reservation -> {
+            EntityStatus lastStatus = reservation.getReservationStatuses().get(reservation.getReservationStatuses().size() - 1);
+            return lastStatus.getStatus().getStatusType().equals("ACTIVE");
+        });
     }
 
     public FieldDetailsDTO(Field field) {

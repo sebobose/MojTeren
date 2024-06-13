@@ -32,6 +32,7 @@ export class AddFieldComponent implements OnInit {
   resTimeSelected: boolean = false;
   timeSlotSelected: boolean = false;
   fieldAvailability = new Array(7).fill(0);
+  hasActiveReservations: boolean = false;
   workHoursPattern =
     '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]-([0-1]?[0-9]|2[0-3]):[0-5][0-9]$';
   pricePattern = '^[0-9]+(\\.[0-9]{1,2})?$';
@@ -110,6 +111,8 @@ export class AddFieldComponent implements OnInit {
     if (this.fieldId) {
       this.fieldService.getFieldById(this.fieldId).subscribe({
         next: (data: any) => {
+          console.log(data);
+          this.hasActiveReservations = data.hasActiveReservations;
           this.addForm.controls.fieldName.setValue(data.fieldName);
           this.addForm.controls.sport.setValue(data.sport);
           this.sportSelected = true;

@@ -43,7 +43,7 @@
 .dropdown-options {
   display: none;
   position: absolute;
-  left: -36%;
+  left: 10%;
   overflow: auto;
   background-color: #e3bd2a;
   color: #323437;

@@ -227,3 +227,9 @@ mat-checkbox {
   background-color: #b8bec5;
   color: #646669;
 }
+
+.delete-button:disabled {
+  background-color: #2f2f2f;
+  color: #4d4d4d;
+  cursor: default;
+}

@@ -211,6 +211,7 @@
             type="button"
             class="button delete-button"
             (click)="deleteField()"
+            [disabled]="hasActiveReservations"
           >
             Obriši teren
           </button>
